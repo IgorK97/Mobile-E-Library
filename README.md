@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 # Mobile-E-Library
 Этот репозиторий содержит код мобильного приложения свободной электронной библиотеки по истории "Хронолибрис" (Chronolibris)
 Макет этого приложения можно посмотреть по ссылке https://www.figma.com/design/1kz9n4gIb31Z2pVKPS2dw4/Mobile-E-Library?node-id=0-1&t=aOMBhsgdV2B8U8ZJ-1
-=======
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
@@ -53,4 +52,3 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
->>>>>>> f858022 (Initial commit)
