@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import {
+  Modal,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -12,6 +14,8 @@ import { ReviewCard } from "@/components/review-card";
 // import { BottomNavigation } from "./BottomNavigation"; // make sure this is adapted for React Native
 // import Icon from "react-native-vector-icons/Feather"; // Using Feather icons as substitute
 import Feather from "@expo/vector-icons/Feather";
+import { router } from "expo-router";
+import { Star } from "lucide-react-native";
 interface Review {
   id: string;
   author: string;
@@ -84,11 +88,21 @@ export default function ReviewsScreen({
   bookTitle = "Буддизм в Японии",
 }: ReviewsScreenProps) {
   const [sortBy, setSortBy] = useState("highest");
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [newReview, setNewReview] = useState("");
+  const [newRating, setNewRating] = useState(0);
   const sortedReviews = [...mockReviews].sort((a, b) => {
     if (sortBy === "highest") return b.rating - a.rating;
     return a.rating - b.rating;
   });
+  const handleSendReview = () => {
+    if (newReview.trim() === "" || newRating === 0) return;
+    // здесь можно добавить логику отправки на сервер
+    console.log("Отзыв отправлен:", newReview, "Рейтинг:", newRating);
+    setNewReview("");
+    setNewRating(0);
+    setIsModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -96,7 +110,10 @@ export default function ReviewsScreen({
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backButton}
+        >
           <Feather name="arrow-left" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Отзывы</Text>
@@ -132,7 +149,60 @@ export default function ReviewsScreen({
           />
         ))}
       </ScrollView>
+      {/* Bottom button */}
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => setIsModalVisible(true)}
+      >
+        <Text style={styles.addButtonText}>Написать отзыв</Text>
+      </TouchableOpacity>
+      {/* Modal for writing a review */}
+      <Modal
+        visible={isModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            {/* Header */}
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Новый отзыв</Text>
+              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                <Feather name="x" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+            {/* Rating */}
+            <View style={styles.ratingRow}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <TouchableOpacity key={star} onPress={() => setNewRating(star)}>
+                  <Star
+                    size={28}
+                    color={star <= newRating ? "#FFD700" : "#CCC"}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+            {/* Text input */}
+            <TextInput
+              style={styles.input}
+              placeholder="Напишите ваш отзыв..."
+              placeholderTextColor="#999"
+              multiline
+              value={newReview}
+              onChangeText={setNewReview}
+            />
 
+            {/* Send button */}
+            <TouchableOpacity
+              style={styles.sendButton}
+              onPress={handleSendReview}
+            >
+              <Text style={styles.sendButtonText}>Отправить</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       {/* Bottom navigation */}
       {/* <BottomNavigation activeTab={activeTab} onTabChange={onTabChange} /> */}
     </View>
@@ -140,7 +210,7 @@ export default function ReviewsScreen({
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f2f2f2" },
+  container: { flex: 1, backgroundColor: "#f2f2f2", paddingVertical: 10 },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -162,4 +232,57 @@ const styles = StyleSheet.create({
   sortButton: { flexDirection: "row", alignItems: "center", gap: 5 },
   sortText: { fontSize: 14 },
   reviewList: { paddingHorizontal: 15, paddingVertical: 10, paddingBottom: 80 },
+  addButton: {
+    backgroundColor: "#D32F2F",
+    borderRadius: 30,
+    position: "absolute",
+    bottom: 30,
+    left: "10%",
+    right: "10%",
+    alignItems: "center",
+    paddingVertical: 12,
+    elevation: 3,
+  },
+  addButtonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "flex-end",
+  },
+  modalContainer: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    minHeight: "50%",
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  modalTitle: { fontSize: 18, fontWeight: "600" },
+  ratingRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 16,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    padding: 12,
+    minHeight: 100,
+    textAlignVertical: "top",
+    fontSize: 15,
+    color: "#333",
+  },
+  sendButton: {
+    backgroundColor: "#D32F2F",
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  sendButtonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
 });

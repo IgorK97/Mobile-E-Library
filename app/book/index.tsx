@@ -172,6 +172,7 @@ export default function BookDetailsScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Book Cover and Info Section */}
         <View style={styles.coverContainer}>
@@ -209,17 +210,32 @@ export default function BookDetailsScreen() {
           <Text style={styles.aboutTitle}>О книге</Text>
           <Text style={styles.aboutText}>{books[0].description}</Text>
         </View>
+        {/* Genres Section */}
+        <View style={styles.genresSection}>
+          <Text style={styles.sectionTitle}>Жанры</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.genresContainer}
+          >
+            {books[0].genres?.map((genre, index) => (
+              <TouchableOpacity key={index} style={styles.genreChip}>
+                <Text style={styles.genreText}>{genre}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+        {/* Reviews Navigation Button */}
+        <TouchableOpacity
+          style={styles.reviewsButton}
+          onPress={() => {
+            router.push(`/book/reviews`);
+          }}
+        >
+          <Text style={styles.reviewsButtonText}>Смотреть все отзывы</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
-
-    // <View style={{ flex: 1, padding: 16 }}>
-    //   <Text style={{ fontSize: 20 }}>Описание книги {bookId}</Text>
-    //   <Text style={{ marginTop: 8 }}>
-    //     Здесь будет описание выбранной книги.
-    //   </Text>
-
-    //   <Button title="Назад" onPress={() => router.back()} />
-    // </View>
   );
 }
 
@@ -278,6 +294,50 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 12,
   },
+  genresSection: {
+    paddingHorizontal: 10,
+    marginBottom: 24,
+    height: 100,
+  },
+  genresContainer: {
+    paddingBottom: 8,
+  },
+  genreChip: {
+    backgroundColor: "#f8f8f8",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    height: 40,
+  },
+  genreText: {
+    fontSize: 14,
+    color: "#555",
+    fontWeight: "500",
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 12,
+    color: "#333",
+  },
+  reviewsButton: {
+    backgroundColor: "#f8f8f8",
+    marginHorizontal: 20,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+  },
+  reviewsButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#D32F2F",
+  },
   author: {
     fontSize: 13,
     color: "#6B7280",
@@ -332,11 +392,13 @@ const styles = StyleSheet.create({
   },
   aboutSection: {
     marginBottom: 24,
+    paddingHorizontal: 10,
   },
   aboutTitle: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 8,
     color: "#000",
+    fontWeight: "500",
   },
   aboutText: {
     fontSize: 13,
