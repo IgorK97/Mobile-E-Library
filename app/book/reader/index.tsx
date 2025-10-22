@@ -1,242 +1,301 @@
-// components/BookReader.tsx
-import BookReader from "@/components/book-reader";
-import { ArrowLeft } from "lucide-react-native";
-import React, { useState } from "react";
+import Slider from "@react-native-community/slider";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  // SafeAreaView,
+  ActivityIndicator,
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
-import Animated from "react-native-reanimated";
-import { SafeAreaView } from "react-native-safe-area-context";
-
-interface BookReaderProps {
-  bookId: string;
+// import * as FileSystem from "react-native-fs";
+import { Asset } from "expo-asset";
+import * as FileSystem from "expo-file-system/legacy";
+// import { parseStringPromise } from "xml2js";
+interface BookData {
+  title: string;
+  author: string;
+}
+interface BookText {
+  title: string;
+  content: string;
 }
 
-const BookReaderPage: React.FC<BookReaderProps> = ({ bookId }) => {
-  // const [currentPage, setCurrentPage] = useState(0);
-  // const [pageContent, setPageContent] = useState<string>("");
-  // const [totalPages, setTotalPages] = useState<number>(100);
-  // const [loading, setLoading] = useState<boolean>(true);
-  const [isBottomVisible, setIsBottomVisible] = useState(true);
-  const [activePanel, setActivePanel] = useState<"none" | "toc" | "settings">(
-    "none"
-  );
+export async function parseStringPromise(xmlString: string): Promise<any> {
+  // Удаляем возможные BOM и пробелы
+  const cleaned = xmlString.replace(/^[\uFEFF\xEF\xBB\xBF]/, "").trim();
 
-  // useEffect(() => {
-  //   loadPage(currentPage);
-  // }, [bookId, currentPage]);
-
-  // const loadPage = async (pageNumber: number) => {
-  //   const asset = Asset.fromModule(
-  //     require("../../../assets/books/chapter_001.html")
-  //   );
-  //   await asset.downloadAsync();
-  //   const fileUri = asset.localUri || asset.uri;
-  //   const html = await FileSystem.readAsStringAsync(fileUri, {
-  //     encoding: FileSystem.EncodingType.UTF8,
-  //   });
-  //   setPageContent(html);
-  //   setLoading(false);
-  //   // try {
-  //   //   setLoading(true);
-  //   //   const response = await fetch(
-  //   //     `https://localhost:7188/api/books/${bookId}/pages/${pageNumber}`
-  //   //   );
-  //   //   if (response.ok) {
-  //   //     const html = await response.text();
-  //   //     setPageContent(html);
-  //   //   } else {
-  //   //     console.error("Failed to load page");
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.error("Error loading page:", error);
-  //   // } finally {
-  //   //   setLoading(false);
-  //   // }
-  // };
-
-  // if (loading) {
-  //   return (
-  //     <SafeAreaView style={styles.loadingContainer}>
-  //       <Text>Загрузка страницы...</Text>
-  //     </SafeAreaView>
-  //   );
+  // Попробуем использовать DOMParser, если он есть (на Web)
+  // if (typeof DOMParser !== "undefined") {
+  //   const parser = new DOMParser();
+  //   const xml = parser.parseFromString(cleaned, "text/xml");
+  //   return xmlToJson(xml);
   // }
 
+  // Если в RN, то используем простейший regex-парсер
+  return simpleXMLToJSON(cleaned);
+}
+
+function simpleXMLToJSON(xml: string): any {
+  const tagPattern = /<([^!?][^>\s]*)(.*?)>(.*?)<\/\1>/gs;
+  const result: any = {};
+
+  // Функция для рекурсивного разбора
+  const parseNode = (text: string): any => {
+    const matches = [...text.matchAll(tagPattern)];
+    if (matches.length === 0) return text.trim();
+
+    const obj: any = {};
+    for (const match of matches) {
+      const [, tagName, _attrs, inner] = match;
+      const parsed = parseNode(inner);
+      if (obj[tagName]) {
+        if (!Array.isArray(obj[tagName])) obj[tagName] = [obj[tagName]];
+        obj[tagName].push(parsed);
+      } else {
+        obj[tagName] = parsed;
+      }
+    }
+    return obj;
+  };
+
+  return parseNode(xml);
+}
+
+export default function ReaderScreen() {
+  const [bookData, setBookData] = useState<BookData>({ title: "", author: "" });
+  const [currentPosition, setCurrentPosition] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [chapters, setChapters] = useState<BookText[]>([]);
+  const scrollViewRef = useRef(null);
+
+  // Загрузка и парсинг FB2 файла
+  useEffect(() => {
+    loadBook();
+  }, []);
+
+  const loadBook = async () => {
+    try {
+      // 1️⃣ Загружаем файл из assets
+      const asset =
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        Asset.fromModule(require("../../../assets/books/frolovBook.fb2"));
+
+      await asset.downloadAsync();
+      const fileUri = asset.localUri || asset.uri;
+
+      // 2️⃣ Читаем содержимое файла как текст (UTF-8)
+      const fb2Content = await FileSystem.readAsStringAsync(fileUri, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+
+      // 3️⃣ Парсим XML
+      const result = await parseStringPromise(fb2Content);
+
+      // 4️⃣ Извлекаем метаданные
+      const description = result.FictionBook?.description?.[0];
+      const title =
+        description?.["title-info"]?.[0]?.["book-title"]?.[0] || "Без названия";
+      const authorData =
+        description?.["title-info"]?.[0]?.author?.[0] || undefined;
+      const authorName =
+        authorData?.["first-name"]?.[0] +
+          " " +
+          authorData?.["last-name"]?.[0] || "Неизвестный автор";
+
+      // 5️⃣ Извлекаем текст (body/section)
+      const body = result.FictionBook?.body?.[0];
+      const sections = body?.section || [];
+      const parsedChapters: BookText[] = sections.map((sec: any) => {
+        const title = sec.title?.[0]?.p?.[0] || "";
+        const paragraphs = (sec.p || [])
+          .map((p: any) => (typeof p === "string" ? p : p?._ || ""))
+          .filter((t: string) => t.trim().length > 0);
+
+        return {
+          title,
+          content: paragraphs.join("\n\n"),
+        };
+      });
+
+      setBookData({ title, author: authorName });
+      setChapters(parsedChapters);
+    } catch (error) {
+      console.error("Ошибка загрузки книги:", error);
+    }
+
+    // try {
+    //   // 1. Загрузка файла из assets
+    //   const filePath = `../../../assets/books/frolovBook.fb2`;
+    //   // 2. Чтение файла
+    //   const base64Content = await FileSystem.readAsStringAsync(
+    //     filePath,
+    //     "base64"
+    //   );
+    //   const binaryData = Buffer.from(base64Content, "base64").toString(
+    //     "binary"
+    //   );
+    //   // 3. Парсинг XML
+    //   const parser = new DOMParser();
+    //   const xmlDoc = parser.parseFromString(binaryData, "text/xml");
+    //   // 4. Извлечение заголовка и автора
+    //   const title =
+    //     xmlDoc.getElementsByTagName("book-title")[0]?.textContent ||
+    //     "Неизвестно";
+    //   const author =
+    //     xmlDoc.getElementsByTagName("author")[0]?.textContent || "Неизвестно";
+    //   // 5. Извлечение содержимого
+    //   const body = xmlDoc.getElementsByTagName("body")[0];
+    //   const sections = Array.from(body.getElementsByTagName("section"));
+    //   const parsedChapters = sections.map((section) => {
+    //     const title =
+    //       section.getElementsByTagName("title")[0]?.textContent || "";
+    //     const paragraphs = Array.from(section.getElementsByTagName("p"))
+    //       .map((p) => p.textContent)
+    //       .filter((text) => text.trim().length > 0);
+    //     return { title, content: paragraphs.join("\n\n") };
+    //   });
+    //   setBookData({ title, author });
+    //   setChapters(parsedChapters);
+    // } catch (error) {
+    //   console.error("Ошибка загрузки книги:", error);
+    // }
+  };
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+    const scrollProgress =
+      contentOffset.y / (contentSize.height - layoutMeasurement.height);
+    setCurrentPosition(contentOffset.y);
+    setProgress(scrollProgress);
+  };
+
+  const handleSliderChange = (value: number) => {
+    if (scrollViewRef.current) {
+      const scrollHeight = chapters.length * Dimensions.get("window").height;
+      const scrollTo = value * scrollHeight;
+      // scrollViewRef.current.scrollTo({ y: scrollTo, animated: false });
+      setProgress(value);
+    }
+  };
+
+  if (!bookData) {
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" />
+        <Text>Загрузка книги...</Text>
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      {/* HEADER */}
-      {isBottomVisible && (
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => console.log("Back")}
-          >
-            <ArrowLeft size={24} color="#D32F2F" />
-          </TouchableOpacity>
-          <View style={styles.headerText}>
-            <Text style={styles.title}>Буддизм в Японии</Text>
-            <Text style={styles.author}>Т.П. Григорьева</Text>
+    <View style={styles.container}>
+      {/* Заголовок */}
+      <View style={styles.header}>
+        <Text style={styles.title}>{bookData.title}</Text>
+        <Text style={styles.author}>{bookData.author}</Text>
+      </View>
+
+      {/* Прогресс-бар */}
+      <View style={styles.progressContainer}>
+        <Text style={styles.progressText}>
+          Прогресс: {Math.round(progress * 100)}%
+        </Text>
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={1}
+          value={progress}
+          onValueChange={handleSliderChange}
+          minimumTrackTintColor="#1EB1FC"
+          maximumTrackTintColor="#000000"
+        />
+      </View>
+
+      {/* Содержимое книги */}
+      <ScrollView
+        ref={scrollViewRef}
+        style={styles.contentContainer}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
+      >
+        {chapters.map((chapter, index) => (
+          <View key={index} style={styles.chapterContainer}>
+            {chapter.title ? (
+              <Text style={styles.chapterTitle}>{chapter.title}</Text>
+            ) : null}
+            <Text style={styles.chapterContent}>{chapter.content}</Text>
           </View>
-        </View>
-      )}
-
-      {/* PAGE CONTENT */}
-      {/* <View style={styles.readerContainer}>
-        {Platform.OS === "web" ? (
-          <div
-            style={{ padding: 16, fontSize: 18, lineHeight: "1.6em" }}
-            dangerouslySetInnerHTML={{ __html: pageContent }}
-          />
-        ) : (
-          <WebView
-            source={{ html: pageContent }}
-            originWhitelist={["*"]}
-            style={{ flex: 1, backgroundColor: "#fff" }}
-          />
-        )}
-      </View> */}
-      <BookReader />
-
-      {/* BOTTOM CONTROLS */}
-      {/* {isBottomVisible && (
-        <View style={styles.bottomControls}>
-          <Slider
-            style={styles.slider}
-            minimumValue={1}
-            maximumValue={totalPages}
-            value={currentPage + 1}
-            onValueChange={(value) => setCurrentPage(Math.floor(value - 1))}
-            minimumTrackTintColor="#D32F2F"
-            maximumTrackTintColor="#E0E0E0"
-            thumbTintColor="#D32F2F"
-          />
-          <Text style={styles.pageCounter}>
-            {currentPage + 1} из {totalPages}
-          </Text>
-
-          <View style={styles.toolbar}>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => setActivePanel("toc")}
-            >
-              <Menu size={24} color="#666" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => setActivePanel("settings")}
-            >
-              <Settings size={24} color="#666" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => setIsBottomVisible(!isBottomVisible)}
-            >
-              <Minimize size={24} color="#666" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      )} */}
-
-      {/* SETTINGS PANEL */}
-      {activePanel === "settings" && (
-        <Animated.View style={styles.panel}>
-          <Text style={styles.panelTitle}>Настройки шрифта</Text>
-          <View style={styles.panelRow}>
-            <TouchableOpacity style={styles.panelButton}>
-              <Text style={styles.panelText}>A-</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.panelButton}>
-              <Text style={styles.panelText}>A+</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity onPress={() => setActivePanel("none")}>
-            <Text style={styles.closeText}>Закрыть</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-
-      {/* TOC PANEL */}
-      {activePanel === "toc" && (
-        <Animated.View style={styles.panel}>
-          <Text style={styles.panelTitle}>Оглавление</Text>
-          <TouchableOpacity style={styles.panelItem}>
-            <Text>Введение</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.panelItem}>
-            <Text>Глава 1. Зарождение буддизма</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.panelItem}>
-            <Text>Глава 2. Распространение в Японии</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setActivePanel("none")}>
-            <Text style={styles.closeText}>Закрыть</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-    </SafeAreaView>
+        ))}
+      </ScrollView>
+    </View>
   );
-};
-
-export default BookReader;
+}
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
-  header: {
-    flexDirection: "row",
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    paddingTop: 50,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    padding: 12,
-    backgroundColor: "#fafafa",
   },
-  iconButton: { padding: 8 },
-  headerText: { flex: 1, marginLeft: 8 },
-  title: { fontSize: 18, fontWeight: "bold", color: "#333" },
-  author: { fontSize: 14, color: "#666" },
-  readerContainer: { flex: 1 },
-  bottomControls: {
-    padding: 12,
-    borderTopWidth: 1,
-    borderTopColor: "#eee",
-    backgroundColor: "#fafafa",
+  header: {
+    alignItems: "center",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
   },
-  slider: { width: "100%", height: 40 },
-  pageCounter: { textAlign: "center", color: "#333", marginVertical: 4 },
-  toolbar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 8,
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
-  panel: {
-    position: "absolute",
-    bottom: 0,
+  author: {
+    fontSize: 16,
+    color: "#666",
+    marginTop: 5,
+  },
+  progressContainer: {
+    padding: 15,
+    backgroundColor: "#FFF",
+  },
+  progressText: {
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  slider: {
     width: "100%",
-    backgroundColor: "#fff",
-    padding: 20,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    elevation: 4,
+    height: 40,
   },
-  panelTitle: { fontWeight: "bold", fontSize: 16, marginBottom: 12 },
-  panelRow: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginBottom: 12,
+  contentContainer: {
+    flex: 1,
+    padding: 15,
   },
-  panelButton: {
-    padding: 8,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: "#ccc",
+  chapterContainer: {
+    marginBottom: 30,
   },
-  panelText: { fontSize: 18 },
-  closeText: { textAlign: "center", color: "#D32F2F", marginTop: 8 },
-  panelItem: { paddingVertical: 8 },
+  chapterTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+    color: "#333",
+  },
+  chapterContent: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: "#444",
+    textAlign: "justify",
+  },
 });
+
+// export default FB2Reader;
 
 // import Slider from "@react-native-community/slider";
 // import { useRouter } from "expo-router";

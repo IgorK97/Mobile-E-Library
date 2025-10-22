@@ -206,7 +206,7 @@ export default function MyBooks() {
             <BookCard
               bookInfo={item}
               key={item.id}
-              onPress={() => router.push("/(tabs)/library/book")}
+              onPress={() => router.push("/book")}
             />
           </View>
         )}
