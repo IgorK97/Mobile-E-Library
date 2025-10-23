@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 20,
     borderBottomWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#D32F2F",
   },
   avatar: {
     width: 48,
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#A855F7",
+    backgroundColor: "#D32F2F",
     width: 32,
     height: 32,
     borderRadius: 16,
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   saveButtonBottom: {
-    backgroundColor: "#A855F7",
+    backgroundColor: "#D32F2F",
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",

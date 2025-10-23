@@ -12,3 +12,12 @@ export interface Book {
   imageUrl: ImageSourcePropType;
   genres: string[];
 }
+
+export interface DownloadedBook {
+  id: string;
+  title: string;
+  localPath: string;
+  downloadedAt: string;
+  lastOpenedAt?: string;
+  progress?: number;
+}
