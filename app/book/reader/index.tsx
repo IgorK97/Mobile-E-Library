@@ -723,13 +723,23 @@
 
 // export default FB2Reader;
 
+import { EpubNode } from "@/scripts/types";
+import { Reader, useReader } from "@epubjs-react-native/core";
+import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import Slider from "@react-native-community/slider";
+import { Directory, File, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
-import { ArrowLeft, Menu, Minimize, Settings } from "lucide-react-native";
-import React, { useRef, useState } from "react";
+import { IconButton } from "react-native-paper";
+import {
+  ArrowLeft,
+  Menu,
+  Minimize,
+  Settings,
+  AArrowDown,
+} from "lucide-react-native";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
-  Image,
   ImageSourcePropType,
   Modal,
   StyleSheet,
@@ -739,18 +749,82 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const url = "http:/10.0.2.2:5202/api/Book/book.epub";
+
+const dest = new Directory(Paths.cache, "files");
+
 export default function ReaderScreen() {
   const [currentPage, setCurrentPage] = useState(1);
   const paths: ImageSourcePropType = require("../../../assets/images/book_1.png");
   const router = useRouter();
-
+  const [epubData, setEpubData] = useState<EpubNode[]>([]);
   const [isBottomVisible, setIsBottomVisible] = useState(true);
   const [activePanel, setActivePanel] = useState<"none" | "settings" | "toc">(
     "none"
   );
+  const [epubAsset, setEpubAsset] = useState<string | null>(null);
+  const { goToLocation } = useReader();
+  const {
+    bookmarks,
+    isBookmarked,
+    addBookmark,
+    removeBookmark,
+    getCurrentLocation,
+  } = useReader();
+  const handleChangeBookmark = () => {
+    const location = getCurrentLocation();
 
+    if (!location) return;
+
+    if (isBookmarked) {
+      const bookmark = bookmarks.find(
+        (item) =>
+          item.location.start.cfi === location?.start.cfi &&
+          item.location.end.cfi === location?.end.cfi
+      );
+
+      if (!bookmark) return;
+      removeBookmark(bookmark);
+    } else addBookmark(location);
+  };
+  useEffect(() => {
+    const funcLoad = async () => {
+      try {
+        if (dest.exists) dest.delete();
+        dest.create();
+        const output = await File.downloadFileAsync(url, dest);
+        console.log(output.exists);
+        console.log(output.uri);
+        const res = output.base64Sync();
+        setEpubAsset(res);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    funcLoad();
+  }, []);
+  // useEffect(() => {
+  //   // setEpubData(bookData as EpubNode[]);
+  // }, []);
   const bottomAnim = useRef(new Animated.Value(0)).current;
+  // useEffect(() => {
+  //   const loadBook = async () => {
+  //     try {
+  //       const base64 = await loadEpubAsBase64();
+  //       setEpubAsset(base64);
+  //     } catch (error) {
+  //       console.error("Failed to load book:", error);
+  //     } finally {
+  //       // setLoading(false);
+  //     }
+  //   };
 
+  //   loadBook();
+  // }, []);
+
+  if (epubAsset === null) {
+    return <Text>Загрузка книги...</Text>;
+  }
   const toggleBottom = () => {
     Animated.timing(bottomAnim, {
       toValue: isBottomVisible ? 100 : 0,
@@ -790,7 +864,51 @@ export default function ReaderScreen() {
           </View>
         </View>
       )}
-      {/*Book Cover*/}
+
+      <Reader
+        src={epubAsset}
+        // src={epubAsset}
+        fileSystem={useFileSystem}
+        onAddBookmark={(bookmark) => {
+          console.log(bookmark);
+        }}
+        onRemoveBookmark={(bookmark) =>
+          console.log("onRemoveBookmark", bookmark)
+        }
+        onUpdateBookmark={(bookmark) =>
+          console.log("onUpdateBookmark", bookmark)
+        }
+        onChangeBookmarks={(bookmarks) =>
+          console.log("onChangeBookmarks", bookmarks)
+        }
+      />
+
+      <View style={styles.containerBottom}>
+        {/* <IconButton
+          icon="arrow-left"
+          size={22}
+          onPress={() => navigation.goBack()}
+        /> */}
+
+        <View style={styles.actions}>
+          <IconButton
+            icon={isBookmarked ? "bookmark" : "bookmark-outline"}
+            size={20}
+            animated
+            onPress={handleChangeBookmark}
+          />
+
+          {/* <IconButton
+            icon="format-list-bulleted-square"
+            size={20}
+            animated
+            onPress={onOpenBookmarksList}
+          /> */}
+        </View>
+      </View>
+      {/* <ChronoReader /> */}
+      {/* <PagedEpubViewer fragments={epubData} /> */}
+      {/*
       <View style={styles.coverWrapper}>
         <TouchableOpacity
           onPress={() => {
@@ -801,9 +919,9 @@ export default function ReaderScreen() {
             <Image source={paths} style={styles.cover} resizeMode="contain" />
           </View>
         </TouchableOpacity>
-      </View>
+      </View> */}
       {/*Bottom Controls*/}
-      {isBottomVisible && (
+      {/* {isBottomVisible && (
         <View style={styles.bottomControls}>
           <Slider
             style={styles.slider}
@@ -815,9 +933,9 @@ export default function ReaderScreen() {
             maximumTrackTintColor="#E0E0E0"
             thumbTintColor="#D32F2F"
           />
-          {/*Page Counter*/}
+       
           <Text style={styles.pageColor}>{currentPage} из 100</Text>
-          {/*Toolbar*/}
+       
           <View style={styles.toolbar}>
             <TouchableOpacity
               style={styles.iconButton}
@@ -847,11 +965,12 @@ export default function ReaderScreen() {
             </TouchableOpacity>
           </View>
         </View>
-      )}
+      )} 
+      */}
 
-      {/* Settings panel*/}
       {/* {activePanel === "settings" && (
         <Animated.View style={styles.panel}> */}
+      {/* Settings panel*/}
       <Modal
         animationType="slide"
         visible={activePanel === "settings"}
@@ -906,6 +1025,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5F5F5",
   },
+  containerBottom: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 10,
+  },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -921,6 +1046,11 @@ const styles = StyleSheet.create({
   headerText: {
     flex: 1,
     marginLeft: 12,
+  },
+  actions: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
   title: {
     fontSize: 15,

@@ -6,7 +6,9 @@ config.resolver.assetExts.push(
   // Adds support for `.db` files for SQLite databases
   "fb2",
   "xhtml",
-  "html"
+  "html",
+  "json",
+  "epub"
 );
 
 module.exports = config;

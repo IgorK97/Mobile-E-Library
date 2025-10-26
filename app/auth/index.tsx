@@ -210,7 +210,7 @@ function InputField({
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
-        keyboardType={keyboardType}
+        // keyboardType={keyboardType}
         placeholder={label}
         placeholderTextColor="#aaa"
       />

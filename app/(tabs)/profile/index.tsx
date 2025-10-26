@@ -293,7 +293,7 @@ export default function ProfileScreen() {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.securityTips}>
+                {/* <View style={styles.securityTips}>
                   <Text style={styles.tipsTitle}>Советы по безопасности:</Text>
                   <Text style={styles.tip}>
                     • Используйте не менее 8 символов
@@ -304,7 +304,7 @@ export default function ProfileScreen() {
                   <Text style={styles.tip}>
                     • Не используйте простые пароли
                   </Text>
-                </View>
+                </View> */}
               </View>
             </View>
           </TouchableWithoutFeedback>

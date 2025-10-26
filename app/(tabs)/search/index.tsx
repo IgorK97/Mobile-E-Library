@@ -294,7 +294,7 @@ const SelectableItem = ({
 
 /* ------------------- Styles ------------------- */
 const styles = StyleSheet.create({
-  container: { paddingHorizontal: 20 },
+  container: { paddingHorizontal: 20, paddingVertical: 10 },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
