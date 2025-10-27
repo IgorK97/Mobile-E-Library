@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { forwardRef, useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Bookmark, useReader } from "@epubjs-react-native/core";
+import { Bookmark, useReader, Themes } from "@epubjs-react-native/core";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -66,7 +66,12 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
         <BottomSheetView
           style={{
             ...styles.contentContainer,
-            backgroundColor: theme.body.background,
+            backgroundColor:
+              theme === Themes.DARK
+                ? "rgba(26,26,26,1)"
+                : theme === Themes.LIGHT
+                ? "rgba(244,244,244,1)"
+                : "rgba(241,232,215,1)",
           }}
         >
           <View style={styles.title}>

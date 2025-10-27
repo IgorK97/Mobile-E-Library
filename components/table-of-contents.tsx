@@ -7,6 +7,7 @@ import {
   Toc,
   Section as SectionType,
   useReader,
+  Themes,
 } from "@epubjs-react-native/core";
 import {
   BottomSheetModal,
@@ -51,7 +52,16 @@ export const TableOfContents = forwardRef<Ref, Props>(
 
     const header = React.useCallback(
       () => (
-        <View style={{ backgroundColor: theme.body.background }}>
+        <View
+          style={{
+            backgroundColor:
+              theme === Themes.DARK
+                ? "rgba(26,26,26,1)"
+                : theme === Themes.LIGHT
+                ? "rgba(244,244,244,1)"
+                : "rgba(241,232,215,1)",
+          }}
+        >
           <View style={styles.title}>
             <Text
               variant="titleMedium"
@@ -77,7 +87,15 @@ export const TableOfContents = forwardRef<Ref, Props>(
               autoCorrect={false}
               autoCapitalize="none"
               defaultValue={searchTerm}
-              style={styles.input}
+              style={{
+                ...styles.input,
+                // backgroundColor:
+                //   theme === Themes.DARK
+                //     ? "rgba(26,26,26,1)"
+                //     : theme === Themes.LIGHT
+                //     ? "rgba(244,244,244,1)"
+                //     : "rgba(241,232,215,1)",
+              }}
               placeholder="Type an term here..."
               placeholderTextColor={contrast[theme.body.background]}
               onSubmitEditing={(event) => {
@@ -109,10 +127,29 @@ export const TableOfContents = forwardRef<Ref, Props>(
           enablePanDownToClose
           style={{
             ...styles.container,
-            backgroundColor: theme.body.background,
+            backgroundColor:
+              theme === Themes.DARK
+                ? "rgba(26,26,26,1)"
+                : theme === Themes.LIGHT
+                ? "rgba(244,244,244,1)"
+                : "rgba(241,232,215,1)",
           }}
-          handleStyle={{ backgroundColor: theme.body.background }}
-          backgroundStyle={{ backgroundColor: theme.body.background }}
+          handleStyle={{
+            backgroundColor:
+              theme === Themes.DARK
+                ? "rgba(26,26,26,1)"
+                : theme === Themes.LIGHT
+                ? "rgba(244,244,244,1)"
+                : "rgba(241,232,215,1)",
+          }}
+          backgroundStyle={{
+            backgroundColor:
+              theme === Themes.DARK
+                ? "rgba(26,26,26,1)"
+                : theme === Themes.LIGHT
+                ? "rgba(244,244,244,1)"
+                : "rgba(241,232,215,1)",
+          }}
           onDismiss={() => setSearchTerm("")}
         >
           <BottomSheetFlatList

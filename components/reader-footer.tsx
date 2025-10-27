@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 
-import { useReader } from "@epubjs-react-native/core";
+import { useReader, Themes } from "@epubjs-react-native/core";
 import { IconButton, MD3Colors } from "react-native-paper";
 import { MAX_FONT_SIZE, MIN_FONT_SIZE } from "@/scripts/utils/utils";
 
@@ -24,6 +24,7 @@ export function ReaderFooter({
   onOpenBookmarksList,
   onOpenTableOfContents,
 }: Props) {
+  const [showSettings, setShowSettings] = useState(false);
   const {
     theme,
     bookmarks,
@@ -32,8 +33,6 @@ export function ReaderFooter({
     getCurrentLocation,
     isBookmarked,
   } = useReader();
-  const [showSettings, setShowSettings] = useState(false);
-
   const handleChangeBookmark = () => {
     const location = getCurrentLocation();
 
@@ -51,7 +50,17 @@ export function ReaderFooter({
     } else addBookmark(location);
   };
   return (
-    <View style={styles.footer}>
+    <View
+      style={{
+        ...styles.footer,
+        backgroundColor:
+          theme === Themes.DARK
+            ? "rgba(26,26,26,1)"
+            : theme === Themes.LIGHT
+            ? "rgba(244,244,244,1)"
+            : "rgba(241,232,215,1)",
+      }}
+    >
       <View style={styles.actions}>
         {showSettings && (
           <TouchableOpacity
@@ -126,7 +135,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingVertical: 20, // или отдельные paddingTop/paddingBottom
     paddingHorizontal: 16,
-    backgroundColor: "rgba(0,0,0,0.7)", // полупрозрачный фон
+
     alignItems: "center", // выравнивание контента по центру
     justifyContent: "center",
     zIndex: 10,

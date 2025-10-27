@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
-import { useReader } from "@epubjs-react-native/core";
+import { useReader, Themes } from "@epubjs-react-native/core";
 import { MAX_FONT_SIZE, MIN_FONT_SIZE } from "@/scripts/utils/utils";
 import { ArrowLeft } from "lucide-react-native";
 
@@ -12,8 +12,19 @@ interface Props {
 }
 
 export function ReaderHeader({ author, title }: Props) {
+  const { theme } = useReader();
   return (
-    <View style={styles.header}>
+    <View
+      style={{
+        ...styles.header,
+        backgroundColor:
+          theme === Themes.DARK
+            ? "rgba(26,26,26,1)"
+            : theme === Themes.LIGHT
+            ? "rgba(244,244,244,1)"
+            : "rgba(241,232,215,1)",
+      }}
+    >
       <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
         <ArrowLeft size={24} color="#D32F2F" />
       </TouchableOpacity>
@@ -48,10 +59,11 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: 50,
     paddingBottom: 10,
-    backgroundColor: "rgba(0,0,0,0.7)",
+    // backgroundColor: "rgba(0,0,0,0.7)",
     alignItems: "center",
     zIndex: 10,
-
+    justifyContent: "center",
+    flexDirection: "row",
     // flexDirection: "row",
     // alignItems: "center",
     // paddingHorizontal: 16,

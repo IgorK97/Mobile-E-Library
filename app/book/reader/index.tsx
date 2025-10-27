@@ -4,28 +4,17 @@ import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import Slider from "@react-native-community/slider";
 import { Directory, File, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
-import { IconButton } from "react-native-paper";
-import {
-  ArrowLeft,
-  Menu,
-  Minimize,
-  Settings,
-  AArrowDown,
-} from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { TableOfContents } from "@/components/table-of-contents";
 import {
   Animated,
   ImageSourcePropType,
-  Modal,
   Pressable,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import {
-  SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import {
