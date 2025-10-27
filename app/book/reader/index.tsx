@@ -47,6 +47,7 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/components/reader-header";
+import { ReaderFooter } from "@/components/reader-footer";
 const url = "http:/10.0.2.2:5202/api/Book/book.epub";
 
 const dest = new Directory(Paths.cache, "files");
@@ -227,6 +228,17 @@ export default function ReaderScreen() {
         style={StyleSheet.absoluteFill}
       ></Pressable>
       {!isFullScreen && <ReaderHeader author="Author" title="Title" />}
+      {!isFullScreen && (
+        <ReaderFooter
+          currentFontSize={currentFontSize}
+          increaseFontSize={increaseFontSize}
+          decreaseFontSize={decreaseFontSize}
+          switchTheme={switchTheme}
+          switchFontFamily={switchFontFamily}
+          onOpenBookmarksList={() => bookmarksListRef.current?.present()}
+          onOpenTableOfContents={() => tableOfContentsRef.current?.present()}
+        />
+      )}
       {/* </GestureDetector> */}
     </GestureHandlerRootView>
   );
