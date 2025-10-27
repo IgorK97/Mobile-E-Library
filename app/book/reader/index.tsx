@@ -48,6 +48,7 @@ import {
 } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/components/reader-header";
 import { ReaderFooter } from "@/components/reader-footer";
+import { BookmarksList } from "@/components/bookmark-list";
 const url = "http:/10.0.2.2:5202/api/Book/book.epub";
 
 const dest = new Directory(Paths.cache, "files");
@@ -235,10 +236,17 @@ export default function ReaderScreen() {
           decreaseFontSize={decreaseFontSize}
           switchTheme={switchTheme}
           switchFontFamily={switchFontFamily}
-          onOpenBookmarksList={() => bookmarksListRef.current?.present()}
+          onOpenBookmarksList={() => {
+            bookmarksListRef.current?.present();
+            setIsFullScreen(!isFullScreen);
+          }}
           onOpenTableOfContents={() => tableOfContentsRef.current?.present()}
         />
       )}
+      <BookmarksList
+        ref={bookmarksListRef}
+        onClose={() => bookmarksListRef.current?.dismiss()}
+      />
       {/* </GestureDetector> */}
     </GestureHandlerRootView>
   );
