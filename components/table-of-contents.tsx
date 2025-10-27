@@ -18,6 +18,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { Button, Text } from "react-native-paper";
 import Section from "./section";
 import { contrast } from "@/scripts/utils/utils";
+import { Section as SectionElem } from "@epubjs-react-native/core";
 
 interface Props {
   onPressSection: (section: SectionType) => void;
@@ -117,7 +118,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
           <BottomSheetFlatList
             data={data}
             showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item: SectionElem) => item.id}
             renderItem={renderItem}
             ListHeaderComponent={header}
             style={{ width: "100%" }}

@@ -241,7 +241,10 @@ export default function ReaderScreen() {
             bookmarksListRef.current?.present();
             setIsFullScreen(!isFullScreen);
           }}
-          onOpenTableOfContents={() => tableOfContentsRef.current?.present()}
+          onOpenTableOfContents={() => {
+            tableOfContentsRef.current?.present();
+            setIsFullScreen(!isFullScreen);
+          }}
         />
       )}
       <BookmarksList
