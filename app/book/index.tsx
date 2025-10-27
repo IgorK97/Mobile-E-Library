@@ -10,6 +10,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 const books: Book[] = [
   {
     id: 1,
@@ -137,105 +142,113 @@ export default function BookDetailsScreen() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const router = useRouter();
-
+  const reaction = Gesture.Tap()
+    .numberOfTaps(2)
+    .onStart(() => console.log("tutu"));
   return (
-    <View style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.iconButton}
-        >
-          <ArrowLeft size={24} color="#000" />
-        </TouchableOpacity>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity
-            onPress={() => setIsBookmarked(!isBookmarked)}
-            style={styles.iconButton}
-          >
-            <Bookmark
-              size={24}
-              color={isBookmarked ? "#D32F2F" : "#000"}
-              fill={"none"}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => setIsFavorite(!isFavorite)}
-            style={styles.iconButton}
-          >
-            <Heart
-              size={24}
-              color={isFavorite ? "#D32F2F" : "#000"}
-              fill={isFavorite ? "#D32F2F" : "none"}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Book Cover and Info Section */}
-        <View style={styles.coverContainer}>
-          <Image
-            source={books[0].imageUrl}
-            style={styles.cover}
-            resizeMode="contain"
-          />
-        </View>
-
-        {/* Book Details Section */}
-        <View style={styles.infoContainer}>
-          <View style={styles.textCenter}>
-            <Text style={styles.author}>{books[0].author}</Text>
-            <Text style={styles.title}>{books[0].title}</Text>
-          </View>
-          <Text style={styles.reviewText}>{books[0].reviewCount} отзывов</Text>
-        </View>
-        {/*Pages & Year*/}
-        <Text style={styles.metaText}>
-          {books[0].pages} стр. | {books[0].year}
-        </Text>
-
-        {/* Read Button */}
-        <TouchableOpacity style={styles.readButton}>
-          <Text
-            onPress={() => router.push(`/book/reader`)}
-            style={styles.readButtonText}
-          >
-            Читать
-          </Text>
-        </TouchableOpacity>
-        {/* About the Book Section */}
-        <View style={styles.aboutSection}>
-          <Text style={styles.aboutTitle}>О книге</Text>
-          <Text style={styles.aboutText}>{books[0].description}</Text>
-        </View>
-        {/* Genres Section */}
-        <View style={styles.genresSection}>
-          <Text style={styles.sectionTitle}>Жанры</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.genresContainer}
-          >
-            {books[0].genres?.map((genre, index) => (
-              <TouchableOpacity key={index} style={styles.genreChip}>
-                <Text style={styles.genreText}>{genre}</Text>
+    <GestureHandlerRootView>
+      <GestureDetector gesture={reaction}>
+        <View style={styles.container}>
+          {/* Header Section */}
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={styles.iconButton}
+            >
+              <ArrowLeft size={24} color="#000" />
+            </TouchableOpacity>
+            <View style={styles.headerIcons}>
+              <TouchableOpacity
+                onPress={() => setIsBookmarked(!isBookmarked)}
+                style={styles.iconButton}
+              >
+                <Bookmark
+                  size={24}
+                  color={isBookmarked ? "#D32F2F" : "#000"}
+                  fill={"none"}
+                />
               </TouchableOpacity>
-            ))}
+
+              <TouchableOpacity
+                onPress={() => setIsFavorite(!isFavorite)}
+                style={styles.iconButton}
+              >
+                <Heart
+                  size={24}
+                  color={isFavorite ? "#D32F2F" : "#000"}
+                  fill={isFavorite ? "#D32F2F" : "none"}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            {/* Book Cover and Info Section */}
+            <View style={styles.coverContainer}>
+              <Image
+                source={books[0].imageUrl}
+                style={styles.cover}
+                resizeMode="contain"
+              />
+            </View>
+
+            {/* Book Details Section */}
+            <View style={styles.infoContainer}>
+              <View style={styles.textCenter}>
+                <Text style={styles.author}>{books[0].author}</Text>
+                <Text style={styles.title}>{books[0].title}</Text>
+              </View>
+              <Text style={styles.reviewText}>
+                {books[0].reviewCount} отзывов
+              </Text>
+            </View>
+            {/*Pages & Year*/}
+            <Text style={styles.metaText}>
+              {books[0].pages} стр. | {books[0].year}
+            </Text>
+
+            {/* Read Button */}
+            <TouchableOpacity style={styles.readButton}>
+              <Text
+                onPress={() => router.push(`/book/reader`)}
+                style={styles.readButtonText}
+              >
+                Читать
+              </Text>
+            </TouchableOpacity>
+            {/* About the Book Section */}
+            <View style={styles.aboutSection}>
+              <Text style={styles.aboutTitle}>О книге</Text>
+              <Text style={styles.aboutText}>{books[0].description}</Text>
+            </View>
+            {/* Genres Section */}
+            <View style={styles.genresSection}>
+              <Text style={styles.sectionTitle}>Жанры</Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.genresContainer}
+              >
+                {books[0].genres?.map((genre, index) => (
+                  <TouchableOpacity key={index} style={styles.genreChip}>
+                    <Text style={styles.genreText}>{genre}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+            {/* Reviews Navigation Button */}
+            <TouchableOpacity
+              style={styles.reviewsButton}
+              onPress={() => {
+                router.push(`/book/reviews`);
+              }}
+            >
+              <Text style={styles.reviewsButtonText}>Смотреть все отзывы</Text>
+            </TouchableOpacity>
           </ScrollView>
         </View>
-        {/* Reviews Navigation Button */}
-        <TouchableOpacity
-          style={styles.reviewsButton}
-          onPress={() => {
-            router.push(`/book/reviews`);
-          }}
-        >
-          <Text style={styles.reviewsButtonText}>Смотреть все отзывы</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </GestureDetector>
+    </GestureHandlerRootView>
   );
 }
 

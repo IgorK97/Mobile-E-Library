@@ -1,5 +1,5 @@
 import { EpubNode } from "@/scripts/types";
-import { Reader, useReader } from "@epubjs-react-native/core";
+import { Reader, useReader, Themes } from "@epubjs-react-native/core";
 import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import Slider from "@react-native-community/slider";
 import { Directory, File, Paths } from "expo-file-system";
@@ -17,6 +17,7 @@ import {
   Animated,
   ImageSourcePropType,
   Modal,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -40,8 +41,12 @@ import {
 } from "@/scripts/utils/utils";
 import { useWindowDimensions } from "react-native";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Header } from "@react-navigation/elements";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+import { ReaderHeader } from "@/components/reader-header";
 const url = "http:/10.0.2.2:5202/api/Book/book.epub";
 
 const dest = new Directory(Paths.cache, "files");
@@ -69,6 +74,14 @@ export default function ReaderScreen() {
   const [isFullScreen, setIsFullScreen] = useState(true);
   const [currentFontSize, setCurrentFontSize] = useState(16);
   const [currentFontFamily, setCurrentFontFamily] = useState(availableFonts[0]);
+
+  const doubleTap = Gesture.Tap()
+    .numberOfTaps(2)
+    .onStart(() => {
+      console.log("I am here~~~");
+      setIsFullScreen(!isFullScreen);
+      // console.log(isFullScreen);
+    });
 
   const increaseFontSize = () => {
     if (currentFontSize < MAX_FONT_SIZE) {
@@ -172,7 +185,50 @@ export default function ReaderScreen() {
         paddingRight: insets.right,
         backgroundColor: theme.body.background,
       }}
-    ></GestureHandlerRootView>
+    >
+      {/* <GestureDetector gesture={doubleTap}> */}
+      {/* <View style={{ flex: 1, height: !isFullScreen ? height * 0.75 : height }}> */}
+      {/* {!isFullScreen && (
+        <ReaderHeader author="Т.П. Григорьева" title="Буддизм в Японии" />
+      )} */}
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <Reader
+          src={epubAsset}
+          fileSystem={useFileSystem}
+          initialBookmarks={dbm}
+          onAddBookmark={(bookmark) => {
+            console.log(bookmark);
+          }}
+          onRemoveBookmark={(bookmark) =>
+            console.log("onRemoveBookmark", bookmark)
+          }
+          onUpdateBookmark={(bookmark) =>
+            console.log("onUpdateBookmark", bookmark)
+          }
+          onChangeBookmarks={(bookmarks) =>
+            console.log("onChangeBookmarks", bookmarks)
+          }
+          width={width}
+          // height={!isFullScreen ? height * 0.75 : height}
+          defaultTheme={Themes.LIGHT}
+          waitForLocationsReady
+          // onDoubleTap={() => {
+          //   setIsFullScreen(!isFullScreen);
+          //   console.log("Hello~~~");
+          // }}
+        />
+      </View>
+      <Pressable
+        onPress={() => setIsFullScreen(!isFullScreen)}
+        style={StyleSheet.absoluteFill}
+      ></Pressable>
+      {!isFullScreen && <ReaderHeader author="Author" title="Title" />}
+      {/* </GestureDetector> */}
+    </GestureHandlerRootView>
   );
 }
 // return (
@@ -355,35 +411,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 10,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  iconButton: {
-    padding: 8,
-  },
-  headerText: {
-    flex: 1,
-    marginLeft: 12,
-  },
+
   actions: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
   },
-  title: {
-    fontSize: 15,
-    fontWeight: "600",
-  },
-  author: {
-    fontSize: 13,
-    color: "#666",
-  },
+
   panel: {
     position: "absolute",
     top: 0,
