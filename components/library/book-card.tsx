@@ -1,4 +1,4 @@
-import { Book } from "@/scripts/book";
+import { Book } from "@/types/types";
 import { Heart } from "lucide-react-native";
 import React, { useState } from "react";
 import {

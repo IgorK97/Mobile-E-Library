@@ -1,11 +1,10 @@
-import { EpubNode } from "@/scripts/types";
 import { Reader, useReader, Themes } from "@epubjs-react-native/core";
 import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import Slider from "@react-native-community/slider";
 import { Directory, File, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { TableOfContents } from "@/components/table-of-contents";
+import { TableOfContents } from "@/components/toc/table-of-contents";
 import {
   Animated,
   ImageSourcePropType,
@@ -26,7 +25,7 @@ import {
   MAX_FONT_SIZE,
   MIN_FONT_SIZE,
   themes,
-} from "@/scripts/utils/utils";
+} from "@/constants/reader-theme";
 import { useWindowDimensions } from "react-native";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import {
@@ -34,9 +33,9 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
-import { ReaderHeader } from "@/components/reader-header";
-import { ReaderFooter } from "@/components/reader-footer";
-import { BookmarksList } from "@/components/bookmark-list";
+import { ReaderHeader } from "@/components/reader/reader-header";
+import { ReaderFooter } from "@/components/reader/reader-footer";
+import { BookmarksList } from "@/components/bookmarks/bookmark-list";
 const url = "http:/10.0.2.2:5202/api/Book/book.epub";
 
 const dest = new Directory(Paths.cache, "files");
@@ -104,7 +103,7 @@ export default function ReaderScreen() {
 
   const paths: ImageSourcePropType = require("../../../assets/images/book_1.png");
   const router = useRouter();
-  const [epubData, setEpubData] = useState<EpubNode[]>([]);
+
   const [activePanel, setActivePanel] = useState<"none" | "settings" | "toc">(
     "none"
   );
@@ -255,175 +254,7 @@ export default function ReaderScreen() {
     </GestureHandlerRootView>
   );
 }
-// return (
-//     <SafeAreaView style={styles.container}>
-//       {/*Header*/}
-//       {isFullScreen && (
-//         <View style={styles.header}>
-//           <TouchableOpacity
-//             style={styles.iconButton}
-//             onPress={() => router.back()}
-//           >
-//             <ArrowLeft size={24} color="#D32F2F" />
-//           </TouchableOpacity>
-//           <View style={styles.headerText}>
-//             <Text style={styles.title} numberOfLines={1}>
-//               Буддизм в Японии
-//             </Text>
-//             <Text style={styles.author} numberOfLines={1}>
-//               Т.П. Григорьева
-//             </Text>
-//           </View>
-//         </View>
-//       )}
 
-//       <Reader
-//         src={epubAsset}
-//         // src={epubAsset}
-//         fileSystem={useFileSystem}
-//         initialBookmarks={dbm}
-//         onAddBookmark={(bookmark) => {
-//           console.log(bookmark);
-//         }}
-//         onRemoveBookmark={(bookmark) =>
-//           console.log("onRemoveBookmark", bookmark)
-//         }
-//         onUpdateBookmark={(bookmark) =>
-//           console.log("onUpdateBookmark", bookmark)
-//         }
-//         onChangeBookmarks={(bookmarks) =>
-//           console.log("onChangeBookmarks", bookmarks)
-//         }
-//       />
-
-//       <View style={styles.containerBottom}>
-//         {/* <IconButton
-//           icon="arrow-left"
-//           size={22}
-//           onPress={() => navigation.goBack()}
-//         /> */}
-
-//         <View style={styles.actions}>
-//           <IconButton
-//             icon={isBookmarked ? "bookmark" : "bookmark-outline"}
-//             size={20}
-//             animated
-//             onPress={handleChangeBookmark}
-//           />
-
-//           {/* <IconButton
-//             icon="format-list-bulleted-square"
-//             size={20}
-//             animated
-//             onPress={onOpenBookmarksList}
-//           /> */}
-//         </View>
-//       </View>
-//       {/* <ChronoReader /> */}
-//       {/* <PagedEpubViewer fragments={epubData} /> */}
-//       {/*
-//       <View style={styles.coverWrapper}>
-//         <TouchableOpacity
-//           onPress={() => {
-//             setIsBottomVisible(true);
-//           }}
-//         >
-//           <View style={styles.coverContainer}>
-//             <Image source={paths} style={styles.cover} resizeMode="contain" />
-//           </View>
-//         </TouchableOpacity>
-//       </View> */}
-//       {/*Bottom Controls*/}
-//       {/* {isBottomVisible && (
-//         <View style={styles.bottomControls}>
-//           <Slider
-//             style={styles.slider}
-//             minimumValue={1}
-//             maximumValue={100}
-//             value={currentPage}
-//             onValueChange={(value) => setCurrentPage(Math.floor(value))}
-//             minimumTrackTintColor="#D32F2F"
-//             maximumTrackTintColor="#E0E0E0"
-//             thumbTintColor="#D32F2F"
-//           />
-
-//           <Text style={styles.pageColor}>{currentPage} из 100</Text>
-
-//           <View style={styles.toolbar}>
-//             <TouchableOpacity
-//               style={styles.iconButton}
-//               onPress={() => {
-//                 setActivePanel("toc");
-//               }}
-//             >
-//               <Menu size={24} color="#666" />
-//             </TouchableOpacity>
-//             <TouchableOpacity style={styles.iconButton}>
-//               <Settings
-//                 size={24}
-//                 color="#666"
-//                 onPress={() => {
-//                   setActivePanel("settings");
-//                 }}
-//               />
-//             </TouchableOpacity>
-//             <TouchableOpacity style={styles.iconButton}>
-//               <Minimize
-//                 size={24}
-//                 color="#666"
-//                 onPress={() => {
-//                   setIsBottomVisible(!isBottomVisible);
-//                 }}
-//               />
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-//       )}
-//       */}
-
-//       {/* {activePanel === "settings" && (
-//         <Animated.View style={styles.panel}> */}
-//       {/* Settings panel*/}
-//       <Modal
-//         animationType="slide"
-//         visible={activePanel === "settings"}
-//         presentationStyle="fullScreen"
-//       >
-//         <Text style={styles.panelTitle}>Настройки шрифта</Text>
-//         <View style={styles.panelRow}>
-//           <TouchableOpacity style={styles.panelButton}>
-//             <Text style={styles.panelText}>A-</Text>
-//           </TouchableOpacity>
-//           <TouchableOpacity style={styles.panelButton}>
-//             <Text style={styles.panelText}>A+</Text>
-//           </TouchableOpacity>
-//         </View>
-//         <TouchableOpacity onPress={() => setActivePanel("none")}>
-//           <Text style={styles.closeText}>Закрыть</Text>
-//         </TouchableOpacity>
-//       </Modal>
-
-//       <Modal
-//         animationType="slide"
-//         visible={activePanel === "toc"}
-//         presentationStyle="fullScreen"
-//       >
-//         <Text style={styles.panelTitle}>Оглавление</Text>
-//         <TouchableOpacity style={styles.panelItem}>
-//           <Text>Введение</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity style={styles.panelItem}>
-//           <Text>Глава 1. Зарождение буддизма</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity style={styles.panelItem}>
-//           <Text>Глава 2. Распространение в Японии</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity onPress={() => setActivePanel("none")}>
-//           <Text style={styles.closeText}>Закрыть</Text>
-//         </TouchableOpacity>
-//       </Modal>
-//     </SafeAreaView>
-//   );
 const styles = StyleSheet.create({
   container: {
     flex: 1,

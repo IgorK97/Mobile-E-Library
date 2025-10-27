@@ -10,7 +10,11 @@ import {
 } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, IconButton, MD3Colors, Text } from "react-native-paper";
-import { contrast } from "@/scripts/utils/utils";
+import {
+  contrast,
+  resolveTheme,
+  readerThemeColors,
+} from "@/constants/reader-theme";
 
 interface Props {
   onClose: () => void;
@@ -32,7 +36,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
   const snapPoints = React.useMemo(() => ["50%", "75%"], []);
   const [note, setNote] = useState("");
   const [currentBookmark, setCurrentBookmark] = useState<Bookmark | null>(null);
-
+  const colors = resolveTheme(theme);
   useEffect(() => {
     if (isBookmarked) {
       const bookmark = bookmarks.find(
@@ -66,12 +70,12 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
         <BottomSheetView
           style={{
             ...styles.contentContainer,
-            backgroundColor:
-              theme === Themes.DARK
-                ? "rgba(26,26,26,1)"
-                : theme === Themes.LIGHT
-                ? "rgba(244,244,244,1)"
-                : "rgba(241,232,215,1)",
+            backgroundColor: colors.background,
+            // theme === Themes.DARK
+            //   ? "rgba(26,26,26,1)"
+            //   : theme === Themes.LIGHT
+            //   ? "rgba(244,244,244,1)"
+            //   : "rgba(241,232,215,1)",
           }}
         >
           <View style={styles.title}>

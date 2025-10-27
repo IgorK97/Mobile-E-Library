@@ -4,7 +4,7 @@ import { Section as SectionType, useReader } from "@epubjs-react-native/core";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { IconButton, MD3Colors, Text } from "react-native-paper";
-import { contrast } from "@/scripts/utils/utils";
+import { contrast } from "@/constants/reader-theme";
 
 interface Props {
   searchTerm: string;
@@ -32,10 +32,6 @@ function Section({ searchTerm, isCurrentSection, section, onPress }: Props) {
             isCurrentSection ? MD3Colors.primary50 : MD3Colors.neutralVariant30
           }
         />
-
-        {/* <Text style={styles.bookmarkLocationNumber} variant="labelSmall">
-          {location}
-        </Text> */}
       </View>
 
       <View style={styles.info}>

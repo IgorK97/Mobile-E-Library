@@ -1,4 +1,5 @@
 import { ImageSourcePropType } from "react-native";
+import { Bookmark } from "@epubjs-react-native/core";
 
 export interface Book {
   id: number;

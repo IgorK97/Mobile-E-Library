@@ -1,4 +1,4 @@
-import { Book } from "@/scripts/book";
+import { Book } from "@/types/types";
 import { useRouter } from "expo-router";
 import { ArrowLeft, Bookmark, Heart } from "lucide-react-native";
 import { useState } from "react";

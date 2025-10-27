@@ -18,8 +18,12 @@ import {
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, Text } from "react-native-paper";
 import Section from "./section";
-import { contrast } from "@/scripts/utils/utils";
-import { Section as SectionElem } from "@epubjs-react-native/core";
+import {
+  contrast,
+  readerThemeColors,
+  resolveTheme,
+} from "@/constants/reader-theme";
+// import { Section as SectionElem } from "@epubjs-react-native/core";
 
 interface Props {
   onPressSection: (section: SectionType) => void;
@@ -35,7 +39,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
     const [data, setData] = useState<Toc>(toc);
 
     const snapPoints = React.useMemo(() => ["50%", "90%"], []);
-
+    const colors = resolveTheme(theme);
     const renderItem = React.useCallback(
       ({ item }: { item: SectionType }) => (
         <Section
@@ -54,12 +58,12 @@ export const TableOfContents = forwardRef<Ref, Props>(
       () => (
         <View
           style={{
-            backgroundColor:
-              theme === Themes.DARK
-                ? "rgba(26,26,26,1)"
-                : theme === Themes.LIGHT
-                ? "rgba(244,244,244,1)"
-                : "rgba(241,232,215,1)",
+            backgroundColor: colors.background,
+            // theme === Themes.DARK
+            //   ? "rgba(26,26,26,1)"
+            //   : theme === Themes.LIGHT
+            //   ? "rgba(244,244,244,1)"
+            //   : "rgba(241,232,215,1)",
           }}
         >
           <View style={styles.title}>
@@ -127,35 +131,35 @@ export const TableOfContents = forwardRef<Ref, Props>(
           enablePanDownToClose
           style={{
             ...styles.container,
-            backgroundColor:
-              theme === Themes.DARK
-                ? "rgba(26,26,26,1)"
-                : theme === Themes.LIGHT
-                ? "rgba(244,244,244,1)"
-                : "rgba(241,232,215,1)",
+            backgroundColor: colors.background,
+            // theme === Themes.DARK
+            //   ? "rgba(26,26,26,1)"
+            //   : theme === Themes.LIGHT
+            //   ? "rgba(244,244,244,1)"
+            //   : "rgba(241,232,215,1)",
           }}
           handleStyle={{
-            backgroundColor:
-              theme === Themes.DARK
-                ? "rgba(26,26,26,1)"
-                : theme === Themes.LIGHT
-                ? "rgba(244,244,244,1)"
-                : "rgba(241,232,215,1)",
+            backgroundColor: colors.background,
+            // theme === Themes.DARK
+            //   ? "rgba(26,26,26,1)"
+            //   : theme === Themes.LIGHT
+            //   ? "rgba(244,244,244,1)"
+            //   : "rgba(241,232,215,1)",
           }}
           backgroundStyle={{
-            backgroundColor:
-              theme === Themes.DARK
-                ? "rgba(26,26,26,1)"
-                : theme === Themes.LIGHT
-                ? "rgba(244,244,244,1)"
-                : "rgba(241,232,215,1)",
+            backgroundColor: colors.background,
+            // theme === Themes.DARK
+            //   ? "rgba(26,26,26,1)"
+            //   : theme === Themes.LIGHT
+            //   ? "rgba(244,244,244,1)"
+            //   : "rgba(241,232,215,1)",
           }}
           onDismiss={() => setSearchTerm("")}
         >
           <BottomSheetFlatList
             data={data}
             showsVerticalScrollIndicator={false}
-            keyExtractor={(item: SectionElem) => item.id}
+            keyExtractor={(item: SectionType) => item.id}
             renderItem={renderItem}
             ListHeaderComponent={header}
             style={{ width: "100%" }}

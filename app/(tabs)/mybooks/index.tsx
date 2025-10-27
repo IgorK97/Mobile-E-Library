@@ -8,8 +8,8 @@
 //   );
 // }
 
-import { BookCard } from "@/components/book-card";
-import { Book } from "@/scripts/book";
+import { BookCard } from "@/components/library/book-card";
+import { Book } from "@/types/types";
 import { router } from "expo-router";
 import { BookOpen } from "lucide-react-native";
 import { useState } from "react";
