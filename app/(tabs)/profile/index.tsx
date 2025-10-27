@@ -17,6 +17,8 @@ import {
 
 import { router } from "expo-router";
 import { ArrowLeft, Camera, ChevronRight, User } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
+import "@/i18n";
 
 export default function ProfileScreen() {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
@@ -29,6 +31,8 @@ export default function ProfileScreen() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const { t, i18n } = useTranslation();
 
   const handleAvatarPick = () => {
     Alert.alert(
@@ -77,7 +81,7 @@ export default function ProfileScreen() {
             <User size={24} color="#A855F7" />
           </View>
           <View>
-            <Text style={styles.userName}>Читатель</Text>
+            <Text style={styles.userName}>{t("profile.reader")}</Text>
             <Text style={styles.userEmail}>email@mail.ru</Text>
           </View>
         </View>

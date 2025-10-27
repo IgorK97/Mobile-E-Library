@@ -36,7 +36,8 @@ import {
 import { ReaderHeader } from "@/components/reader/reader-header";
 import { ReaderFooter } from "@/components/reader/reader-footer";
 import { BookmarksList } from "@/components/bookmarks/bookmark-list";
-const url = "http:/10.0.2.2:5202/api/Book/book.epub";
+
+const url = process.env.EXPO_PUBLIC_API_BASE_DEV_URL + "/api/Book/book.epub";
 
 const dest = new Directory(Paths.cache, "files");
 const dbm: Bookmark[] = [];
