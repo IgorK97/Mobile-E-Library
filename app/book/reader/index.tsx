@@ -14,9 +14,7 @@ import {
   Text,
   View,
 } from "react-native";
-import {
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Bookmark,
   Location,
@@ -208,6 +206,11 @@ export default function ReaderScreen() {
           // height={!isFullScreen ? height * 0.75 : height}
           defaultTheme={Themes.LIGHT}
           waitForLocationsReady
+          onWebViewMessage={(message) => {
+            if (message.type === "onCfiFromPercentage") {
+              goToLocation(message.cfi);
+            }
+          }}
           // onDoubleTap={() => {
           //   setIsFullScreen(!isFullScreen);
           //   console.log("Hello~~~");

@@ -5,6 +5,10 @@ import { useReader, Themes } from "@epubjs-react-native/core";
 import { IconButton, MD3Colors } from "react-native-paper";
 import { MAX_FONT_SIZE, MIN_FONT_SIZE } from "@/scripts/utils/utils";
 
+import Slider from "@react-native-community/slider";
+import { useDebounceCallback } from "usehooks-ts";
+import { Text } from "react-native-paper";
+
 interface Props {
   currentFontSize: number;
   increaseFontSize: () => void;
@@ -32,7 +36,23 @@ export function ReaderFooter({
     removeBookmark,
     getCurrentLocation,
     isBookmarked,
+    totalLocations,
+    injectJavascript,
+    currentLocation,
   } = useReader();
+  const [sliderValue, setSliderValue] = useState(
+    (currentLocation?.start.percentage || 0) * 100
+  ); // начальное значение
+
+  const debounced = useDebounceCallback((percentage) => {
+    injectJavascript(`
+        try{
+            const cfi = book.locations.cfiFromPercentage(${percentage}/100);
+            window.ReactNativeWebView.postMessage(JSON.stringify({type:"onCfiFromPercentage", cfi})); true
+        } catch(error){
+            alert(error?.message);
+        }`);
+  }, 1000);
   const handleChangeBookmark = () => {
     const location = getCurrentLocation();
 
@@ -42,7 +62,7 @@ export function ReaderFooter({
       const bookmark = bookmarks.find(
         (item) =>
           item.location.start.cfi === location?.start.cfi &&
-          item.location.end.cfi == location?.end.cfi
+          item.location.end.cfi === location?.end.cfi
       );
 
       if (!bookmark) return;
@@ -61,6 +81,29 @@ export function ReaderFooter({
             : "rgba(241,232,215,1)",
       }}
     >
+      <Text variant="labelMedium" style={styles.currentPercentage}>
+        Прогресс чтения:{" "}
+        {((currentLocation?.start.percentage || 0) * 100).toFixed(0)}%
+      </Text>
+      <View style={styles.row}>
+        <Text variant="labelMedium">0%</Text>
+
+        <Slider
+          style={styles.slider}
+          disabled={totalLocations === 0}
+          value={sliderValue}
+          minimumValue={0}
+          maximumValue={100}
+          minimumTrackTintColor="#c0c0c0"
+          maximumTrackTintColor="#000000"
+          step={1}
+          thumbTintColor="#D32F2F"
+          tapToSeek
+          onValueChange={(percentage) => debounced(percentage)}
+        />
+
+        <Text variant="labelMedium">100%</Text>
+      </View>
       <View style={styles.actions}>
         {showSettings && (
           <TouchableOpacity
@@ -135,7 +178,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingVertical: 20, // или отдельные paddingTop/paddingBottom
     paddingHorizontal: 16,
-
+    flexDirection: "column",
     alignItems: "center", // выравнивание контента по центру
     justifyContent: "center",
     zIndex: 10,
@@ -146,6 +189,12 @@ const styles = StyleSheet.create({
   //     justifyContent: "space-between",
   //     marginHorizontal: 10,
   //   },
+  row: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  slider: { width: "75%", height: 40 },
   themeIcon: {
     width: 24,
     height: 24,
@@ -158,4 +207,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
   },
+  currentPercentage: {},
 });
