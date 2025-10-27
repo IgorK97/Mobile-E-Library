@@ -13,6 +13,7 @@ import {
   AArrowDown,
 } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
+import { TableOfContents } from "@/components/table-of-contents";
 import {
   Animated,
   ImageSourcePropType,
@@ -246,6 +247,14 @@ export default function ReaderScreen() {
       <BookmarksList
         ref={bookmarksListRef}
         onClose={() => bookmarksListRef.current?.dismiss()}
+      />
+      <TableOfContents
+        ref={tableOfContentsRef}
+        onClose={() => tableOfContentsRef.current?.dismiss()}
+        onPressSection={(selectedSection) => {
+          goToLocation(selectedSection.href.split("/")[1]);
+          tableOfContentsRef.current?.dismiss();
+        }}
       />
       {/* </GestureDetector> */}
     </GestureHandlerRootView>
