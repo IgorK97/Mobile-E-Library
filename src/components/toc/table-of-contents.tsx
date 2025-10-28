@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import {
   Toc,
   Section as SectionType,
@@ -96,7 +96,15 @@ export const TableOfContents = forwardRef<Ref, Props>(
           </View>
         </View>
       ),
-      [onClose, searchTerm, theme.body.background, toc]
+      [
+        onClose,
+        searchTerm,
+        theme.body.background,
+        toc,
+        // styles.input,
+        // styles.title,
+        // colors.background,
+      ]
     );
 
     React.useEffect(() => {

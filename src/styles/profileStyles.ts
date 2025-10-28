@@ -21,7 +21,7 @@ export const useProfileStyles = () => {
       paddingHorizontal: 16,
       paddingVertical: 20,
       borderBottomWidth: 1,
-      backgroundColor: useThemeColor({}, "iconBackground"),
+      backgroundColor: useThemeColor({}, "background"),
     },
     avatar: {
       width: 48,

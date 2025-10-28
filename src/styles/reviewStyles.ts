@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { useColorScheme } from "@/src/hooks/use-color-scheme";
-import { useThemeColor } from "@/src/hooks/use-theme-color";
+// import { useColorScheme } from "@/src/hooks/use-color-scheme";
+// import { useThemeColor } from "@/src/hooks/use-theme-color";
 
 export const useReviewStyles = () => {
   return StyleSheet.create({

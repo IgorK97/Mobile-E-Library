@@ -233,7 +233,7 @@ function InputField({
     <View style={styles.inputContainer}>
       <Text style={typography.label}>{label}</Text>
       <TextInput
-        style={[styles.inputContainer, error && styles.errorContainer]}
+        style={[styles.input, error && styles.errorContainer]}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}

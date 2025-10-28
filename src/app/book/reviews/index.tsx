@@ -3,7 +3,6 @@ import {
   Modal,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,

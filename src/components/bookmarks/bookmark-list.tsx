@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { forwardRef, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Bookmark, useReader, Themes } from "@epubjs-react-native/core";
+import { View, TouchableOpacity } from "react-native";
+import { Bookmark, useReader } from "@epubjs-react-native/core";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -61,7 +60,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
         index={1}
         enablePanDownToClose
         snapPoints={snapPoints}
-        handleStyle={{ backgroundColor: theme.body.background }}
+        handleStyle={{ backgroundColor: colors.background }}
       >
         <BottomSheetView
           style={{
@@ -130,7 +129,10 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
           {bookmarks.map((bookmark) => (
             <View key={bookmark.id} style={styles.bookmarkContainer}>
               <TouchableOpacity
-                style={styles.bookmarkInfo}
+                style={[
+                  styles.bookmarkInfo,
+                  { backgroundColor: colors.background },
+                ]}
                 onPress={() => {
                   goToLocation(bookmark.location.start.cfi);
                   onClose();

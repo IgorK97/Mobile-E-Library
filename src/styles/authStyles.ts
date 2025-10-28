@@ -10,10 +10,7 @@ export const useAuthStyles = () => {
     inputContainer: {
       marginBottom: 18,
       backgroundColor: useThemeColor({}, "containerBackground"),
-      borderColor: useThemeColor(
-        { light: "#ddd", dark: "#ddd" },
-        "borderBottomColor"
-      ),
+      borderColor: useThemeColor({}, "hightlightedText"),
       color: useThemeColor({}, "text"),
     },
     errorContainer: {
@@ -25,6 +22,7 @@ export const useAuthStyles = () => {
       borderRadius: 10,
       paddingHorizontal: 12,
       paddingVertical: 10,
+      borderColor: "#cb8bc4ff",
     },
     button: {
       borderRadius: 10,
