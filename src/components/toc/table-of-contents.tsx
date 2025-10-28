@@ -4,7 +4,6 @@ import {
   Toc,
   Section as SectionType,
   useReader,
-  Themes,
 } from "@epubjs-react-native/core";
 import {
   BottomSheetModal,
@@ -15,11 +14,7 @@ import {
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, Text } from "react-native-paper";
 import Section from "./section";
-import {
-  contrast,
-  readerThemeColors,
-  resolveTheme,
-} from "@/src/constants/reader-theme";
+import { contrast, resolveTheme } from "@/src/constants/reader-theme";
 
 interface Props {
   onPressSection: (section: SectionType) => void;

@@ -1,6 +1,5 @@
 import { Reader, useReader, Themes } from "@epubjs-react-native/core";
 import { useFileSystem } from "@epubjs-react-native/expo-file-system";
-import Slider from "@react-native-community/slider";
 import { Directory, File, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -12,6 +11,7 @@ import {
   StyleSheet,
   Text,
   View,
+  useWindowDimensions,
 } from "react-native";
 import "@/src/i18n";
 
@@ -28,13 +28,8 @@ import {
   MIN_FONT_SIZE,
   themes,
 } from "@/src/constants/reader-theme";
-import { useWindowDimensions } from "react-native";
-import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/components/reader/reader-header";
 import { ReaderFooter } from "@/src/components/reader/reader-footer";
 import { BookmarksList } from "@/src/components/bookmarks/bookmark-list";
@@ -67,13 +62,13 @@ export default function ReaderScreen() {
   const [currentFontSize, setCurrentFontSize] = useState(16);
   const [currentFontFamily, setCurrentFontFamily] = useState(availableFonts[0]);
 
-  const doubleTap = Gesture.Tap()
-    .numberOfTaps(2)
-    .onStart(() => {
-      console.log("I am here~~~");
-      setIsFullScreen(!isFullScreen);
-      // console.log(isFullScreen);
-    });
+  // const doubleTap = Gesture.Tap()
+  //   .numberOfTaps(2)
+  //   .onStart(() => {
+  //     console.log("I am here~~~");
+  //     setIsFullScreen(!isFullScreen);
+  //     // console.log(isFullScreen);
+  //   });
 
   const increaseFontSize = () => {
     if (currentFontSize < MAX_FONT_SIZE) {
@@ -104,30 +99,30 @@ export default function ReaderScreen() {
     changeFontFamily(nextFontFamily);
   };
 
-  const paths: ImageSourcePropType = require("../../../assets/images/book_1.png");
-  const router = useRouter();
+  // const paths: ImageSourcePropType = require("@assets/images/book_1.png");
+  // const router = useRouter();
 
   const [activePanel, setActivePanel] = useState<"none" | "settings" | "toc">(
     "none"
   );
   const [epubAsset, setEpubAsset] = useState<string | null>(null);
 
-  const handleChangeBookmark = () => {
-    const location = getCurrentLocation();
+  // const handleChangeBookmark = () => {
+  //   const location = getCurrentLocation();
 
-    if (!location) return;
+  //   if (!location) return;
 
-    if (isBookmarked) {
-      const bookmark = bookmarks.find(
-        (item) =>
-          item.location.start.cfi === location?.start.cfi &&
-          item.location.end.cfi === location?.end.cfi
-      );
+  //   if (isBookmarked) {
+  //     const bookmark = bookmarks.find(
+  //       (item) =>
+  //         item.location.start.cfi === location?.start.cfi &&
+  //         item.location.end.cfi === location?.end.cfi
+  //     );
 
-      if (!bookmark) return;
-      removeBookmark(bookmark);
-    } else addBookmark(location);
-  };
+  //     if (!bookmark) return;
+  //     removeBookmark(bookmark);
+  //   } else addBookmark(location);
+  // };
   useEffect(() => {
     const funcLoad = async () => {
       try {
@@ -145,28 +140,10 @@ export default function ReaderScreen() {
     funcLoad();
   }, []);
 
-  const bottomAnim = useRef(new Animated.Value(0)).current;
-
   if (epubAsset === null) {
     return <Text>Загрузка книги...</Text>;
   }
-  const toggleBottom = () => {
-    Animated.timing(bottomAnim, {
-      toValue: isFullScreen ? 100 : 0,
-      duration: 250,
-      useNativeDriver: true,
-    }).start();
-    setIsFullScreen(!isFullScreen);
-    setActivePanel("none");
-  };
 
-  const openPanel = (type: "settings" | "toc") => {
-    if (activePanel === type) {
-      setActivePanel("none");
-    } else {
-      setActivePanel(type);
-    }
-  };
   return (
     <GestureHandlerRootView
       style={{

@@ -99,8 +99,6 @@ export default function ProfileScreen() {
             <ChevronRight size={20} color="#9CA3AF" />
           </TouchableOpacity>
         </View>
-
-        {/* Help Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Помощь</Text>
           <TouchableOpacity style={styles.row}>
@@ -128,7 +126,6 @@ export default function ProfileScreen() {
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.modalContent}>
-              {/* Заголовок модального окна */}
               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   onPress={() => setIsProfileModalVisible(false)}
@@ -139,7 +136,6 @@ export default function ProfileScreen() {
                 <Text style={styles.modalTitle}>Настройки профиля</Text>
               </View>
               <ScrollView style={styles.scrollForm}>
-                {/* Аватар */}
                 <View style={styles.avatarSection}>
                   <View style={styles.avatarContainer}>
                     {userAvatar ? (
@@ -163,7 +159,6 @@ export default function ProfileScreen() {
                   </View>
                   <Text style={styles.avatarText}>Изменить аватар</Text>
                 </View>
-                {/*Форма редактирования профиля*/}
                 <View style={styles.form}>
                   <View style={styles.inputGroup}>
                     <Text style={styles.label}>Имя пользователя</Text>
@@ -187,7 +182,6 @@ export default function ProfileScreen() {
                   </View>
                 </View>
               </ScrollView>
-              {/* Кнопка сохранения внизу */}
               <View style={styles.bottomActions}>
                 <TouchableOpacity
                   style={styles.saveButtonBottom}
@@ -201,7 +195,6 @@ export default function ProfileScreen() {
         </KeyboardAvoidingView>
       </Modal>
 
-      {/* Модальное окно настроек безопасности */}
       <Modal
         animationType="slide"
         visible={isSecurityModalVisible}
@@ -213,7 +206,6 @@ export default function ProfileScreen() {
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.modalContent}>
-              {/* Заголовок модального окна */}
               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   onPress={() => setIsSecurityModalVisible(false)}
@@ -223,7 +215,6 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
                 <Text style={styles.modalTitle}>Безопасность</Text>
               </View>
-              {/* Форма смены пароля */}
               <View style={styles.form}>
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Текущий пароль</Text>
@@ -255,7 +246,6 @@ export default function ProfileScreen() {
                     secureTextEntry
                   />
                 </View>
-                {/* Кнопка сохранения внизу */}
                 <View style={styles.bottomActions}>
                   <TouchableOpacity
                     style={styles.saveButtonBottom}

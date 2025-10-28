@@ -11,7 +11,7 @@ export const MIN_FONT_SIZE = 8;
 //   [Themes.SEPIA, "SEPIA"],
 // ]);
 
-export const availableFonts: Array<string> = [
+export const availableFonts: string[] = [
   "Helvetica",
   "cursive",
   "serif",

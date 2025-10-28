@@ -10,11 +10,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, IconButton, MD3Colors, Text } from "react-native-paper";
-import {
-  contrast,
-  resolveTheme,
-  readerThemeColors,
-} from "@/src/constants/reader-theme";
+import { contrast, resolveTheme } from "@/src/constants/reader-theme";
 
 interface Props {
   onClose: () => void;
