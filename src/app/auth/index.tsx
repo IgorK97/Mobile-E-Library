@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import "@/src/i18n";
 import { Colors, Typography } from "@/src/constants/theme";
-
+import { useColorScheme } from "@/src/hooks/use-color-scheme";
 interface MyError {
   username: string | null;
   email: string | null;
@@ -46,6 +46,8 @@ export default function AuthScreen() {
   const handleChange = (field: string, value: string) => {
     setForm({ ...form, [field]: value });
   };
+
+  const color = useColorScheme();
 
   const validateForm = () => {
     let valid = true;
@@ -107,14 +109,18 @@ export default function AuthScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: "#fff" }}
+      style={{
+        flex: 1,
+        backgroundColor:
+          color === "light" ? Colors.light.background : Colors.dark.background,
+      }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.title}>
+        <Text style={Typography.giantTitle}>
           {isRegister ? "Регистрация" : "Авторизация"}
         </Text>
 
@@ -136,7 +142,7 @@ export default function AuthScreen() {
               label="Телефон"
               value={form.phone}
               onChangeText={(v) => handleChange("phone", v)}
-              keyboardType="phone-pad"
+              // keyboardType="phone-pad"
               error={errors.phone || ""}
             />
           </>
@@ -146,7 +152,7 @@ export default function AuthScreen() {
           label="Email"
           value={form.email}
           onChangeText={(v) => handleChange("email", v)}
-          keyboardType="email-address"
+          // keyboardType="email-address"
           error={errors.email || ""}
         />
 
@@ -168,7 +174,15 @@ export default function AuthScreen() {
           />
         )}
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            color === "light"
+              ? Colors.light.saveButton
+              : Colors.dark.saveButton,
+          ]}
+          onPress={handleSubmit}
+        >
           <Text style={Typography.defaultButtonText}>
             {isRegister ? "Зарегистрироваться" : "Войти"}
           </Text>
@@ -178,7 +192,15 @@ export default function AuthScreen() {
           style={styles.switchButton}
           onPress={() => setIsRegister(!isRegister)}
         >
-          <Text style={styles.switchText}>
+          <Text
+            style={{
+              textAlign: "center",
+              color:
+                color === "light"
+                  ? Colors.light.highlightedText
+                  : Colors.dark.highlightedText,
+            }}
+          >
             {isRegister
               ? "Уже есть аккаунт? Войти"
               : "Нет аккаунта? Зарегистрироваться"}
@@ -195,20 +217,24 @@ function InputField({
   onChangeText,
   error,
   secureTextEntry,
-  keyboardType,
-}: {
+}: // keyboardType,
+{
   label: string;
   value: string;
   onChangeText: (v: string) => void;
   error?: string;
   secureTextEntry?: boolean;
-  keyboardType?: "default" | "email-address" | "phone-pad";
+  // keyboardType?: "default" | "email-address" | "phone-pad";
 }) {
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={Typography.label}>{label}</Text>
       <TextInput
-        style={[styles.input, error && Colors.default.inputError]}
+        style={[
+          Colors.default.input,
+          styles.input,
+          error && Colors.default.inputError,
+        ]}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
@@ -226,31 +252,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 40,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    textAlign: "center",
-    marginBottom: 30,
-    color: "#333",
-  },
   inputContainer: { marginBottom: 18 },
-  label: { fontSize: 14, color: "#555", marginBottom: 6 },
+
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    fontSize: 16,
-    color: "#000",
   },
   button: {
-    backgroundColor: "#D32F2F",
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: "center",
     marginTop: 10,
   },
   switchButton: { marginTop: 20 },
-  switchText: { textAlign: "center", color: "#D32F2F" },
 });

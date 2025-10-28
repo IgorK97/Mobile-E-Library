@@ -41,6 +41,7 @@ export const Colors = {
       backgroundColor: baseAppColor,
       borderColor: "#fff",
     },
+    label: "#555",
   },
   dark: {
     text: "#ECEDEE",
@@ -71,11 +72,13 @@ export const Colors = {
       backgroundColor: baseAppColor,
       borderColor: "#fff",
     },
+    label: "#555",
   },
   default: {
     input: {
       backgroundColor: baseBackgroundColor,
       borderColor: "#ddd",
+      color: "#000",
     },
     inputError: { borderColor: "#D32F2F" },
   },
@@ -123,6 +126,12 @@ export const Typography = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
+  giantTitle: {
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 30,
+  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 8,
@@ -146,5 +155,9 @@ export const Typography = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
   },
+  inputText: {
+    fontSize: 16,
+  },
+  label: { fontSize: 14, marginBottom: 6 },
   defaultButtonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
 });

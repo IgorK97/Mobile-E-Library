@@ -73,19 +73,7 @@ const mockReviews: Review[] = [
   },
 ];
 
-interface ReviewsScreenProps {
-  onBack: () => void;
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-  bookTitle?: string;
-}
-
-export default function ReviewsScreen({
-  onBack,
-  activeTab,
-  onTabChange,
-  bookTitle = "Буддизм в Японии",
-}: ReviewsScreenProps) {
+export default function ReviewsScreen() {
   const [sortBy, setSortBy] = useState("highest");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newReview, setNewReview] = useState("");
