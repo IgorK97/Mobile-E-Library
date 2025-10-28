@@ -31,7 +31,7 @@ const url = process.env.EXPO_PUBLIC_API_BASE_DEV_URL + "/api/Book/book.epub";
 const dest = new Directory(Paths.cache, "files");
 const dbm: Bookmark[] = [];
 export default function ReaderScreen() {
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 
   const { theme, changeFontSize, changeFontFamily, changeTheme, goToLocation } =
@@ -81,9 +81,6 @@ export default function ReaderScreen() {
     changeFontFamily(nextFontFamily);
   };
 
-  const [activePanel, setActivePanel] = useState<"none" | "settings" | "toc">(
-    "none"
-  );
   const [epubAsset, setEpubAsset] = useState<string | null>(null);
   useEffect(() => {
     const funcLoad = async () => {

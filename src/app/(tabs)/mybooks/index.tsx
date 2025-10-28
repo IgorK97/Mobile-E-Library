@@ -8,7 +8,6 @@ import "@/src/i18n";
 import {
   FlatList,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   useWindowDimensions,
