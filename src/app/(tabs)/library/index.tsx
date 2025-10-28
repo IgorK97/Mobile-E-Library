@@ -2,7 +2,6 @@ import { BookCard } from "@/src/components/library/book-card";
 import { SectionHeader } from "@/src/components/library/section-header";
 import { Book } from "@/src/types/types";
 import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { FlatList, ScrollView, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "@/src/i18n";
@@ -138,7 +137,7 @@ const books3 = [
 export default function HomeScreen() {
   const router = useRouter();
   const { width } = useWindowDimensions();
-  const numColumns = width < 500 ? 2 : 4;
+  const numColumns = 2;
   const cardWidth = width / numColumns - 24;
   const color = useColorScheme();
   return (
@@ -149,7 +148,6 @@ export default function HomeScreen() {
           color === "light" ? Colors.light.background : Colors.dark.background,
       }}
     >
-      <StatusBar style="auto" />
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
         <SectionHeader title="История культуры" />
         <FlatList
@@ -164,7 +162,9 @@ export default function HomeScreen() {
               <BookCard
                 bookInfo={item}
                 key={item.id}
-                onPress={() => router.push("/book")}
+                onPress={() =>
+                  router.push({ pathname: "/book", params: { id: item.id } })
+                }
               />
             </View>
           )}

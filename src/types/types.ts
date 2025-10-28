@@ -11,6 +11,7 @@ export interface Book {
   description: string;
   imageUrl: ImageSourcePropType;
   genres: string[];
+  fav?: boolean;
 }
 
 export interface DownloadedBook {

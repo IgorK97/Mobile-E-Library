@@ -9,6 +9,10 @@ const tintColorDark = "#fff";
 const errorColor = "#D32F2F";
 const baseAppColor = "#D32F2F";
 const baseBackgroundColor = "#fff";
+export const favColor = "#D32F2F";
+export const unfavColor = "#666";
+export const fillFavColor = "#D32F2F";
+export const fillUnfavColor = "none";
 
 export const Colors = {
   light: {

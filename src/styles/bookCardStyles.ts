@@ -7,6 +7,15 @@ export const useBookCardStyles = () => {
       marginTop: 2,
       marginBottom: 2,
     },
+    cardImage: {
+      aspectRatio: 2 / 3,
+      borderRadius: 10,
+      overflow: "hidden",
+      marginBottom: 8,
+      position: "relative",
+      justifyContent: "center",
+      alignItems: "center",
+    },
     coverContainer: {
       aspectRatio: 2 / 3,
       borderRadius: 10,

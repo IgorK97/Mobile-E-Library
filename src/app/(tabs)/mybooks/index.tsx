@@ -154,7 +154,7 @@ export default function MyBooks() {
   const color = useColorScheme();
   const styles = useMyBooksStyles();
   const typography = useTypography();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
     <View
       style={{
