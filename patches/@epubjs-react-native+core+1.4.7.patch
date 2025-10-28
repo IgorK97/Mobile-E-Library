@@ -1,0 +1,51 @@
+diff --git a/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/dark.js b/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/dark.js
+index 18f09cf..ede040a 100644
+--- a/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/dark.js
++++ b/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/dark.js
+@@ -20,6 +20,12 @@ const dark = exports.dark = {
+   'h1': {
+     color: '#fff !important'
+   },
++  'h2': {
++    color: '#fff !important'
++  },
++  'h3': {
++    color: '#fff !important'
++  },
+   'a': {
+     'color': '#fff !important',
+     'pointer-events': 'auto',
+diff --git a/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/light.js b/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/light.js
+index 7cdbee3..ea72a29 100644
+--- a/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/light.js
++++ b/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/light.js
+@@ -20,6 +20,12 @@ const light = exports.light = {
+   'h1': {
+     color: '#000 !important'
+   },
++  'h2': {
++    color: '#000 !important'
++  },
++  'h3': {
++    color: '#000 !important'
++  },
+   'a': {
+     'color': '#000 !important',
+     'pointer-events': 'auto',
+diff --git a/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/sepia.js b/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/sepia.js
+index 9ed5785..ced4c85 100644
+--- a/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/sepia.js
++++ b/node_modules/@epubjs-react-native/core/lib/commonjs/utils/themes/sepia.js
+@@ -20,6 +20,12 @@ const sepia = exports.sepia = {
+   'h1': {
+     color: '#333 !important'
+   },
++  'h2': {
++    color: '#333 !important'
++  },
++  'h3': {
++    color: '#333 !important'
++  },
+   'a': {
+     'color': '#333 !important',
+     'pointer-events': 'auto',
