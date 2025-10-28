@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-
+import { View, Text, TouchableOpacity } from "react-native";
+import { useSectionHeaderStyles } from "@/src/styles/sectionHeader";
 interface SectionHeaderProps {
   title: string;
   onPress?: () => void;
 }
 
 export function SectionHeader({ title, onPress }: SectionHeaderProps) {
+  const styles = useSectionHeaderStyles();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -16,22 +17,3 @@ export function SectionHeader({ title, onPress }: SectionHeaderProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  title: {
-    color: "#D32F2F",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  buttonText: {
-    color: "#D32F2F",
-    fontSize: 14,
-  },
-});

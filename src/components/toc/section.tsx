@@ -1,9 +1,9 @@
 import { Section as SectionType, useReader } from "@epubjs-react-native/core";
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { IconButton, MD3Colors, Text } from "react-native-paper";
 import { contrast } from "@/src/constants/reader-theme";
-
+import { useSectionStyles } from "@/src/styles/sectionStyles";
 interface Props {
   searchTerm: string;
   isCurrentSection: boolean;
@@ -16,6 +16,7 @@ function Section({ searchTerm, isCurrentSection, section, onPress }: Props) {
 
   const regex = new RegExp(`(${searchTerm})`, "gi");
   const parts = section?.label.split(regex);
+  const styles = useSectionStyles();
   return (
     <TouchableOpacity
       key={section.id}
@@ -70,24 +71,5 @@ function Section({ searchTerm, isCurrentSection, section, onPress }: Props) {
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  icon: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  info: {
-    width: "85%",
-  },
-  chapter: { marginBottom: 2 },
-  name: { fontStyle: "italic" },
-  highlight: { backgroundColor: "yellow" },
-});
 
 export default Section;

@@ -15,7 +15,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { Button, Text } from "react-native-paper";
 import Section from "./section";
 import { contrast, resolveTheme } from "@/src/constants/reader-theme";
-
+import { useTocStyles } from "@/src/styles/tocStyles";
 interface Props {
   onPressSection: (section: SectionType) => void;
   onClose: () => void;
@@ -44,7 +44,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
       ),
       [onPressSection, searchTerm, section?.id]
     );
-
+    const styles = useTocStyles();
     const header = React.useCallback(
       () => (
         <View
@@ -137,26 +137,3 @@ export const TableOfContents = forwardRef<Ref, Props>(
 );
 
 TableOfContents.displayName = "TableOfContents";
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  title: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  input: {
-    width: "100%",
-    borderRadius: 10,
-    fontSize: 16,
-    lineHeight: 20,
-    padding: 8,
-    backgroundColor: "rgba(151, 151, 151, 0.25)",
-  },
-});

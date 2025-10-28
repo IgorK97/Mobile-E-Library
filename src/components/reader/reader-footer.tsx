@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 
 import { useReader } from "@epubjs-react-native/core";
 import { IconButton, MD3Colors, Text } from "react-native-paper";
@@ -11,6 +11,8 @@ import {
 
 import Slider from "@react-native-community/slider";
 import { useDebounceCallback } from "usehooks-ts";
+
+import { useReaderFooterStyles } from "@/src/styles/readerFooterStyles";
 
 interface Props {
   currentFontSize: number;
@@ -47,7 +49,7 @@ export function ReaderFooter({
   //   (currentLocation?.start.percentage || 0) * 100
   // );
   const colors = resolveTheme(theme);
-
+  const styles = useReaderFooterStyles();
   const debounced = useDebounceCallback((percentage) => {
     injectJavascript(`
         try{
@@ -169,36 +171,3 @@ export function ReaderFooter({
     </View>
   );
 }
-const styles = StyleSheet.create({
-  footer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10,
-  },
-  row: {
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  slider: { width: "75%", height: 40 },
-  themeIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 32,
-    borderWidth: 2,
-    marginRight: 10,
-  },
-  actions: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  currentPercentage: {},
-});

@@ -11,7 +11,7 @@ import {
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, IconButton, MD3Colors, Text } from "react-native-paper";
 import { contrast, resolveTheme } from "@/src/constants/reader-theme";
-
+import { useBookmarksStyles } from "@/src/styles/bookmarksStyles";
 interface Props {
   onClose: () => void;
 }
@@ -52,7 +52,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
     currentLocation?.start.cfi,
     isBookmarked,
   ]);
-
+  const styles = useBookmarksStyles();
   return (
     // <View style={{ zIndex: 20 }}>
     <BottomSheetModalProvider>
@@ -195,51 +195,3 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
 });
 
 BookmarksList.displayName = "BookmarksList";
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: "center",
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  bookmarkContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  bookmarkInfo: {
-    flexDirection: "row",
-  },
-  bookmarkInfoText: {
-    width: "80%",
-  },
-  title: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  bookmarkIcon: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bookmarkLocationNumber: {
-    marginTop: -12,
-  },
-  input: {
-    width: "100%",
-    height: 64,
-    marginTop: 8,
-    borderRadius: 10,
-    fontSize: 16,
-    lineHeight: 20,
-    padding: 8,
-    backgroundColor: "rgba(151, 151, 151, 0.25)",
-  },
-});
