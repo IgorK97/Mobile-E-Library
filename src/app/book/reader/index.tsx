@@ -1,0 +1,249 @@
+import { Reader, useReader, Themes } from "@epubjs-react-native/core";
+import { useFileSystem } from "@epubjs-react-native/expo-file-system";
+import Slider from "@react-native-community/slider";
+import { Directory, File, Paths } from "expo-file-system";
+import { useRouter } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
+import { TableOfContents } from "@/src/components/toc/table-of-contents";
+import {
+  Animated,
+  ImageSourcePropType,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import "@/src/i18n";
+
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  Bookmark,
+  Location,
+  Section,
+  Toc,
+} from "@epubjs-react-native/core/lib/typescript/types";
+import {
+  availableFonts,
+  MAX_FONT_SIZE,
+  MIN_FONT_SIZE,
+  themes,
+} from "@/src/constants/reader-theme";
+import { useWindowDimensions } from "react-native";
+import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+import { ReaderHeader } from "@/src/components/reader/reader-header";
+import { ReaderFooter } from "@/src/components/reader/reader-footer";
+import { BookmarksList } from "@/src/components/bookmarks/bookmark-list";
+
+const url = process.env.EXPO_PUBLIC_API_BASE_DEV_URL + "/api/Book/book.epub";
+
+const dest = new Directory(Paths.cache, "files");
+const dbm: Bookmark[] = [];
+export default function ReaderScreen() {
+  const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+
+  const {
+    theme,
+    changeFontSize,
+    changeFontFamily,
+    changeTheme,
+    goToLocation,
+    addBookmark,
+    removeBookmark,
+    bookmarks,
+    isBookmarked,
+    getCurrentLocation,
+  } = useReader();
+
+  const bookmarksListRef = useRef<BottomSheetModal>(null);
+  const tableOfContentsRef = useRef<BottomSheetModal>(null);
+
+  const [isFullScreen, setIsFullScreen] = useState(true);
+  const [currentFontSize, setCurrentFontSize] = useState(16);
+  const [currentFontFamily, setCurrentFontFamily] = useState(availableFonts[0]);
+
+  const doubleTap = Gesture.Tap()
+    .numberOfTaps(2)
+    .onStart(() => {
+      console.log("I am here~~~");
+      setIsFullScreen(!isFullScreen);
+      // console.log(isFullScreen);
+    });
+
+  const increaseFontSize = () => {
+    if (currentFontSize < MAX_FONT_SIZE) {
+      setCurrentFontSize(currentFontSize + 1);
+      changeFontSize(`${currentFontSize + 1}px`);
+    }
+  };
+
+  const decreaseFontSize = () => {
+    if (currentFontSize > MIN_FONT_SIZE) {
+      setCurrentFontSize(currentFontSize - 1);
+      changeFontSize(`${currentFontSize - 1}px`);
+    }
+  };
+
+  const switchTheme = () => {
+    const index = Object.values(themes).indexOf(theme);
+    const nextTheme =
+      Object.values(themes)[(index + 1) % Object.values(themes).length];
+    changeTheme(nextTheme);
+  };
+
+  const switchFontFamily = () => {
+    const index = availableFonts.indexOf(currentFontFamily);
+    const nextFontFamily = availableFonts[(index + 1) % availableFonts.length];
+
+    setCurrentFontFamily(nextFontFamily);
+    changeFontFamily(nextFontFamily);
+  };
+
+  const paths: ImageSourcePropType = require("../../../assets/images/book_1.png");
+  const router = useRouter();
+
+  const [activePanel, setActivePanel] = useState<"none" | "settings" | "toc">(
+    "none"
+  );
+  const [epubAsset, setEpubAsset] = useState<string | null>(null);
+
+  const handleChangeBookmark = () => {
+    const location = getCurrentLocation();
+
+    if (!location) return;
+
+    if (isBookmarked) {
+      const bookmark = bookmarks.find(
+        (item) =>
+          item.location.start.cfi === location?.start.cfi &&
+          item.location.end.cfi === location?.end.cfi
+      );
+
+      if (!bookmark) return;
+      removeBookmark(bookmark);
+    } else addBookmark(location);
+  };
+  useEffect(() => {
+    const funcLoad = async () => {
+      try {
+        if (dest.exists) dest.delete();
+        dest.create();
+        const output = await File.downloadFileAsync(url, dest);
+        console.log(output.exists);
+        console.log(output.uri);
+        const res = output.base64Sync();
+        setEpubAsset(res);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    funcLoad();
+  }, []);
+
+  const bottomAnim = useRef(new Animated.Value(0)).current;
+
+  if (epubAsset === null) {
+    return <Text>Загрузка книги...</Text>;
+  }
+  const toggleBottom = () => {
+    Animated.timing(bottomAnim, {
+      toValue: isFullScreen ? 100 : 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+    setIsFullScreen(!isFullScreen);
+    setActivePanel("none");
+  };
+
+  const openPanel = (type: "settings" | "toc") => {
+    if (activePanel === type) {
+      setActivePanel("none");
+    } else {
+      setActivePanel(type);
+    }
+  };
+  return (
+    <GestureHandlerRootView
+      style={{
+        flex: 1,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+        backgroundColor: theme.body.background,
+      }}
+    >
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <Reader
+          src={epubAsset}
+          fileSystem={useFileSystem}
+          initialBookmarks={dbm}
+          onAddBookmark={(bookmark) => {
+            console.log(bookmark);
+          }}
+          onRemoveBookmark={(bookmark) =>
+            console.log("onRemoveBookmark", bookmark)
+          }
+          onUpdateBookmark={(bookmark) =>
+            console.log("onUpdateBookmark", bookmark)
+          }
+          onChangeBookmarks={(bookmarks) =>
+            console.log("onChangeBookmarks", bookmarks)
+          }
+          width={width}
+          // height={!isFullScreen ? height * 0.75 : height}
+          defaultTheme={Themes.LIGHT}
+          waitForLocationsReady
+          onWebViewMessage={(message) => {
+            if (message.type === "onCfiFromPercentage") {
+              goToLocation(message.cfi);
+            }
+          }}
+        />
+      </View>
+      <Pressable
+        onPress={() => setIsFullScreen(!isFullScreen)}
+        style={StyleSheet.absoluteFill}
+      ></Pressable>
+      {!isFullScreen && <ReaderHeader author="Author" title="Title" />}
+      {!isFullScreen && (
+        <ReaderFooter
+          currentFontSize={currentFontSize}
+          increaseFontSize={increaseFontSize}
+          decreaseFontSize={decreaseFontSize}
+          switchTheme={switchTheme}
+          switchFontFamily={switchFontFamily}
+          onOpenBookmarksList={() => {
+            bookmarksListRef.current?.present();
+            setIsFullScreen(!isFullScreen);
+          }}
+          onOpenTableOfContents={() => {
+            tableOfContentsRef.current?.present();
+            setIsFullScreen(!isFullScreen);
+          }}
+        />
+      )}
+      <BookmarksList
+        ref={bookmarksListRef}
+        onClose={() => bookmarksListRef.current?.dismiss()}
+      />
+      <TableOfContents
+        ref={tableOfContentsRef}
+        onClose={() => tableOfContentsRef.current?.dismiss()}
+        onPressSection={(selectedSection) => {
+          goToLocation(selectedSection.href.split("/")[1]);
+          tableOfContentsRef.current?.dismiss();
+        }}
+      />
+    </GestureHandlerRootView>
+  );
+}
