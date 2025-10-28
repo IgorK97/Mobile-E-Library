@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
+
 import "@/src/i18n";
 
 import { useSearchStyles } from "@/src/styles/searchStyles";
@@ -19,7 +21,7 @@ export default function BookFilters() {
 
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [showAllLanguages, setShowAllLanguages] = useState(false);
-
+  const { t } = useTranslation();
   const [selectedGenres, setSelectedGenres] = useState<{
     [key: string]: string;
   }>({});
@@ -89,14 +91,6 @@ export default function BookFilters() {
 
   const handleApply = () => {
     setOpen(false);
-    console.log("Filters applied:", {
-      search,
-      languages: selectedLanguages,
-      genres: selectedGenres,
-      rating,
-      yearFrom,
-      yearTo,
-    });
   };
 
   return (
@@ -110,24 +104,26 @@ export default function BookFilters() {
         />
         <TextInput
           style={styles.searchInput}
-          placeholder="Поиск книг..."
+          placeholder={t("search.ph")}
           value={search}
           onChangeText={setSearch}
         />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={() => setOpen(true)}>
-        <Text style={typography.defaultButtonText}>Фильтры</Text>
+        <Text style={typography.defaultButtonText}>{t("search.filters")}</Text>
       </TouchableOpacity>
 
       <Modal visible={open} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={typography.defaultTitle}>Фильтры</Text>
+            <Text style={typography.defaultTitle}>
+              {t("search.title_filters")}
+            </Text>
 
             <ScrollView style={styles.scrollArea}>
               <FilterSection
-                title="Языки"
+                title={t("search.title_lang_sect")}
                 // styles={styles}
                 // typography={typography}
               >
@@ -154,7 +150,7 @@ export default function BookFilters() {
               </FilterSection>
 
               <FilterSection
-                title="Жанры и поджанры"
+                title={t("title_genre_sect")}
                 // styles={styles}
                 // typography={typography}
               >
@@ -167,7 +163,7 @@ export default function BookFilters() {
               </FilterSection>
 
               <FilterSection
-                title="Оценка"
+                title={t("search.title_mark")}
                 // styles={styles}
                 // typography={typography}
               >
@@ -176,7 +172,7 @@ export default function BookFilters() {
                     styles={styles}
                     typography={typography}
                     key={r}
-                    label={`${r}★ и выше`}
+                    label={`${r}★ ${t("search.mark_label")}`}
                     selected={rating === r}
                     onPress={() => setRating(r)}
                   />
@@ -184,14 +180,14 @@ export default function BookFilters() {
               </FilterSection>
 
               <FilterSection
-                title="Год написания"
+                title={t("search.title_year_sect")}
                 // styles={styles}
                 // typography={typography}
               >
                 <View style={styles.yearRow}>
                   <TextInput
                     style={styles.yearInput}
-                    placeholder="От"
+                    placeholder={t("search.ph_from")}
                     keyboardType="numeric"
                     value={yearFrom}
                     onChangeText={setYearFrom}
@@ -199,7 +195,7 @@ export default function BookFilters() {
                   <Text style={{ marginHorizontal: 8 }}>—</Text>
                   <TextInput
                     style={styles.yearInput}
-                    placeholder="До"
+                    placeholder={t("search.ph_to")}
                     keyboardType="numeric"
                     value={yearTo}
                     onChangeText={setYearTo}
@@ -213,13 +209,13 @@ export default function BookFilters() {
                 onPress={handleReset}
                 style={[styles.footerButton, styles.resetButton]}
               >
-                <Text>Сбросить</Text>
+                <Text>{t("search.reset")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleApply}
                 style={[styles.footerButton, styles.applyButton]}
               >
-                <Text style={{ color: "white" }}>Применить</Text>
+                <Text style={{ color: "white" }}>{t("search.apply")}</Text>
               </TouchableOpacity>
             </View>
 

@@ -1,9 +1,48 @@
 {
-  "home": {
-    "welcome": "Добро пожаловать в приложение Chronolibris!",
-    "description": "Это мобильное приложение позволит вам глубже изучить историческую литературу."
-  },
   "profile": {
-    "reader": "Читатель"
+    "reader": "Читатель",
+    "choose_avatar": "Выберите аватар",
+    "descr_avatar": "Вы можете выбрать изображение из галереи или сделать фото",
+    "from_gallery": "Из галереи",
+    "via_camera": "Сделать фото",
+    "button_text": "Отмена",
+    "label_settings": "Настройки",
+    "label_profile_settings": "Настройки профиля",
+    "label_security": "Безопасность",
+    "label_dark_theme": "Тёмная тема",
+    "lable_help": "Помощь",
+    "tips": "Как пользоваться приложением",
+    "exit": "Выйти",
+    "title_prof_sett": "Настройки профиля",
+    "change_avatar": "Изменить аватар",
+    "label_name": "имя пользователя",
+    "ph_name": "Введите имя пользователя",
+    "label_email": "Email",
+    "ph_email": "Введите ваш email",
+    "save": "Сохранить изменения",
+    "title_sec_sett": "Безопасность",
+    "label_pass": "Текущий пароль",
+    "ph_pass": "Введите текущий пароль",
+    "label_new_pass": "Новый пароль",
+    "ph_new_pass": "Введите новый пароль",
+    "lable_conf_pass": "Подтвердите новый пароль",
+    "ph_conf_pass": "Повторите новый пароль"
+  },
+  "mybooks": {
+    "my_books": "Мои книги"
+  },
+  "search": {
+    "ph": "Поиск книг...",
+    "filters": "Фильтры",
+    "title_filters": "Фильтры",
+    "title_lang_sect": "Языки",
+    "title_genre_sect": "Темы и подтемы",
+    "title_mark": "Оценка",
+    "mark_label": "и выше",
+    "title_year_sect": "Год написания",
+    "ph_from": "От",
+    "ph_to": "До",
+    "reset": "Сбросить",
+    "apply": "Применить"
   }
 }

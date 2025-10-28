@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { BookOpen } from "lucide-react-native";
 import { useState } from "react";
 import "@/src/i18n";
-
+import { useTranslation } from "react-i18next";
 import {
   FlatList,
   ScrollView,
@@ -154,6 +154,7 @@ export default function MyBooks() {
   const color = useColorScheme();
   const styles = useMyBooksStyles();
   const typography = useTypography();
+  const { t, i18n } = useTranslation();
   return (
     <View
       style={{
@@ -173,7 +174,7 @@ export default function MyBooks() {
             }
           />
         </View>
-        <Text style={typography.headerTitle}>Мои книги</Text>
+        <Text style={typography.headerTitle}>{t("mybooks.my_books")}</Text>
       </View>
 
       <ScrollView

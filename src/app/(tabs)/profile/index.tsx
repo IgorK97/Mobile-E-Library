@@ -43,24 +43,20 @@ export default function ProfileScreen() {
   const chevronRightColor =
     color === "light" ? Colors.light.chevronRight : Colors.dark.chevronRight;
   const handleAvatarPick = () => {
-    Alert.alert(
-      "Выберите аватар",
-      "Вы можете выбрать изображение из галереи или сделать фото",
-      [
-        {
-          text: "Из галереи (в разработке)",
-          onPress: () => {},
-        },
-        {
-          text: "Сделать фото (в разработке)",
-          onPress: () => {},
-        },
-        {
-          text: "Отмена",
-          style: "cancel",
-        },
-      ]
-    );
+    Alert.alert(t("profile.choose_avatar"), t("profile.desc_avatar"), [
+      {
+        text: t("profile.from_gallery"),
+        onPress: () => {},
+      },
+      {
+        text: t("profile.via_camera"),
+        onPress: () => {},
+      },
+      {
+        text: t("profile.button_text"),
+        style: "cancel",
+      },
+    ]);
   };
 
   const handleSaveProfile = () => {
@@ -104,30 +100,30 @@ export default function ProfileScreen() {
           </View>
         </View>
         <View style={styles.section}>
-          <Text style={typography.sectionTitle}>Настройки</Text>
+          <Text style={typography.sectionTitle}>{t("label_settings")}</Text>
           <TouchableOpacity
             style={styles.row}
             onPress={() => setIsProfileModalVisible(true)}
           >
-            <Text style={rowText}>Настройки профиля</Text>
+            <Text style={rowText}>{t("profile.lable_profile_settings")}</Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.row}
             onPress={() => setIsSecurityModalVisible(true)}
           >
-            <Text style={rowText}>Безопасность</Text>
+            <Text style={rowText}>{t("profile.lable_security")}</Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.row}>
-            <Text style={rowText}>Тёмная тема</Text>
+            <Text style={rowText}>{t("profile.label_dark_theme")}</Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
         </View>
         <View style={styles.section}>
-          <Text style={typography.sectionTitle}>Помощь</Text>
+          <Text style={typography.sectionTitle}>{t("profile.label_help")}</Text>
           <TouchableOpacity style={styles.row}>
-            <Text style={rowText}>Как пользоваться приложением</Text>
+            <Text style={rowText}>{t("profile.tips")}</Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -145,7 +141,7 @@ export default function ProfileScreen() {
                 },
               ]}
             >
-              Выйти
+              {t("profile.exit")}
             </Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
@@ -170,7 +166,9 @@ export default function ProfileScreen() {
                 >
                   <ArrowLeft size={24} color="#000" />
                 </TouchableOpacity>
-                <Text style={typography.subTitle}>Настройки профиля</Text>
+                <Text style={typography.subTitle}>
+                  {t("profile.title_prof_sett")}
+                </Text>
               </View>
               <ScrollView style={styles.scrollForm}>
                 <View
@@ -236,26 +234,26 @@ export default function ProfileScreen() {
                           : Colors.dark.subText,
                     }}
                   >
-                    Изменить аватар
+                    {t("profile.change_avatar")}
                   </Text>
                 </View>
                 <View style={styles.form}>
                   <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Имя пользователя</Text>
+                    <Text style={styles.label}>{t("profile.label_name")}</Text>
                     <TextInput
                       style={styles.textInput}
                       value={userName}
                       onChangeText={setUserName}
-                      placeholder="Введите ваше имя"
+                      placeholder={t("profile.ph_name")}
                     />
                   </View>
                   <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Email</Text>
+                    <Text style={styles.label}>{t("profile.label_email")}</Text>
                     <TextInput
                       style={styles.textInput}
                       value={userEmail}
                       onChangeText={setUserEmail}
-                      placeholder="Введите ваш email"
+                      placeholder={t("profile.ph_email")}
                       keyboardType="email-address"
                       autoCapitalize="none"
                     />
@@ -273,7 +271,7 @@ export default function ProfileScreen() {
                       color: "#fff",
                     }}
                   >
-                    Сохранить изменения
+                    {t("profile.save")}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -307,36 +305,42 @@ export default function ProfileScreen() {
                     }
                   />
                 </TouchableOpacity>
-                <Text style={typography.subTitle}>Безопасность</Text>
+                <Text style={typography.subTitle}>
+                  {t("profile.title_sec_sett")}
+                </Text>
               </View>
               <View style={styles.form}>
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>Текущий пароль</Text>
+                  <Text style={styles.label}>{t("profile.label_pass")}</Text>
                   <TextInput
                     style={styles.textInput}
                     value={currentPassword}
                     onChangeText={setCurrentPassword}
-                    placeholder="Введите текущий пароль"
+                    placeholder={t("profile.ph_pass")}
                     secureTextEntry
                   />
                 </View>
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>Новый пароль</Text>
+                  <Text style={styles.label}>
+                    {t("profile.label_new_pass")}
+                  </Text>
                   <TextInput
                     style={styles.textInput}
                     value={newPassword}
                     onChangeText={setNewPassword}
-                    placeholder="Введите новый пароль"
+                    placeholder={t("profile.ph_new_pass")}
                     secureTextEntry
                   />
                 </View>
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>Подтвердите новый пароль</Text>
+                  <Text style={styles.label}>
+                    {t("profile.label_conf_pass")}
+                  </Text>
                   <TextInput
                     style={styles.textInput}
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
-                    placeholder="Повторите новый пароль"
+                    placeholder={t("profile.ph_conf_pass")}
                     secureTextEntry
                   />
                 </View>
@@ -351,7 +355,7 @@ export default function ProfileScreen() {
                         color: "#fff",
                       }}
                     >
-                      Сохранить изменения
+                      {t("profile.save")}
                     </Text>
                   </TouchableOpacity>
                 </View>
