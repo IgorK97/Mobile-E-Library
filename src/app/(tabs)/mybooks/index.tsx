@@ -14,8 +14,10 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { useMyBooksStyles } from "@/src/styles/mybooksStyles";
+import { useTypography } from "@/src/styles/fontStyles";
 import { commonStyles } from "@/src/constants/common";
-import { Colors, Typography } from "@/src/constants/theme";
+import { Colors } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 const books: Book[] = [
   {
@@ -139,7 +141,6 @@ const books: Book[] = [
     ],
   },
 ];
-
 export default function MyBooks() {
   const [activaTab, setActiveTab] = useState("favorites");
   const { width } = useWindowDimensions();
@@ -152,6 +153,8 @@ export default function MyBooks() {
     { id: "read", label: "Прочитанные" },
   ];
   const color = useColorScheme();
+  const styles = useMyBooksStyles();
+  const typography = useTypography();
   return (
     <View
       style={{
@@ -160,24 +163,8 @@ export default function MyBooks() {
           color === "light" ? Colors.light.background : Colors.dark.background,
       }}
     >
-      <View
-        style={{
-          ...styles.header,
-          borderBottomColor:
-            color === "light"
-              ? Colors.light.borderBottomColor
-              : Colors.dark.borderBottomColor,
-        }}
-      >
-        <View
-          style={{
-            ...styles.headerIcon,
-            backgroundColor:
-              color === "light"
-                ? Colors.light.headerIcon.backgroundColor
-                : Colors.dark.headerIcon.backgroundColor,
-          }}
-        >
+      <View style={styles.header}>
+        <View style={styles.headerIcon}>
           <BookOpen
             size={20}
             color={
@@ -187,29 +174,13 @@ export default function MyBooks() {
             }
           />
         </View>
-        <Text
-          style={{
-            ...Typography.headerTitle,
-            color:
-              color === "light"
-                ? Colors.light.headerTitle.color
-                : Colors.dark.headerTitle.color,
-          }}
-        >
-          Мои книги
-        </Text>
+        <Text style={typography.headerTitle}>Мои книги</Text>
       </View>
 
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{
-          ...styles.tabsContainer,
-          borderBottomColor:
-            color === "light"
-              ? Colors.light.borderBottomColor
-              : Colors.dark.borderBottomColor,
-        }}
+        style={styles.tabsContainer}
         contentContainerStyle={{ alignItems: "center" }}
       >
         {tabs.map((tab) => (
@@ -217,24 +188,14 @@ export default function MyBooks() {
             key={tab.id}
             style={[
               styles.tabButton,
-              activaTab === tab.id && {
-                borderBottomColor:
-                  color === "light"
-                    ? Colors.light.tabButtonSelected
-                    : Colors.dark.background,
-              },
+              activaTab === tab.id && styles.tabButtonSelected,
             ]}
             onPress={() => setActiveTab(tab.id)}
           >
             <Text
               style={[
-                Typography.tabText,
-                activaTab === tab.id && {
-                  color:
-                    color === "light"
-                      ? Colors.light.tabTextSelected.color
-                      : Colors.dark.tabText.color,
-                },
+                typography.tabText,
+                activaTab === tab.id && typography.tabTextSelected,
               ]}
             >
               {tab.label}
@@ -263,32 +224,3 @@ export default function MyBooks() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-  },
-  headerIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 6,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  tabsContainer: {
-    borderBottomWidth: 1,
-    height: 50,
-    flexGrow: 0,
-  },
-  tabButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderBottomWidth: 2,
-    borderBottomColor: "transparent",
-  },
-});

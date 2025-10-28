@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -14,6 +13,8 @@ import {
 import "@/src/i18n";
 import { Colors, Typography } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
+import { useAuthStyles } from "@/src/styles/authStyles";
+
 interface MyError {
   username: string | null;
   email: string | null;
@@ -48,6 +49,7 @@ export default function AuthScreen() {
   };
 
   const color = useColorScheme();
+  const styles = useAuthStyles();
 
   const validateForm = () => {
     let valid = true;
@@ -131,12 +133,14 @@ export default function AuthScreen() {
               value={form.username}
               onChangeText={(v) => handleChange("username", v)}
               error={errors.username || ""}
+              styles={styles}
             />
             <InputField
               label="Полное имя"
               value={form.fullName}
               onChangeText={(v) => handleChange("fullName", v)}
               error={errors.fullName || ""}
+              styles={styles}
             />
             <InputField
               label="Телефон"
@@ -144,6 +148,7 @@ export default function AuthScreen() {
               onChangeText={(v) => handleChange("phone", v)}
               // keyboardType="phone-pad"
               error={errors.phone || ""}
+              styles={styles}
             />
           </>
         )}
@@ -154,6 +159,7 @@ export default function AuthScreen() {
           onChangeText={(v) => handleChange("email", v)}
           // keyboardType="email-address"
           error={errors.email || ""}
+          styles={styles}
         />
 
         <InputField
@@ -162,6 +168,7 @@ export default function AuthScreen() {
           onChangeText={(v) => handleChange("password", v)}
           secureTextEntry
           error={errors.password || ""}
+          styles={styles}
         />
 
         {isRegister && (
@@ -171,18 +178,11 @@ export default function AuthScreen() {
             onChangeText={(v) => handleChange("confirmPassword", v)}
             secureTextEntry
             error={errors.confirmPassword || ""}
+            styles={styles}
           />
         )}
 
-        <TouchableOpacity
-          style={[
-            styles.button,
-            color === "light"
-              ? Colors.light.saveButton
-              : Colors.dark.saveButton,
-          ]}
-          onPress={handleSubmit}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={Typography.defaultButtonText}>
             {isRegister ? "Зарегистрироваться" : "Войти"}
           </Text>
@@ -217,6 +217,7 @@ function InputField({
   onChangeText,
   error,
   secureTextEntry,
+  styles,
 }: // keyboardType,
 {
   label: string;
@@ -224,17 +225,14 @@ function InputField({
   onChangeText: (v: string) => void;
   error?: string;
   secureTextEntry?: boolean;
+  styles: ReturnType<typeof useAuthStyles>;
   // keyboardType?: "default" | "email-address" | "phone-pad";
 }) {
   return (
     <View style={styles.inputContainer}>
       <Text style={Typography.label}>{label}</Text>
       <TextInput
-        style={[
-          Colors.default.input,
-          styles.input,
-          error && Colors.default.inputError,
-        ]}
+        style={[styles.inputContainer, error && styles.errorContainer]}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
@@ -246,25 +244,3 @@ function InputField({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-    paddingVertical: 40,
-  },
-  inputContainer: { marginBottom: 18 },
-
-  input: {
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  button: {
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  switchButton: { marginTop: 20 },
-});

@@ -14,73 +14,51 @@ export const Colors = {
   light: {
     text: "#11181C",
     subText: "#6B7280",
-    highlightedText: baseAppColor,
+    hightlightedText: baseAppColor,
     background: baseBackgroundColor,
+    containerBackground: baseBackgroundColor,
     tint: tintColorLight,
     icon: "#687076",
     tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
     tabButtonSelected: baseAppColor,
     borderBottomColor: "#E0E0E0",
-    headerIcon: {
-      backgroundColor: baseAppColor,
-    },
-    headerTitle: {
-      color: "#000",
-    },
-    tabText: {
-      color: "#666",
-    },
-    tabTextSelected: {
-      color: baseAppColor,
-    },
+    iconBackground: baseAppColor,
+    headerTitleColor: "#000",
+    tabTextColor: "#666",
+    tabTextSelectedColor: baseAppColor,
     userIcon: "#A855F7",
     chevronRight: "#9CA3AF",
     avatarPlaceholder: "#F3E8FF",
-    saveButton: {
-      backgroundColor: baseAppColor,
-      borderColor: "#fff",
-    },
+    buttonBackground: baseAppColor,
+    buttonBorder: "#fff",
     label: "#555",
+    errorColor: errorColor,
   },
   dark: {
     text: "#ECEDEE",
     subText: "#6B7280",
-
-    highlightedText: baseAppColor,
-
+    hightlightedText: baseAppColor,
     background: "#151718",
+    containerBackground: baseBackgroundColor,
+
     tint: tintColorDark,
     icon: "#9BA1A6",
     tabIconDefault: "#9BA1A6",
     tabIconSelected: tintColorDark,
     borderBottomColor: "#E0E0E0",
-    headerIcon: {
-      backgroundColor: baseBackgroundColor,
-    },
-    headerTitle: {
-      color: "#fff",
-    },
+    iconBackground: baseBackgroundColor,
+    tabTextSelectedColor: baseAppColor,
+    headerTitleColor: "#fff",
     tabButtonSelected: "#fff",
-    tabText: {
-      color: "#fff",
-    },
+    tabTextColor: "#fff",
     userIcon: "#A855F7",
     chevronRight: "#9CA3AF",
     avatarPlaceholder: "#F3E8FF",
-    saveButton: {
-      backgroundColor: baseAppColor,
-      borderColor: "#fff",
-    },
+    buttonBackground: baseAppColor,
+    buttonBorder: "#fff",
     label: "#555",
-  },
-  default: {
-    input: {
-      backgroundColor: baseBackgroundColor,
-      borderColor: "#ddd",
-      color: "#000",
-    },
-    inputError: { borderColor: "#D32F2F" },
+    errorColor: errorColor,
   },
 };
 
@@ -118,46 +96,3 @@ export const FontSizes = {
   xl: 24,
   "2xl": 32,
 };
-
-export const Typography = StyleSheet.create({
-  defaultTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  giantTitle: {
-    fontSize: 28,
-    fontWeight: "700",
-    textAlign: "center",
-    marginBottom: 30,
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 8,
-  },
-  sectionTitle: {
-    fontSize: FontSizes.md,
-    fontWeight: "600",
-    color: baseAppColor,
-    marginBottom: 8,
-    paddingHorizontal: 16,
-  },
-  tabText: {
-    fontSize: FontSizes.sm,
-  },
-  subTitle: {
-    fontSize: FontSizes.md,
-    fontWeight: 600,
-  },
-  errorText: {
-    color: errorColor,
-    fontSize: 12,
-    marginTop: 4,
-  },
-  inputText: {
-    fontSize: 16,
-  },
-  label: { fontSize: 14, marginBottom: 6 },
-  defaultButtonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
-});
