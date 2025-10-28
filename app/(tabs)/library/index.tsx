@@ -15,7 +15,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import book1 from "../../../assets/images/book_1.png";
 import "@/i18n";
 import { commonStyles } from "@/styles/common";
-
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Colors } from "@/constants/theme";
 const books1: Book[] = [
   {
     id: 1,
@@ -147,11 +148,17 @@ export default function HomeScreen() {
   const { width } = useWindowDimensions();
   const numColumns = width < 500 ? 2 : 4;
   const cardWidth = width / numColumns - 24;
-
+  const color = useColorScheme();
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor:
+          color === "light" ? Colors.light.background : Colors.dark.background,
+      }}
+    >
       <StatusBar style="auto" />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
         {/*История культуры*/}
         <SectionHeader title="История культуры" />
         <FlatList
@@ -215,20 +222,3 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  scrollContent: {
-    paddingBottom: 100,
-  },
-  // grid: {
-  //   padding: 16,
-  //   paddingBottom: 80,
-  // },
-  // gridRow: {
-  //   justifyContent: "space-between",
-  // },
-});

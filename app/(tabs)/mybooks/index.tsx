@@ -15,7 +15,8 @@ import {
   View,
 } from "react-native";
 import { commonStyles } from "@/styles/common";
-
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 const books: Book[] = [
   {
     id: 1,
@@ -150,35 +151,91 @@ export default function MyBooks() {
     { id: "reading", label: "Читаю сейчас" },
     { id: "read", label: "Прочитанные" },
   ];
+  const color = useColorScheme();
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...commonStyles.defaultContainer,
+        backgroundColor:
+          color === "light" ? Colors.light.background : Colors.dark.background,
+      }}
+    >
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerIcon}>
-          <BookOpen size={20} color="#FFF" />
+      <View
+        style={{
+          ...styles.header,
+          borderBottomColor:
+            color === "light"
+              ? Colors.light.borderBottomColor
+              : Colors.dark.borderBottomColor,
+        }}
+      >
+        <View
+          style={{
+            ...styles.headerIcon,
+            backgroundColor:
+              color === "light"
+                ? Colors.light.headerIcon.backgroundColor
+                : Colors.dark.headerIcon.backgroundColor,
+          }}
+        >
+          <BookOpen
+            size={20}
+            color={
+              color === "light"
+                ? Colors.light.background
+                : Colors.dark.background
+            }
+          />
         </View>
-        <Text style={styles.headerTitle}>Мои книги</Text>
+        <Text
+          style={{
+            ...styles.headerTitle,
+            color:
+              color === "light"
+                ? Colors.light.headerTitle.color
+                : Colors.dark.headerTitle.color,
+          }}
+        >
+          Мои книги
+        </Text>
       </View>
       {/* Tabs */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={styles.tabsContainer}
-        contentContainerStyle={styles.tabsContent}
+        style={{
+          ...styles.tabsContainer,
+          borderBottomColor:
+            color === "light"
+              ? Colors.light.borderBottomColor
+              : Colors.dark.borderBottomColor,
+        }}
+        contentContainerStyle={{ alignItems: "center" }}
       >
         {tabs.map((tab) => (
           <TouchableOpacity
             key={tab.id}
             style={[
               styles.tabButton,
-              activaTab === tab.id && styles.tabButtonActive,
+              activaTab === tab.id && {
+                borderBottomColor:
+                  color === "light"
+                    ? Colors.light.tabButtonSelected
+                    : Colors.dark.background,
+              },
             ]}
             onPress={() => setActiveTab(tab.id)}
           >
             <Text
               style={[
                 styles.tabText,
-                activaTab === tab.id && styles.tabTextActive,
+                activaTab === tab.id && {
+                  color:
+                    color === "light"
+                      ? Colors.light.tabTextSelected.color
+                      : Colors.dark.tabText.color,
+                },
               ]}
             >
               {tab.label}
@@ -209,24 +266,16 @@ export default function MyBooks() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFF",
-    // alignItems: "center",
-    marginTop: 10,
-  },
   header: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
   },
   headerIcon: {
     width: 32,
     height: 32,
-    backgroundColor: "#D32F2F",
     borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
@@ -234,42 +283,19 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     marginLeft: 8,
-    color: "#000",
   },
   tabsContainer: {
-    borderBottomColor: "#E0E0E0",
     borderBottomWidth: 1,
     height: 50,
-    // maxHeight: 250,
     flexGrow: 0,
-    // maxHeight: 250,
-  },
-  tabsContent: {
-    // height: 50,
-    alignItems: "center",
   },
   tabButton: {
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderBottomWidth: 2,
     borderBottomColor: "transparent",
-    // height: 250,
-  },
-  tabButtonActive: {
-    borderBottomColor: "#D32F2F",
   },
   tabText: {
     fontSize: 14,
-    color: "#666",
   },
-  tabTextActive: {
-    color: "#D32F2F",
-  },
-  // grid: {
-  //   padding: 16,
-  //   paddingBottom: 80,
-  // },
-  // gridRow: {
-  //   justifyContent: "space-between",
-  // },
 });

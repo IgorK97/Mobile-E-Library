@@ -139,12 +139,6 @@ export default function ProfileScreen() {
                   <ArrowLeft size={24} color="#000" />
                 </TouchableOpacity>
                 <Text style={styles.modalTitle}>Настройки профиля</Text>
-                {/* <TouchableOpacity
-                  onPress={handleSaveProfile}
-                  style={styles.saveButton}
-                >
-                  <Text style={styles.saveButtonText}>Сохранить</Text>
-                </TouchableOpacity> */}
               </View>
               <ScrollView style={styles.scrollForm}>
                 {/* Аватар */}
@@ -204,17 +198,6 @@ export default function ProfileScreen() {
                   <Text style={styles.saveButtonText}>Сохранить изменения</Text>
                 </TouchableOpacity>
               </View>
-
-              {/* <View style={styles.inputGroup}>
-                  <Text style={styles.label}>О себе</Text>
-                  <TextInput
-                    style={[styles.textInput, styles.textArea]}
-                    placeholder="Расскажите о себе"
-                    multiline
-                    numberOfLines={4}
-                    textAlignVertical="top"
-                  />
-                </View> */}
             </View>
           </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -241,12 +224,6 @@ export default function ProfileScreen() {
                   <ArrowLeft size={24} color="#000" />
                 </TouchableOpacity>
                 <Text style={styles.modalTitle}>Безопасность</Text>
-                {/* <TouchableOpacity
-                  onPress={handleSaveSecurity}
-                  style={styles.saveButton}
-                >
-                  <Text style={styles.saveButtonText}>Сохранить</Text>
-                </TouchableOpacity> */}
               </View>
               {/* Форма смены пароля */}
               <View style={styles.form}>
@@ -291,18 +268,6 @@ export default function ProfileScreen() {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                {/* <View style={styles.securityTips}>
-                  <Text style={styles.tipsTitle}>Советы по безопасности:</Text>
-                  <Text style={styles.tip}>
-                    • Используйте не менее 8 символов
-                  </Text>
-                  <Text style={styles.tip}>
-                    • Добавьте цифры и специальные символы
-                  </Text>
-                  <Text style={styles.tip}>
-                    • Не используйте простые пароли
-                  </Text>
-                </View> */}
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -471,23 +436,6 @@ const styles = StyleSheet.create({
   textArea: {
     height: 100,
     textAlignVertical: "top",
-  },
-  securityTips: {
-    backgroundColor: "#f8f9fa",
-    padding: 16,
-    borderRadius: 8,
-    marginTop: 16,
-  },
-  tipsTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#374151",
-    marginBottom: 8,
-  },
-  tip: {
-    fontSize: 14,
-    color: "#6b7280",
-    marginBottom: 4,
   },
   bottomActions: {
     padding: 16,
