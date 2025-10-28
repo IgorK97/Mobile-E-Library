@@ -11,9 +11,10 @@ import {
   View,
 } from "react-native";
 import "@/src/i18n";
-import { Colors, Typography } from "@/src/constants/theme";
+import { Colors } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 import { useAuthStyles } from "@/src/styles/authStyles";
+import { useTypography } from "@/src/styles/fontStyles";
 
 interface MyError {
   username: string | null;
@@ -43,6 +44,8 @@ export default function AuthScreen() {
     phone: null,
     username: null,
   });
+
+  const typography = useTypography();
 
   const handleChange = (field: string, value: string) => {
     setForm({ ...form, [field]: value });
@@ -122,7 +125,7 @@ export default function AuthScreen() {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={Typography.giantTitle}>
+        <Text style={typography.giantTitle}>
           {isRegister ? "Регистрация" : "Авторизация"}
         </Text>
 
@@ -133,14 +136,12 @@ export default function AuthScreen() {
               value={form.username}
               onChangeText={(v) => handleChange("username", v)}
               error={errors.username || ""}
-              styles={styles}
             />
             <InputField
               label="Полное имя"
               value={form.fullName}
               onChangeText={(v) => handleChange("fullName", v)}
               error={errors.fullName || ""}
-              styles={styles}
             />
             <InputField
               label="Телефон"
@@ -148,7 +149,6 @@ export default function AuthScreen() {
               onChangeText={(v) => handleChange("phone", v)}
               // keyboardType="phone-pad"
               error={errors.phone || ""}
-              styles={styles}
             />
           </>
         )}
@@ -159,7 +159,6 @@ export default function AuthScreen() {
           onChangeText={(v) => handleChange("email", v)}
           // keyboardType="email-address"
           error={errors.email || ""}
-          styles={styles}
         />
 
         <InputField
@@ -168,7 +167,6 @@ export default function AuthScreen() {
           onChangeText={(v) => handleChange("password", v)}
           secureTextEntry
           error={errors.password || ""}
-          styles={styles}
         />
 
         {isRegister && (
@@ -178,12 +176,11 @@ export default function AuthScreen() {
             onChangeText={(v) => handleChange("confirmPassword", v)}
             secureTextEntry
             error={errors.confirmPassword || ""}
-            styles={styles}
           />
         )}
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={Typography.defaultButtonText}>
+          <Text style={typography.defaultButtonText}>
             {isRegister ? "Зарегистрироваться" : "Войти"}
           </Text>
         </TouchableOpacity>
@@ -197,8 +194,8 @@ export default function AuthScreen() {
               textAlign: "center",
               color:
                 color === "light"
-                  ? Colors.light.highlightedText
-                  : Colors.dark.highlightedText,
+                  ? Colors.light.hightlightedText
+                  : Colors.dark.hightlightedText,
             }}
           >
             {isRegister
@@ -217,20 +214,24 @@ function InputField({
   onChangeText,
   error,
   secureTextEntry,
-  styles,
-}: // keyboardType,
+}: // styles,
+// typography,
+// keyboardType,
 {
   label: string;
   value: string;
   onChangeText: (v: string) => void;
   error?: string;
   secureTextEntry?: boolean;
-  styles: ReturnType<typeof useAuthStyles>;
+  // styles: ReturnType<typeof useAuthStyles>;
+  // typography: ReturnType<typeof useTypography>;
   // keyboardType?: "default" | "email-address" | "phone-pad";
 }) {
+  const styles = useAuthStyles();
+  const typography = useTypography();
   return (
     <View style={styles.inputContainer}>
-      <Text style={Typography.label}>{label}</Text>
+      <Text style={typography.label}>{label}</Text>
       <TextInput
         style={[styles.inputContainer, error && styles.errorContainer]}
         value={value}
@@ -240,7 +241,7 @@ function InputField({
         placeholder={label}
         placeholderTextColor="#aaa"
       />
-      {error && <Text style={Typography.errorText}>{error}</Text>}
+      {error && <Text style={typography.errorText}>{error}</Text>}
     </View>
   );
 }

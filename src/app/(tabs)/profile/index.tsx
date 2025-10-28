@@ -19,9 +19,11 @@ import { router } from "expo-router";
 import { ArrowLeft, Camera, ChevronRight, User } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/i18n";
-import { Colors, FontSizes, Typography } from "@/src/constants/theme";
+import { Colors, FontSizes } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 import { commonStyles } from "@/src/constants/common";
+import { useProfileStyles } from "@/src/styles/profileStyles";
+import { useTypography } from "@/src/styles/fontStyles";
 
 export default function ProfileScreen() {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
@@ -78,31 +80,12 @@ export default function ProfileScreen() {
     fontSize: FontSizes.md,
     color: color === "light" ? Colors.light.text : Colors.dark.text,
   };
-
+  const styles = useProfileStyles();
+  const typography = useTypography();
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor:
-            color === "light"
-              ? Colors.light.background
-              : Colors.dark.background,
-        },
-      ]}
-    >
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View
-          style={[
-            styles.profileSection,
-            {
-              borderColor:
-                color === "light"
-                  ? Colors.light.headerIcon.backgroundColor
-                  : Colors.dark.headerIcon.backgroundColor,
-            },
-          ]}
-        >
+        <View style={styles.profileSection}>
           <View style={styles.avatar}>
             <User size={24} color={Colors.light.userIcon} />
           </View>
@@ -122,19 +105,7 @@ export default function ProfileScreen() {
           </View>
         </View>
         <View style={styles.section}>
-          <Text
-            style={[
-              Typography.sectionTitle,
-              {
-                color:
-                  color === "light"
-                    ? Colors.light.highlightedText
-                    : Colors.dark.highlightedText,
-              },
-            ]}
-          >
-            Настройки
-          </Text>
+          <Text style={typography.sectionTitle}>Настройки</Text>
           <TouchableOpacity
             style={styles.row}
             onPress={() => setIsProfileModalVisible(true)}
@@ -155,19 +126,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.section}>
-          <Text
-            style={[
-              Typography.sectionTitle,
-              {
-                color:
-                  color === "light"
-                    ? Colors.light.highlightedText
-                    : Colors.dark.highlightedText,
-              },
-            ]}
-          >
-            Помощь
-          </Text>
+          <Text style={typography.sectionTitle}>Помощь</Text>
           <TouchableOpacity style={styles.row}>
             <Text style={rowText}>Как пользоваться приложением</Text>
             <ChevronRight size={20} color={chevronRightColor} />
@@ -182,8 +141,8 @@ export default function ProfileScreen() {
                 {
                   color:
                     color === "light"
-                      ? Colors.light.highlightedText
-                      : Colors.dark.highlightedText,
+                      ? Colors.light.hightlightedText
+                      : Colors.dark.hightlightedText,
                 },
               ]}
             >
@@ -212,14 +171,7 @@ export default function ProfileScreen() {
                 >
                   <ArrowLeft size={24} color="#000" />
                 </TouchableOpacity>
-                <Text
-                  style={{
-                    ...Typography.subTitle,
-                    color: Colors.light.text,
-                  }}
-                >
-                  Настройки профиля
-                </Text>
+                <Text style={typography.subTitle}>Настройки профиля</Text>
               </View>
               <ScrollView style={styles.scrollForm}>
                 <View
@@ -263,12 +215,7 @@ export default function ProfileScreen() {
                       </View>
                     )}
                     <TouchableOpacity
-                      style={[
-                        styles.avatarEditButton,
-                        color === "light"
-                          ? Colors.light.saveButton
-                          : Colors.dark.saveButton,
-                      ]}
+                      style={styles.avatarEditButton}
                       onPress={handleAvatarPick}
                     >
                       <Camera
@@ -318,17 +265,12 @@ export default function ProfileScreen() {
               </ScrollView>
               <View style={styles.bottomActions}>
                 <TouchableOpacity
-                  style={[
-                    styles.saveButtonBottom,
-                    color === "light"
-                      ? Colors.light.saveButton
-                      : Colors.dark.saveButton,
-                  ]}
+                  style={styles.saveButtonBottom}
                   onPress={handleSaveProfile}
                 >
                   <Text
                     style={{
-                      ...Typography.subTitle,
+                      ...typography.subTitle,
                       color: "#fff",
                     }}
                   >
@@ -361,19 +303,12 @@ export default function ProfileScreen() {
                     size={24}
                     color={
                       color === "light"
-                        ? Colors.light.headerTitle.color
-                        : Colors.dark.headerTitle.color
+                        ? Colors.light.headerTitleColor
+                        : Colors.dark.headerTitleColor
                     }
                   />
                 </TouchableOpacity>
-                <Text
-                  style={{
-                    ...Typography.subTitle,
-                    color: Colors.light.text,
-                  }}
-                >
-                  Безопасность
-                </Text>
+                <Text style={typography.subTitle}>Безопасность</Text>
               </View>
               <View style={styles.form}>
                 <View style={styles.inputGroup}>
@@ -408,17 +343,12 @@ export default function ProfileScreen() {
                 </View>
                 <View style={styles.bottomActions}>
                   <TouchableOpacity
-                    style={[
-                      styles.saveButtonBottom,
-                      color === "light"
-                        ? Colors.light.saveButton
-                        : Colors.dark.saveButton,
-                    ]}
+                    style={styles.saveButtonBottom}
                     onPress={handleSaveSecurity}
                   >
                     <Text
                       style={{
-                        ...Typography.subTitle,
+                        ...typography.subTitle,
                         color: "#fff",
                       }}
                     >
@@ -434,139 +364,3 @@ export default function ProfileScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  scrollContainer: {
-    paddingBottom: 50,
-    width: "100%",
-    maxWidth: 480,
-  },
-  profileSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  section: {
-    paddingVertical: 16,
-  },
-  // sectionTitle: {
-  //   fontSize: 15,
-  //   marginBottom: 8,
-  //   paddingHorizontal: 16,
-  // },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-  },
-  modalContent: {
-    flex: 1,
-    paddingTop: 60,
-  },
-  modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-  },
-  closeButton: {
-    padding: 8,
-  },
-
-  placeholder: {
-    width: 40,
-  },
-  scrollForm: {
-    flex: 1,
-    marginTop: 60,
-  },
-  avatarSection: {
-    alignItems: "center",
-    paddingVertical: 24,
-    borderBottomWidth: 1,
-  },
-  avatarContainer: {
-    position: "relative",
-    marginBottom: 12,
-  },
-  modalAvatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  placeholderAvatar: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  avatarEditButton: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 2,
-  },
-  form: {
-    padding: 16,
-  },
-  inputGroup: {
-    marginBottom: 24,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#374151",
-    marginBottom: 8,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#d1d5db",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: "#fff",
-  },
-  textArea: {
-    height: 100,
-    textAlignVertical: "top",
-  },
-  bottomActions: {
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: "#e5e7eb",
-    backgroundColor: "#fff",
-  },
-  saveButtonBottom: {
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-});

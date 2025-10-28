@@ -36,6 +36,7 @@ export const useTypography = () => {
     subTitle: {
       fontSize: FontSizes.md,
       fontWeight: 600,
+      color: useThemeColor({}, "text"),
     },
     errorText: {
       color: useThemeColor({}, "errorColor"),

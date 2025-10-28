@@ -3,15 +3,13 @@ import React, { useState } from "react";
 import {
   Modal,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import "@/src/i18n";
-import { Colors } from "@/src/constants/theme";
-import { useColorScheme } from "@/src/hooks/use-color-scheme.web";
+
 import { useSearchStyles } from "@/src/styles/searchStyles";
 import { useTypography } from "@/src/styles/fontStyles";
 
@@ -130,8 +128,8 @@ export default function BookFilters() {
             <ScrollView style={styles.scrollArea}>
               <FilterSection
                 title="Языки"
-                styles={styles}
-                typography={typography}
+                // styles={styles}
+                // typography={typography}
               >
                 {(showAllLanguages ? languages : languages.slice(0, 4)).map(
                   (lang) => (
@@ -157,8 +155,8 @@ export default function BookFilters() {
 
               <FilterSection
                 title="Жанры и поджанры"
-                styles={styles}
-                typography={typography}
+                // styles={styles}
+                // typography={typography}
               >
                 <GenreTree
                   tree={genres}
@@ -170,8 +168,8 @@ export default function BookFilters() {
 
               <FilterSection
                 title="Оценка"
-                styles={styles}
-                typography={typography}
+                // styles={styles}
+                // typography={typography}
               >
                 {[5, 4, 3, 2, 1].map((r) => (
                   <SelectableItem
@@ -187,8 +185,8 @@ export default function BookFilters() {
 
               <FilterSection
                 title="Год написания"
-                styles={styles}
-                typography={typography}
+                // styles={styles}
+                // typography={typography}
               >
                 <View style={styles.yearRow}>
                   <TextInput
@@ -280,16 +278,28 @@ const GenreTree = ({ tree, path, selected, onToggle }: GenreTreeProps) => {
   );
 };
 
-const FilterSection = (
-  { title, children }: any,
-  styles: ReturnType<typeof useSearchStyles>,
-  typography: ReturnType<typeof useTypography>
-) => (
-  <View style={styles.section}>
-    <Text style={typography.sectionTitle}>{title}</Text>
-    {children}
-  </View>
-);
+interface FilterSectionProps {
+  title: string;
+  children: React.ReactNode;
+  // styles: ReturnType<typeof useSearchStyles>;
+  // typography: ReturnType<typeof useTypography>;
+}
+
+const FilterSection = ({
+  title,
+  children,
+}: // styles,
+// typography,
+FilterSectionProps) => {
+  const styles = useSearchStyles();
+  const typography = useTypography();
+  return (
+    <View style={styles.section}>
+      <Text style={typography.sectionTitle}>{title}</Text>
+      {children}
+    </View>
+  );
+};
 
 const SelectableItem = ({
   label,
