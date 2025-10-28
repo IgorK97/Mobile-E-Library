@@ -5,7 +5,6 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { FlatList, ScrollView, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import book1 from "@assets/images/book_1.png";
 import "@/src/i18n";
 import { commonStyles } from "@/src/styles/common";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";

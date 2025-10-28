@@ -1,12 +1,9 @@
 import { Reader, useReader, Themes } from "@epubjs-react-native/core";
 import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import { Directory, File, Paths } from "expo-file-system";
-import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { TableOfContents } from "@/src/components/toc/table-of-contents";
 import {
-  Animated,
-  ImageSourcePropType,
   Pressable,
   StyleSheet,
   Text,
@@ -16,12 +13,7 @@ import {
 import "@/src/i18n";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  Bookmark,
-  Location,
-  Section,
-  Toc,
-} from "@epubjs-react-native/core/lib/typescript/types";
+import { Bookmark } from "@epubjs-react-native/core/lib/typescript/types";
 import {
   availableFonts,
   MAX_FONT_SIZE,
@@ -29,7 +21,7 @@ import {
   themes,
 } from "@/src/constants/reader-theme";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/components/reader/reader-header";
 import { ReaderFooter } from "@/src/components/reader/reader-footer";
 import { BookmarksList } from "@/src/components/bookmarks/bookmark-list";
@@ -42,18 +34,8 @@ export default function ReaderScreen() {
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 
-  const {
-    theme,
-    changeFontSize,
-    changeFontFamily,
-    changeTheme,
-    goToLocation,
-    addBookmark,
-    removeBookmark,
-    bookmarks,
-    isBookmarked,
-    getCurrentLocation,
-  } = useReader();
+  const { theme, changeFontSize, changeFontFamily, changeTheme, goToLocation } =
+    useReader();
 
   const bookmarksListRef = useRef<BottomSheetModal>(null);
   const tableOfContentsRef = useRef<BottomSheetModal>(null);
@@ -99,30 +81,10 @@ export default function ReaderScreen() {
     changeFontFamily(nextFontFamily);
   };
 
-  // const paths: ImageSourcePropType = require("@assets/images/book_1.png");
-  // const router = useRouter();
-
   const [activePanel, setActivePanel] = useState<"none" | "settings" | "toc">(
     "none"
   );
   const [epubAsset, setEpubAsset] = useState<string | null>(null);
-
-  // const handleChangeBookmark = () => {
-  //   const location = getCurrentLocation();
-
-  //   if (!location) return;
-
-  //   if (isBookmarked) {
-  //     const bookmark = bookmarks.find(
-  //       (item) =>
-  //         item.location.start.cfi === location?.start.cfi &&
-  //         item.location.end.cfi === location?.end.cfi
-  //     );
-
-  //     if (!bookmark) return;
-  //     removeBookmark(bookmark);
-  //   } else addBookmark(location);
-  // };
   useEffect(() => {
     const funcLoad = async () => {
       try {
@@ -177,7 +139,6 @@ export default function ReaderScreen() {
             console.log("onChangeBookmarks", bookmarks)
           }
           width={width}
-          // height={!isFullScreen ? height * 0.75 : height}
           defaultTheme={Themes.LIGHT}
           waitForLocationsReady
           onWebViewMessage={(message) => {

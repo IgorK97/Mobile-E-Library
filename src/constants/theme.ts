@@ -3,14 +3,15 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-import { Platform } from "react-native";
-
+import { Platform, StyleSheet } from "react-native";
 const tintColorLight = "#D32F2F";
 const tintColorDark = "#fff";
 
 export const Colors = {
   light: {
     text: "#11181C",
+    subText: "#6B7280",
+    highlightedText: "#D32F2F",
     background: "#fff",
     tint: tintColorLight,
     icon: "#687076",
@@ -30,9 +31,20 @@ export const Colors = {
     tabTextSelected: {
       color: "#D32F2F",
     },
+    userIcon: "#A855F7",
+    chevronRight: "#9CA3AF",
+    avatarPlaceholder: "#F3E8FF",
+    saveButton: {
+      backgroundColor: "#D32F2F",
+      borderColor: "#fff",
+    },
   },
   dark: {
     text: "#ECEDEE",
+    subText: "#6B7280",
+
+    highlightedText: "#D32F2F",
+
     background: "#151718",
     tint: tintColorDark,
     icon: "#9BA1A6",
@@ -48,6 +60,19 @@ export const Colors = {
     tabButtonSelected: "#fff",
     tabText: {
       color: "#fff",
+    },
+    userIcon: "#A855F7",
+    chevronRight: "#9CA3AF",
+    avatarPlaceholder: "#F3E8FF",
+    saveButton: {
+      backgroundColor: "#D32F2F",
+      borderColor: "#fff",
+    },
+  },
+  default: {
+    input: {
+      backgroundColor: "#fff",
+      borderColor: "#ddd",
     },
   },
 };
@@ -87,32 +112,31 @@ export const FontSizes = {
   "2xl": 32,
 };
 
-export const FontWeights = {
-  regular: "400",
-  medium: "500",
-  bold: "700",
-  heavy: "800",
-};
-
-export const Typography = {
+export const Typography = StyleSheet.create({
   title: {
     fontFamily: Fonts.sans,
-    fontWeight: FontWeights.bold,
+    fontWeight: 700,
     fontSize: FontSizes.lg,
   },
   subtitle: {
     fontFamily: Fonts.sans,
-    fontWeight: FontWeights.medium,
+    fontWeight: 500,
     fontSize: FontSizes.md,
   },
   body: {
     fontFamily: Fonts.sans,
-    fontWeight: FontWeights.regular,
+    fontWeight: 400,
     fontSize: FontSizes.sm,
   },
   caption: {
     fontFamily: Fonts.sans,
-    fontWeight: FontWeights.regular,
+    fontWeight: 400,
     fontSize: FontSizes.xs,
   },
-};
+  sectionTitle: {
+    fontSize: FontSizes.md,
+    fontWeight: "600",
+    color: "#D32F2F",
+    marginBottom: 8,
+  },
+});

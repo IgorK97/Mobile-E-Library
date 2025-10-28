@@ -19,6 +19,9 @@ import { router } from "expo-router";
 import { ArrowLeft, Camera, ChevronRight, User } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/i18n";
+import { Colors } from "@/src/constants/theme";
+import { useColorScheme } from "@/src/hooks/use-color-scheme";
+import { commonStyles } from "@/src/styles/common";
 
 export default function ProfileScreen() {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
@@ -34,6 +37,10 @@ export default function ProfileScreen() {
 
   const { t, i18n } = useTranslation();
 
+  const color = useColorScheme();
+
+  const chevronRightColor =
+    color === "light" ? Colors.light.chevronRight : Colors.dark.chevronRight;
   const handleAvatarPick = () => {
     Alert.alert(
       "Выберите аватар",
@@ -66,51 +73,130 @@ export default function ProfileScreen() {
     setNewPassword("");
     setConfirmPassword("");
   };
+
+  const rowText = {
+    fontSize: 15,
+    color: color === "light" ? Colors.light.text : Colors.dark.text,
+  };
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor:
+            color === "light"
+              ? Colors.light.background
+              : Colors.dark.background,
+        },
+      ]}
+    >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.profileSection}>
+        <View
+          style={[
+            styles.profileSection,
+            {
+              borderColor:
+                color === "light"
+                  ? Colors.light.headerIcon.backgroundColor
+                  : Colors.dark.headerIcon.backgroundColor,
+            },
+          ]}
+        >
           <View style={styles.avatar}>
-            <User size={24} color="#A855F7" />
+            <User size={24} color={Colors.light.userIcon} />
           </View>
           <View>
-            <Text style={styles.userName}>{t("profile.reader")}</Text>
-            <Text style={styles.userEmail}>email@mail.ru</Text>
+            <Text
+              style={{
+                fontSize: 15,
+                color: color === "light" ? Colors.light.text : Colors.dark.text,
+              }}
+            >
+              {t("profile.reader")}
+            </Text>
+            <Text
+              style={{
+                fontSize: 13,
+                color:
+                  color === "light"
+                    ? Colors.light.subText
+                    : Colors.dark.subText,
+              }}
+            >
+              email@mail.ru
+            </Text>
           </View>
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Настройки</Text>
+          <Text
+            style={[
+              styles.sectionTitle,
+              {
+                color:
+                  color === "light"
+                    ? Colors.light.highlightedText
+                    : Colors.dark.highlightedText,
+              },
+            ]}
+          >
+            Настройки
+          </Text>
           <TouchableOpacity
             style={styles.row}
             onPress={() => setIsProfileModalVisible(true)}
           >
-            <Text style={styles.rowText}>Настройки профиля</Text>
-            <ChevronRight size={20} color="#9CA3AF" />
+            <Text style={rowText}>Настройки профиля</Text>
+            <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.row}
             onPress={() => setIsSecurityModalVisible(true)}
           >
-            <Text style={styles.rowText}>Безопасность</Text>
-            <ChevronRight size={20} color="#9CA3AF" />
+            <Text style={rowText}>Безопасность</Text>
+            <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.row}>
-            <Text style={styles.rowText}>Тёмная тема</Text>
-            <ChevronRight size={20} color="#9CA3AF" />
+            <Text style={rowText}>Тёмная тема</Text>
+            <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Помощь</Text>
+          <Text
+            style={[
+              styles.sectionTitle,
+              {
+                color:
+                  color === "light"
+                    ? Colors.light.highlightedText
+                    : Colors.dark.highlightedText,
+              },
+            ]}
+          >
+            Помощь
+          </Text>
           <TouchableOpacity style={styles.row}>
-            <Text style={styles.rowText}>Как пользоваться приложением</Text>
-            <ChevronRight size={20} color="#9CA3AF" />
+            <Text style={rowText}>Как пользоваться приложением</Text>
+            <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.row}
             onPress={() => router.navigate(`/auth`)}
           >
-            <Text style={[styles.rowText, { color: "#D32F2F" }]}>Выйти</Text>
-            <ChevronRight size={20} color="#9CA3AF" />
+            <Text
+              style={[
+                rowText,
+                {
+                  color:
+                    color === "light"
+                      ? Colors.light.highlightedText
+                      : Colors.dark.highlightedText,
+                },
+              ]}
+            >
+              Выйти
+            </Text>
+            <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -122,7 +208,7 @@ export default function ProfileScreen() {
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.modalContainer}
+          style={commonStyles.defaultContainer}
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.modalContent}>
@@ -133,10 +219,28 @@ export default function ProfileScreen() {
                 >
                   <ArrowLeft size={24} color="#000" />
                 </TouchableOpacity>
-                <Text style={styles.modalTitle}>Настройки профиля</Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    color: Colors.light.text,
+                    fontWeight: 600,
+                  }}
+                >
+                  Настройки профиля
+                </Text>
               </View>
               <ScrollView style={styles.scrollForm}>
-                <View style={styles.avatarSection}>
+                <View
+                  style={[
+                    styles.avatarSection,
+                    {
+                      borderBottomColor:
+                        color === "light"
+                          ? Colors.light.borderBottomColor
+                          : Colors.dark.borderBottomColor,
+                    },
+                  ]}
+                >
                   <View style={styles.avatarContainer}>
                     {userAvatar ? (
                       <Image
@@ -145,19 +249,57 @@ export default function ProfileScreen() {
                       />
                     ) : (
                       <View
-                        style={[styles.modalAvatar, styles.placeholderAvatar]}
+                        style={[
+                          styles.modalAvatar,
+                          styles.placeholderAvatar,
+                          {
+                            backgroundColor:
+                              color === "light"
+                                ? Colors.light.avatarPlaceholder
+                                : Colors.dark.avatarPlaceholder,
+                          },
+                        ]}
                       >
-                        <User size={40} color="#A855F7" />
+                        <User
+                          size={40}
+                          color={
+                            color === "light"
+                              ? Colors.light.userIcon
+                              : Colors.dark.userIcon
+                          }
+                        />
                       </View>
                     )}
                     <TouchableOpacity
-                      style={styles.avatarEditButton}
+                      style={[
+                        styles.avatarEditButton,
+                        color === "light"
+                          ? Colors.light.saveButton
+                          : Colors.dark.saveButton,
+                      ]}
                       onPress={handleAvatarPick}
                     >
-                      <Camera size={18} color="#FFF" />
+                      <Camera
+                        size={18}
+                        color={
+                          color === "light"
+                            ? Colors.light.background
+                            : Colors.dark.background
+                        }
+                      />
                     </TouchableOpacity>
                   </View>
-                  <Text style={styles.avatarText}>Изменить аватар</Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color:
+                        color === "light"
+                          ? Colors.light.subText
+                          : Colors.dark.subText,
+                    }}
+                  >
+                    Изменить аватар
+                  </Text>
                 </View>
                 <View style={styles.form}>
                   <View style={styles.inputGroup}>
@@ -184,10 +326,23 @@ export default function ProfileScreen() {
               </ScrollView>
               <View style={styles.bottomActions}>
                 <TouchableOpacity
-                  style={styles.saveButtonBottom}
+                  style={[
+                    styles.saveButtonBottom,
+                    color === "light"
+                      ? Colors.light.saveButton
+                      : Colors.dark.saveButton,
+                  ]}
                   onPress={handleSaveProfile}
                 >
-                  <Text style={styles.saveButtonText}>Сохранить изменения</Text>
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 16,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Сохранить изменения
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -202,7 +357,7 @@ export default function ProfileScreen() {
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.modalContainer}
+          style={commonStyles.defaultContainer}
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.modalContent}>
@@ -211,9 +366,24 @@ export default function ProfileScreen() {
                   onPress={() => setIsSecurityModalVisible(false)}
                   style={styles.closeButton}
                 >
-                  <ArrowLeft size={24} color="#000" />
+                  <ArrowLeft
+                    size={24}
+                    color={
+                      color === "light"
+                        ? Colors.light.headerTitle.color
+                        : Colors.dark.headerTitle.color
+                    }
+                  />
                 </TouchableOpacity>
-                <Text style={styles.modalTitle}>Безопасность</Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    color: Colors.light.text,
+                    fontWeight: 600,
+                  }}
+                >
+                  Безопасность
+                </Text>
               </View>
               <View style={styles.form}>
                 <View style={styles.inputGroup}>
@@ -248,10 +418,21 @@ export default function ProfileScreen() {
                 </View>
                 <View style={styles.bottomActions}>
                   <TouchableOpacity
-                    style={styles.saveButtonBottom}
+                    style={[
+                      styles.saveButtonBottom,
+                      color === "light"
+                        ? Colors.light.saveButton
+                        : Colors.dark.saveButton,
+                    ]}
                     onPress={handleSaveSecurity}
                   >
-                    <Text style={styles.saveButtonText}>
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontSize: 16,
+                        fontWeight: "600",
+                      }}
+                    >
                       Сохранить изменения
                     </Text>
                   </TouchableOpacity>
@@ -268,7 +449,6 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
     alignItems: "center",
     marginTop: 10,
   },
@@ -284,29 +464,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 20,
     borderBottomWidth: 1,
-    borderColor: "#D32F2F",
   },
   avatar: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: "#F3E8FF",
     alignItems: "center",
     justifyContent: "center",
-  },
-  userName: {
-    fontSize: 15,
-    color: "#111",
-  },
-  userEmail: {
-    fontSize: 13,
-    color: "#6B7280",
   },
   section: {
     paddingVertical: 16,
   },
   sectionTitle: {
-    color: "#D32F2F",
     fontSize: 15,
     marginBottom: 8,
     paddingHorizontal: 16,
@@ -318,15 +487,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderColor: "#F3F4F6",
-  },
-  rowText: {
-    fontSize: 15,
-    color: "#111",
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "#fff",
   },
   modalContent: {
     flex: 1,
@@ -339,22 +499,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#fff",
     zIndex: 10,
   },
   closeButton: {
     padding: 8,
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#1f2937",
-  },
+
   placeholder: {
     width: 40,
   },
@@ -366,7 +520,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 24,
     borderBottomWidth: 1,
-    borderBottomColor: "#f3f4f6",
   },
   avatarContainer: {
     position: "relative",
@@ -378,7 +531,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   placeholderAvatar: {
-    backgroundColor: "#F3E8FF",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -386,18 +538,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#D32F2F",
     width: 32,
     height: 32,
     borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#fff",
-  },
-  avatarText: {
-    fontSize: 16,
-    color: "#6b7280",
   },
   form: {
     padding: 16,
@@ -430,14 +576,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   saveButtonBottom: {
-    backgroundColor: "#D32F2F",
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",
-  },
-  saveButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

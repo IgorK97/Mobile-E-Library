@@ -10,6 +10,8 @@ import {
   View,
 } from "react-native";
 import "@/src/i18n";
+import { Colors, Typography } from "@/src/constants/theme";
+import { useColorScheme } from "@/src/hooks/use-color-scheme.web";
 
 export default function BookFilters() {
   const [open, setOpen] = useState(false);
@@ -24,6 +26,8 @@ export default function BookFilters() {
   const [rating, setRating] = useState<number | null>(null);
   const [yearFrom, setYearFrom] = useState<string>("");
   const [yearTo, setYearTo] = useState<string>("");
+
+  const color = useColorScheme();
 
   const languages = [
     "Русский",
@@ -97,7 +101,7 @@ export default function BookFilters() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchBar}>
+      <View style={[styles.searchBar, Colors.default.input]}>
         <Feather
           name="search"
           size={20}
@@ -112,7 +116,13 @@ export default function BookFilters() {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => setOpen(true)}>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          color === "light" ? Colors.light.saveButton : Colors.dark.saveButton,
+        ]}
+        onPress={() => setOpen(true)}
+      >
         <Text style={styles.buttonText}>Фильтры</Text>
       </TouchableOpacity>
 
@@ -256,7 +266,7 @@ const GenreTree = ({ tree, path, selected, onToggle }: GenreTreeProps) => {
 
 const FilterSection = ({ title, children }: any) => (
   <View style={styles.section}>
-    <Text style={styles.sectionTitle}>{title}</Text>
+    <Text style={Typography.sectionTitle}>{title}</Text>
     {children}
   </View>
 );
@@ -287,16 +297,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ddd",
     borderRadius: 10,
     paddingHorizontal: 10,
     marginTop: 10,
     marginBottom: 8,
-    backgroundColor: "#fff",
   },
   searchInput: { flex: 1, height: 40 },
   button: {
-    backgroundColor: "#D32F2F",
+    // backgroundColor: "#D32F2F",
     padding: 12,
     borderRadius: 10,
     alignItems: "center",
@@ -323,12 +331,7 @@ const styles = StyleSheet.create({
   },
   scrollArea: { paddingHorizontal: 20, paddingBottom: 10 },
   section: { marginBottom: 20 },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#D32F2F",
-    marginBottom: 8,
-  },
+
   selectableItem: {
     borderWidth: 1,
     borderColor: "#ccc",
