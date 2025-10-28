@@ -25,11 +25,19 @@ interface MyError {
   confirmPassword: string | null;
   phone: string | null;
 }
+interface FormValues {
+  username: string;
+  email: string;
+  fullName: string;
+  password: string;
+  confirmPassword: string;
+  phone: string;
+}
 
 export default function AuthScreen() {
   const router = useRouter();
   const [isRegister, setIsRegister] = useState(false);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormValues>({
     username: "",
     email: "",
     fullName: "",
@@ -94,7 +102,7 @@ export default function AuthScreen() {
       newErrors.confirmPassword = t("auth.error_conf_pass");
       valid = false;
     }
-    if (isRegister && !/^\+?[0-9]{10,15}$/.test(form.phone)) {
+    if (isRegister && !/^(\+7|8)?[0-9]{10}$/.test(form.phone)) {
       newErrors.phone = t("auth.error_phone");
       valid = false;
     }

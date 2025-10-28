@@ -44,14 +44,6 @@ export default function ReaderScreen() {
   const [currentFontSize, setCurrentFontSize] = useState(16);
   const [currentFontFamily, setCurrentFontFamily] = useState(availableFonts[0]);
 
-  // const doubleTap = Gesture.Tap()
-  //   .numberOfTaps(2)
-  //   .onStart(() => {
-  //     console.log("I am here~~~");
-  //     setIsFullScreen(!isFullScreen);
-  //     // console.log(isFullScreen);
-  //   });
-
   const increaseFontSize = () => {
     if (currentFontSize < MAX_FONT_SIZE) {
       setCurrentFontSize(currentFontSize + 1);

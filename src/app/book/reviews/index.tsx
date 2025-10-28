@@ -94,8 +94,6 @@ export default function ReviewsScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}

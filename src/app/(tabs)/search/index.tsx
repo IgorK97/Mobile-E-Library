@@ -241,7 +241,7 @@ interface GenreTreeProps {
 
 const GenreTree = ({ tree, path, selected, onToggle }: GenreTreeProps) => {
   return (
-    <View style={{ marginLeft: path ? path.length : 0 }}>
+    <View style={{ marginLeft: path ? path.split("/").length * 12 : 0 }}>
       {Object.entries(tree).map(([key, value]) => {
         const fullPath = path ? `${path}/${key}` : key;
         const state = selected[fullPath];

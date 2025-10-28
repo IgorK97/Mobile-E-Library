@@ -4,7 +4,6 @@ import { Bookmark, useReader } from "@epubjs-react-native/core";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
-  BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
