@@ -46,6 +46,10 @@ export const useTypography = () => {
     inputText: {
       fontSize: 16,
     },
+    rowText: {
+      fontSize: FontSizes.md,
+      color: useThemeColor({}, "text"),
+    },
     label: { fontSize: 14, marginBottom: 6 },
     defaultButtonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
   });

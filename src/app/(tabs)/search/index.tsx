@@ -15,7 +15,7 @@ import "@/src/i18n";
 import { useSearchStyles } from "@/src/styles/searchStyles";
 import { useTypography } from "@/src/styles/fontStyles";
 
-export default function BookFilters() {
+export default function SearchComponent() {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -130,8 +130,8 @@ export default function BookFilters() {
                 {(showAllLanguages ? languages : languages.slice(0, 4)).map(
                   (lang) => (
                     <SelectableItem
-                      styles={styles}
-                      typography={typography}
+                      // styles={styles}
+                      // typography={typography}
                       key={lang}
                       label={lang}
                       selected={selectedLanguages.includes(lang)}
@@ -169,8 +169,8 @@ export default function BookFilters() {
               >
                 {[5, 4, 3, 2, 1].map((r) => (
                   <SelectableItem
-                    styles={styles}
-                    typography={typography}
+                    // styles={styles}
+                    // typography={typography}
                     key={r}
                     label={`${r}★ ${t("search.mark_label")}`}
                     selected={rating === r}
@@ -241,7 +241,7 @@ interface GenreTreeProps {
 
 const GenreTree = ({ tree, path, selected, onToggle }: GenreTreeProps) => {
   return (
-    <View style={{ marginLeft: path ? 12 : 0 }}>
+    <View style={{ marginLeft: path ? path.length : 0 }}>
       {Object.entries(tree).map(([key, value]) => {
         const fullPath = path ? `${path}/${key}` : key;
         const state = selected[fullPath];
@@ -266,7 +266,6 @@ const GenreTree = ({ tree, path, selected, onToggle }: GenreTreeProps) => {
                 onToggle={onToggle}
               />
             )}
-            {/* } */}
           </View>
         );
       })}
@@ -301,22 +300,25 @@ const SelectableItem = ({
   label,
   selected,
   onPress,
-  styles,
-  typography,
-}: {
+}: // styles,
+// typography,
+{
   label: string;
   selected?: boolean;
   onPress: () => void;
-  styles: ReturnType<typeof useSearchStyles>;
-  typography: ReturnType<typeof useTypography>;
-}) => (
-  <TouchableOpacity
-    style={[
-      styles.selectableItem,
-      selected && { backgroundColor: "#FCE4EC", borderColor: "#D32F2F" },
-    ]}
-    onPress={onPress}
-  >
-    <Text style={{ color: selected ? "#D32F2F" : "#333" }}>{label}</Text>
-  </TouchableOpacity>
-);
+  // styles: ReturnType<typeof useSearchStyles>;
+  // typography: ReturnType<typeof useTypography>;
+}) => {
+  const styles = useSearchStyles();
+  return (
+    <TouchableOpacity
+      style={[
+        styles.selectableItem,
+        selected && { backgroundColor: "#FCE4EC", borderColor: "#D32F2F" },
+      ]}
+      onPress={onPress}
+    >
+      <Text style={{ color: selected ? "#D32F2F" : "#333" }}>{label}</Text>
+    </TouchableOpacity>
+  );
+};

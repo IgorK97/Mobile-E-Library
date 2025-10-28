@@ -148,7 +148,7 @@ export default function MyBooks() {
   const tabs = [
     { id: "favorites", label: "Избранное" },
     { id: "downloaded", label: "Загруженные" },
-    { id: "reading", label: "Читаю сейчас" },
+    { id: "reading", label: "История чтения" },
     { id: "read", label: "Прочитанные" },
   ];
   const color = useColorScheme();
@@ -216,7 +216,9 @@ export default function MyBooks() {
             <BookCard
               bookInfo={item}
               key={item.id}
-              onPress={() => router.push("/book")}
+              onPress={() =>
+                router.push({ pathname: "/book", params: { id: item.id } })
+              }
             />
           </View>
         )}
