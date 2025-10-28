@@ -100,7 +100,7 @@ export default function ReaderScreen() {
   }, []);
 
   if (epubAsset === null) {
-    return <Text>Загрузка книги...</Text>;
+    return <Text>...</Text>;
   }
 
   return (
@@ -149,7 +149,7 @@ export default function ReaderScreen() {
         onPress={() => setIsFullScreen(!isFullScreen)}
         style={StyleSheet.absoluteFill}
       ></Pressable>
-      {!isFullScreen && <ReaderHeader author="Author" title="Title" />}
+      {!isFullScreen && <ReaderHeader author="Автор" title="Название книги" />}
       {!isFullScreen && (
         <ReaderFooter
           currentFontSize={currentFontSize}

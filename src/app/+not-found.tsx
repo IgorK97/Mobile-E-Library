@@ -4,13 +4,15 @@ import { StyleSheet } from "react-native";
 import { ThemedText } from "@/src/components/ui/themed-text";
 import { ThemedView } from "@/src/components/ui/themed-view";
 import "@/src/i18n";
+import { useTranslation } from "react-i18next";
 
 export default function ModalScreen() {
+  const { t } = useTranslation();
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
+      <ThemedText type="title">{t("not_found.title")}</ThemedText>
       <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
+        <ThemedText type="link">{t("not_found.go_home")}</ThemedText>
       </Link>
     </ThemedView>
   );

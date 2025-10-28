@@ -8,10 +8,11 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import "@/src/i18n";
+import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  const { t } = useTranslation();
   return (
     <Tabs
       screenOptions={{
@@ -29,7 +30,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="library/index"
         options={{
-          title: "Главное",
+          title: t("tabs.library"),
           tabBarIcon: ({ color }) => (
             <FontAwesome name="book" size={24} color={color} />
           ),
@@ -38,7 +39,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="search/index"
         options={{
-          title: "Поиск",
+          title: t("tabs.search"),
           tabBarIcon: ({ color }) => (
             <Ionicons size={28} name="search" color={color} />
           ),
@@ -47,7 +48,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="mybooks/index"
         options={{
-          title: "Мои книги",
+          title: t("tabs.my_books"),
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="bookmark" color={color} />
           ),
@@ -56,7 +57,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile/index"
         options={{
-          title: "Профиль",
+          title: t("tabs.profile"),
           tabBarIcon: ({ color }) => (
             <AntDesign size={28} name="user" color={color} />
           ),

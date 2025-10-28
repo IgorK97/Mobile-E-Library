@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 import "@/src/i18n";
 import { Colors } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
@@ -45,6 +46,8 @@ export default function AuthScreen() {
     username: null,
   });
 
+  const { t } = useTranslation();
+
   const typography = useTypography();
 
   const handleChange = (field: string, value: string) => {
@@ -66,33 +69,33 @@ export default function AuthScreen() {
     };
 
     if (isRegister && !form.username.trim()) {
-      newErrors.username = "Введите имя пользователя";
+      newErrors.username = t("auth.error_name");
       valid = false;
     }
     if (!form.email.trim()) {
-      newErrors.email = "Введите email";
+      newErrors.email = t("auth.error_email");
       valid = false;
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      newErrors.email = "Некорректный email";
+      newErrors.email = t("auth.incorr_email");
       valid = false;
     }
     if (isRegister && !form.fullName.trim()) {
-      newErrors.fullName = "Введите имя";
+      newErrors.fullName = t("auth.error_fullname");
       valid = false;
     }
     if (!form.password.trim()) {
-      newErrors.password = "Введите пароль";
+      newErrors.password = t("auth.error_pass");
       valid = false;
     } else if (form.password.length < 6) {
-      newErrors.password = "Пароль должен быть не менее 6 символов";
+      newErrors.password = t("auth.short_pass");
       valid = false;
     }
     if (isRegister && form.password !== form.confirmPassword) {
-      newErrors.confirmPassword = "Пароли не совпадают";
+      newErrors.confirmPassword = t("auth.error_conf_pass");
       valid = false;
     }
     if (isRegister && !/^\+?[0-9]{10,15}$/.test(form.phone)) {
-      newErrors.phone = "Введите корректный телефон";
+      newErrors.phone = t("auth.error_phone");
       valid = false;
     }
 
@@ -104,10 +107,10 @@ export default function AuthScreen() {
     if (!validateForm()) return;
 
     if (isRegister) {
-      Alert.alert("Регистрация", "Пользователь успешно зарегистрирован!");
+      Alert.alert(t("auth.alert_title_reg"), t("alert_text_reg"));
       router.push("/(tabs)/library");
     } else {
-      Alert.alert("Авторизация", "Успешный вход!");
+      Alert.alert(t("auth.alert_title_auth"), t("auth.alert_text_auth"));
       router.push("/(tabs)/library");
     }
   };
@@ -126,25 +129,25 @@ export default function AuthScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <Text style={typography.giantTitle}>
-          {isRegister ? "Регистрация" : "Авторизация"}
+          {isRegister ? t("auth.alert_title_reg") : t("auth.alert_title_auth")}
         </Text>
 
         {isRegister && (
           <>
             <InputField
-              label="Имя пользователя"
+              label={t("auth.l_name")}
               value={form.username}
               onChangeText={(v) => handleChange("username", v)}
               error={errors.username || ""}
             />
             <InputField
-              label="Полное имя"
+              label={t("auth.l_fullname")}
               value={form.fullName}
               onChangeText={(v) => handleChange("fullName", v)}
               error={errors.fullName || ""}
             />
             <InputField
-              label="Телефон"
+              label={t("auth.l_phone")}
               value={form.phone}
               onChangeText={(v) => handleChange("phone", v)}
               // keyboardType="phone-pad"
@@ -154,7 +157,7 @@ export default function AuthScreen() {
         )}
 
         <InputField
-          label="Email"
+          label={t("auth.l_email")}
           value={form.email}
           onChangeText={(v) => handleChange("email", v)}
           // keyboardType="email-address"
@@ -162,7 +165,7 @@ export default function AuthScreen() {
         />
 
         <InputField
-          label="Пароль"
+          label={t("auth.l_pass")}
           value={form.password}
           onChangeText={(v) => handleChange("password", v)}
           secureTextEntry
@@ -171,7 +174,7 @@ export default function AuthScreen() {
 
         {isRegister && (
           <InputField
-            label="Подтверждение пароля"
+            label={t("auth.l_conf_pass")}
             value={form.confirmPassword}
             onChangeText={(v) => handleChange("confirmPassword", v)}
             secureTextEntry
@@ -181,7 +184,7 @@ export default function AuthScreen() {
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={typography.defaultButtonText}>
-            {isRegister ? "Зарегистрироваться" : "Войти"}
+            {isRegister ? t("auth.action_reg") : t("auth.action_auth")}
           </Text>
         </TouchableOpacity>
 
@@ -198,9 +201,7 @@ export default function AuthScreen() {
                   : Colors.dark.hightlightedText,
             }}
           >
-            {isRegister
-              ? "Уже есть аккаунт? Войти"
-              : "Нет аккаунта? Зарегистрироваться"}
+            {isRegister ? t("auth.switch_to_auth") : t("auth.switch_to_reg")}
           </Text>
         </TouchableOpacity>
       </ScrollView>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import {
   Modal,
   ScrollView,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { ReviewCard } from "@/src/components/reviews/review-card";
 import Feather from "@expo/vector-icons/Feather";
+import { useTranslation } from "react-i18next";
 import "@/src/i18n";
 import { useReviewStyles } from "@/src/styles/reviewStyles";
 import { router } from "expo-router";
@@ -77,6 +78,7 @@ export default function ReviewsScreen() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newReview, setNewReview] = useState("");
   const [newRating, setNewRating] = useState(0);
+  const { t } = useTranslation();
   const sortedReviews = [...mockReviews].sort((a, b) => {
     if (sortBy === "highest") return b.rating - a.rating;
     return a.rating - b.rating;
@@ -84,7 +86,7 @@ export default function ReviewsScreen() {
   const styles = useReviewStyles();
   const handleSendReview = () => {
     if (newReview.trim() === "" || newRating === 0) return;
-    console.log("Отзыв отправлен:", newReview, "Рейтинг:", newRating);
+    // console.log("Отзыв отправлен:", newReview, "Рейтинг:", newRating);
     setNewReview("");
     setNewRating(0);
     setIsModalVisible(false);
@@ -101,7 +103,7 @@ export default function ReviewsScreen() {
         >
           <Feather name="arrow-left" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Отзывы</Text>
+        <Text style={styles.headerTitle}>{t("reviews.title")}</Text>
       </View>
 
       <View style={styles.sortBar}>
@@ -112,8 +114,8 @@ export default function ReviewsScreen() {
           <Feather name="chevron-down" size={16} color="#000" />
           <Text style={styles.sortText}>
             {sortBy === "highest"
-              ? "Сначала с высокой оценкой"
-              : "Сначала с низкой оценкой"}
+              ? t("reviews.filter_high")
+              : t("reviews.filter_low")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -137,7 +139,7 @@ export default function ReviewsScreen() {
         style={styles.addButton}
         onPress={() => setIsModalVisible(true)}
       >
-        <Text style={styles.addButtonText}>Написать отзыв</Text>
+        <Text style={styles.addButtonText}>{t("reviews.write")}</Text>
       </TouchableOpacity>
 
       <Modal
@@ -149,7 +151,7 @@ export default function ReviewsScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Новый отзыв</Text>
+              <Text style={styles.modalTitle}>{t("reviews.new")}</Text>
               <TouchableOpacity onPress={() => setIsModalVisible(false)}>
                 <Feather name="x" size={24} color="#000" />
               </TouchableOpacity>
@@ -168,7 +170,7 @@ export default function ReviewsScreen() {
 
             <TextInput
               style={styles.input}
-              placeholder="Напишите ваш отзыв..."
+              placeholder={t("reviews.ph")}
               placeholderTextColor="#999"
               multiline
               value={newReview}
@@ -179,7 +181,7 @@ export default function ReviewsScreen() {
               style={styles.sendButton}
               onPress={handleSendReview}
             >
-              <Text style={styles.sendButtonText}>Отправить</Text>
+              <Text style={styles.sendButtonText}>{t("reviews.send")}</Text>
             </TouchableOpacity>
           </View>
         </View>

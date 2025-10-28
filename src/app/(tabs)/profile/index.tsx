@@ -100,19 +100,21 @@ export default function ProfileScreen() {
           </View>
         </View>
         <View style={styles.section}>
-          <Text style={typography.sectionTitle}>{t("label_settings")}</Text>
+          <Text style={typography.sectionTitle}>
+            {t("profile.label_settings")}
+          </Text>
           <TouchableOpacity
             style={styles.row}
             onPress={() => setIsProfileModalVisible(true)}
           >
-            <Text style={rowText}>{t("profile.lable_profile_settings")}</Text>
+            <Text style={rowText}>{t("profile.label_profile_settings")}</Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.row}
             onPress={() => setIsSecurityModalVisible(true)}
           >
-            <Text style={rowText}>{t("profile.lable_security")}</Text>
+            <Text style={rowText}>{t("profile.label_security")}</Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.row}>

@@ -14,6 +14,9 @@ import { useDebounceCallback } from "usehooks-ts";
 
 import { useReaderFooterStyles } from "@/src/styles/readerFooterStyles";
 
+import "@/src/i18n";
+import { useTranslation } from "react-i18next";
+
 interface Props {
   currentFontSize: number;
   increaseFontSize: () => void;
@@ -50,6 +53,7 @@ export function ReaderFooter({
   // );
   const colors = resolveTheme(theme);
   const styles = useReaderFooterStyles();
+  const { t } = useTranslation();
   const debounced = useDebounceCallback((percentage) => {
     injectJavascript(`
         try{
@@ -83,7 +87,7 @@ export function ReaderFooter({
       }}
     >
       <Text variant="labelMedium" style={styles.currentPercentage}>
-        Прогресс чтения:{" "}
+        {t("reader_footer.progress")}:{" "}
         {((currentLocation?.start.percentage || 0) * 100).toFixed(0)}%
       </Text>
       <View style={styles.row}>

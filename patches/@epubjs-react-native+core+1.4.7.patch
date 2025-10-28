@@ -49,3 +49,27 @@ index 9ed5785..ced4c85 100644
    'a': {
      'color': '#333 !important',
      'pointer-events': 'auto',
+diff --git a/node_modules/@epubjs-react-native/core/lib/module/utils/LoadingFile/index.js b/node_modules/@epubjs-react-native/core/lib/module/utils/LoadingFile/index.js
+index 325903b..6556020 100644
+--- a/node_modules/@epubjs-react-native/core/lib/module/utils/LoadingFile/index.js
++++ b/node_modules/@epubjs-react-native/core/lib/module/utils/LoadingFile/index.js
+@@ -15,5 +15,5 @@ export function LoadingFile({
+     size: "large"
+   }), /*#__PURE__*/React.createElement(Text, {
+     style: styles.text
+-  }, "Loading ", downloadProgress, "%"));
++  }, "Загрузка ", downloadProgress, "%"));
+ }
+\ No newline at end of file
+diff --git a/node_modules/@epubjs-react-native/core/lib/module/utils/OpeningBook/index.js b/node_modules/@epubjs-react-native/core/lib/module/utils/OpeningBook/index.js
+index 0f3ad6e..63de710 100644
+--- a/node_modules/@epubjs-react-native/core/lib/module/utils/OpeningBook/index.js
++++ b/node_modules/@epubjs-react-native/core/lib/module/utils/OpeningBook/index.js
+@@ -16,5 +16,5 @@ export function OpeningBook({
+     size: "large"
+   }), /*#__PURE__*/React.createElement(Text, {
+     style: styles.text
+-  }, "Opening"));
++  }, "Открытие книги..."));
+ }
+\ No newline at end of file

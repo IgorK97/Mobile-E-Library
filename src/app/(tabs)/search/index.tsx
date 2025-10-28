@@ -144,13 +144,13 @@ export default function BookFilters() {
                   style={{ marginTop: 5 }}
                 >
                   <Text style={{ color: "#D32F2F", fontWeight: "500" }}>
-                    {showAllLanguages ? "Скрыть" : "Показать все"}
+                    {showAllLanguages ? t("search.hide") : t("search.show")}
                   </Text>
                 </TouchableOpacity>
               </FilterSection>
 
               <FilterSection
-                title={t("title_genre_sect")}
+                title={t("search.title_genre_sect")}
                 // styles={styles}
                 // typography={typography}
               >

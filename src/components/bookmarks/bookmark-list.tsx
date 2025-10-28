@@ -11,6 +11,8 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { Button, IconButton, MD3Colors, Text } from "react-native-paper";
 import { contrast, resolveTheme } from "@/src/constants/reader-theme";
 import { useBookmarksStyles } from "@/src/styles/bookmarksStyles";
+import { useTranslation } from "react-i18next";
+import "@/src/i18n";
 interface Props {
   onClose: () => void;
 }
@@ -32,6 +34,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
   const [note, setNote] = useState("");
   const [currentBookmark, setCurrentBookmark] = useState<Bookmark | null>(null);
   const colors = resolveTheme(theme);
+  const { t } = useTranslation();
   useEffect(() => {
     if (isBookmarked) {
       const bookmark = bookmarks.find(
@@ -73,7 +76,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
               variant="titleMedium"
               style={{ color: contrast[theme.body.background] }}
             >
-              Bookmarks
+              {t("bookmarks.title")}
             </Text>
 
             {bookmarks.length > 0 && (
@@ -85,7 +88,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
                 }}
                 textColor={contrast[theme.body.background]}
               >
-                Clear All
+                {t("bookmarks.clear_all")}
               </Button>
             )}
           </View>
@@ -99,12 +102,12 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
                   color: contrast[theme.body.background],
                 }}
               >
-                No bookmarks...
+                {t("bookmarks.no_bookmarks")}
               </Text>
             </View>
           )}
 
-          {isBookmarked && (
+          {/* {isBookmarked && (
             <View style={{ width: "100%" }}>
               <BottomSheetTextInput
                 defaultValue={note}
@@ -124,7 +127,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
                 Update Annotation
               </Button>
             </View>
-          )}
+          )} */}
 
           {bookmarks.map((bookmark) => (
             <View key={bookmark.id} style={styles.bookmarkContainer}>
@@ -164,7 +167,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
                       color: contrast[theme.body.background],
                     }}
                   >
-                    Chapter: {bookmark.section?.label}
+                    {t("bookmarks.chapter")}: {bookmark.section?.label}
                   </Text>
 
                   <Text

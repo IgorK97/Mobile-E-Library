@@ -16,6 +16,9 @@ import { Button, Text } from "react-native-paper";
 import Section from "./section";
 import { contrast, resolveTheme } from "@/src/constants/reader-theme";
 import { useTocStyles } from "@/src/styles/tocStyles";
+
+import "@/src/i18n";
+import { useTranslation } from "react-i18next";
 interface Props {
   onPressSection: (section: SectionType) => void;
   onClose: () => void;
@@ -31,6 +34,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
 
     const snapPoints = React.useMemo(() => ["50%", "90%"], []);
     const colors = resolveTheme(theme);
+    const { t } = useTranslation();
     const renderItem = React.useCallback(
       ({ item }: { item: SectionType }) => (
         <Section
@@ -57,7 +61,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
               variant="titleMedium"
               style={{ color: contrast[theme.body.background] }}
             >
-              Table of Contents
+              {t("toc.title")}
             </Text>
 
             <Button
@@ -65,7 +69,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
               textColor={contrast[theme.body.background]}
               onPress={onClose}
             >
-              Close
+              {t("toc.close")}
             </Button>
           </View>
 
@@ -80,7 +84,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
               style={{
                 ...styles.input,
               }}
-              placeholder="Type an term here..."
+              placeholder={t("toc.ph")}
               placeholderTextColor={contrast[theme.body.background]}
               onSubmitEditing={(event) => {
                 event.persist();
@@ -96,15 +100,7 @@ export const TableOfContents = forwardRef<Ref, Props>(
           </View>
         </View>
       ),
-      [
-        onClose,
-        searchTerm,
-        theme.body.background,
-        toc,
-        // styles.input,
-        // styles.title,
-        // colors.background,
-      ]
+      [onClose, searchTerm, theme.body.background, toc]
     );
 
     React.useEffect(() => {
