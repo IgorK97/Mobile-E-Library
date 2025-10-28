@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 
-import { useReader, Themes } from "@epubjs-react-native/core";
-import { IconButton, MD3Colors } from "react-native-paper";
+import { useReader } from "@epubjs-react-native/core";
+import { IconButton, MD3Colors, Text } from "react-native-paper";
 import {
   MAX_FONT_SIZE,
   MIN_FONT_SIZE,
   resolveTheme,
-  readerThemeColors,
 } from "@/constants/reader-theme";
 
 import Slider from "@react-native-community/slider";
 import { useDebounceCallback } from "usehooks-ts";
-import { Text } from "react-native-paper";
 
 interface Props {
   currentFontSize: number;
@@ -45,9 +43,9 @@ export function ReaderFooter({
     injectJavascript,
     currentLocation,
   } = useReader();
-  const [sliderValue, setSliderValue] = useState(
-    (currentLocation?.start.percentage || 0) * 100
-  ); // начальное значение
+  // const [sliderValue, setSliderValue] = useState(
+  //   (currentLocation?.start.percentage || 0) * 100
+  // );
   const colors = resolveTheme(theme);
 
   const debounced = useDebounceCallback((percentage) => {
@@ -80,11 +78,6 @@ export function ReaderFooter({
       style={{
         ...styles.footer,
         backgroundColor: colors?.background,
-        // theme === Themes.DARK
-        // ? "rgba(26,26,26,1)"
-        // : theme === Themes.LIGHT
-        // ? "rgba(244,244,244,1)"
-        // : "rgba(241,232,215,1)",
       }}
     >
       <Text variant="labelMedium" style={styles.currentPercentage}>
@@ -97,7 +90,7 @@ export function ReaderFooter({
         <Slider
           style={styles.slider}
           disabled={totalLocations === 0}
-          value={sliderValue}
+          value={(currentLocation?.start.percentage || 0) * 100}
           minimumValue={0}
           maximumValue={100}
           minimumTrackTintColor="#c0c0c0"
@@ -179,22 +172,16 @@ export function ReaderFooter({
 const styles = StyleSheet.create({
   footer: {
     position: "absolute",
-    bottom: 0, // ключевое отличие от header
+    bottom: 0,
     left: 0,
     right: 0,
-    paddingVertical: 20, // или отдельные paddingTop/paddingBottom
+    paddingVertical: 20,
     paddingHorizontal: 16,
     flexDirection: "column",
-    alignItems: "center", // выравнивание контента по центру
+    alignItems: "center",
     justifyContent: "center",
     zIndex: 10,
   },
-  //   container: {
-  //     flexDirection: "row",
-  //     alignItems: "center",
-  //     justifyContent: "space-between",
-  //     marginHorizontal: 10,
-  //   },
   row: {
     justifyContent: "space-evenly",
     alignItems: "center",

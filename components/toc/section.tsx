@@ -1,5 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Section as SectionType, useReader } from "@epubjs-react-native/core";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";

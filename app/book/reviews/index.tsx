@@ -14,6 +14,8 @@ import { ReviewCard } from "@/components/reviews/review-card";
 // import { BottomNavigation } from "./BottomNavigation"; // make sure this is adapted for React Native
 // import Icon from "react-native-vector-icons/Feather"; // Using Feather icons as substitute
 import Feather from "@expo/vector-icons/Feather";
+import "@/i18n";
+
 import { router } from "expo-router";
 import { Star } from "lucide-react-native";
 interface Review {

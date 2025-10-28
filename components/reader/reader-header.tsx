@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 import { useReader, Themes } from "@epubjs-react-native/core";
-import {
-  readerThemeColors,
-  resolveTheme,
-} from "@/constants/reader-theme";
+import { readerThemeColors, resolveTheme } from "@/constants/reader-theme";
 import { ArrowLeft } from "lucide-react-native";
 
 interface Props {
@@ -22,11 +19,6 @@ export function ReaderHeader({ author, title }: Props) {
       style={{
         ...styles.header,
         backgroundColor: colors.background,
-        // theme === Themes.DARK
-        //   ? "rgba(26,26,26,1)"
-        //   : theme === Themes.LIGHT
-        //   ? "rgba(244,244,244,1)"
-        //   : "rgba(241,232,215,1)",
       }}
     >
       <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
@@ -63,18 +55,10 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: 50,
     paddingBottom: 10,
-    // backgroundColor: "rgba(0,0,0,0.7)",
     alignItems: "center",
     zIndex: 10,
     justifyContent: "center",
     flexDirection: "row",
-    // flexDirection: "row",
-    // alignItems: "center",
-    // paddingHorizontal: 16,
-    // paddingVertical: 12,
-    // backgroundColor: "#fff",
-    // borderBottomWidth: 1,
-    // borderBottomColor: "#ccc",
   },
   iconButton: {
     padding: 8,

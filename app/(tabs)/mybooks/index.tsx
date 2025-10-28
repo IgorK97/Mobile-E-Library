@@ -1,18 +1,10 @@
-// import { View, Text } from "react-native";
-
-// export default function MyBooksScreen() {
-//   return (
-//     <View>
-//       <Text>My Books</Text>
-//     </View>
-//   );
-// }
-
 import { BookCard } from "@/components/library/book-card";
 import { Book } from "@/types/types";
 import { router } from "expo-router";
 import { BookOpen } from "lucide-react-native";
 import { useState } from "react";
+import "@/i18n";
+
 import {
   FlatList,
   ScrollView,
@@ -22,6 +14,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { commonStyles } from "@/styles/common";
 
 const books: Book[] = [
   {
@@ -198,8 +191,8 @@ export default function MyBooks() {
         data={books}
         keyExtractor={(item) => item.id.toString()}
         numColumns={numColumns}
-        contentContainerStyle={styles.grid}
-        columnWrapperStyle={styles.gridRow}
+        contentContainerStyle={commonStyles.grid}
+        columnWrapperStyle={commonStyles.gridRow}
         style={{ gap: 5, marginBottom: 5 }}
         renderItem={({ item }) => (
           <View style={{ width: cardWidth }}>
@@ -219,6 +212,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF",
+    // alignItems: "center",
     marginTop: 10,
   },
   header: {
@@ -271,11 +265,11 @@ const styles = StyleSheet.create({
   tabTextActive: {
     color: "#D32F2F",
   },
-  grid: {
-    padding: 16,
-    paddingBottom: 80,
-  },
-  gridRow: {
-    justifyContent: "space-between",
-  },
+  // grid: {
+  //   padding: 16,
+  //   paddingBottom: 80,
+  // },
+  // gridRow: {
+  //   justifyContent: "space-between",
+  // },
 });

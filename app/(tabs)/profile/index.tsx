@@ -66,12 +66,6 @@ export default function ProfileScreen() {
     setNewPassword("");
     setConfirmPassword("");
   };
-  {
-    /* <Switch value={colorScheme==='dark'} 
-          onChange={() => {
-            Appearance.setColorScheme(colorScheme==='dark' ? 'light' : 'dark')
-          }}/> */
-  }
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -323,7 +317,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF",
     alignItems: "center",
-    paddingVertical: 10,
+    marginTop: 10,
   },
   scrollContainer: {
     paddingBottom: 50,

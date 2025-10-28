@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import "@/i18n";
+
 
 interface MyError {
   username: string | null;

@@ -1,6 +1,3 @@
-/* eslint-disable react/no-unused-prop-types */
-
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { forwardRef, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import {
@@ -23,7 +20,6 @@ import {
   readerThemeColors,
   resolveTheme,
 } from "@/constants/reader-theme";
-// import { Section as SectionElem } from "@epubjs-react-native/core";
 
 interface Props {
   onPressSection: (section: SectionType) => void;
@@ -59,11 +55,6 @@ export const TableOfContents = forwardRef<Ref, Props>(
         <View
           style={{
             backgroundColor: colors.background,
-            // theme === Themes.DARK
-            //   ? "rgba(26,26,26,1)"
-            //   : theme === Themes.LIGHT
-            //   ? "rgba(244,244,244,1)"
-            //   : "rgba(241,232,215,1)",
           }}
         >
           <View style={styles.title}>
@@ -93,12 +84,6 @@ export const TableOfContents = forwardRef<Ref, Props>(
               defaultValue={searchTerm}
               style={{
                 ...styles.input,
-                // backgroundColor:
-                //   theme === Themes.DARK
-                //     ? "rgba(26,26,26,1)"
-                //     : theme === Themes.LIGHT
-                //     ? "rgba(244,244,244,1)"
-                //     : "rgba(241,232,215,1)",
               }}
               placeholder="Type an term here..."
               placeholderTextColor={contrast[theme.body.background]}
@@ -132,27 +117,12 @@ export const TableOfContents = forwardRef<Ref, Props>(
           style={{
             ...styles.container,
             backgroundColor: colors.background,
-            // theme === Themes.DARK
-            //   ? "rgba(26,26,26,1)"
-            //   : theme === Themes.LIGHT
-            //   ? "rgba(244,244,244,1)"
-            //   : "rgba(241,232,215,1)",
           }}
           handleStyle={{
             backgroundColor: colors.background,
-            // theme === Themes.DARK
-            //   ? "rgba(26,26,26,1)"
-            //   : theme === Themes.LIGHT
-            //   ? "rgba(244,244,244,1)"
-            //   : "rgba(241,232,215,1)",
           }}
           backgroundStyle={{
             backgroundColor: colors.background,
-            // theme === Themes.DARK
-            //   ? "rgba(26,26,26,1)"
-            //   : theme === Themes.LIGHT
-            //   ? "rgba(244,244,244,1)"
-            //   : "rgba(241,232,215,1)",
           }}
           onDismiss={() => setSearchTerm("")}
         >

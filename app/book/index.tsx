@@ -15,6 +15,8 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
+import "@/i18n";
+
 const books: Book[] = [
   {
     id: 1,

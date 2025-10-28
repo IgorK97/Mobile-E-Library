@@ -3,6 +3,8 @@ import { StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
+import "@/i18n";
+
 
 export default function ModalScreen() {
   return (

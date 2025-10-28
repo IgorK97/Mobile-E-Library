@@ -3,7 +3,7 @@ import { SectionHeader } from "@/components/library/section-header";
 import { Book } from "@/types/types";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+// import { useState } from "react";
 import {
   FlatList,
   ScrollView,
@@ -13,6 +13,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import book1 from "../../../assets/images/book_1.png";
+import "@/i18n";
+import { commonStyles } from "@/styles/common";
+
 const books1: Book[] = [
   {
     id: 1,
@@ -140,8 +143,6 @@ const books3 = [
   },
 ];
 export default function HomeScreen() {
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [isReading, setIsReading] = useState(false);
   const router = useRouter();
   const { width } = useWindowDimensions();
   const numColumns = width < 500 ? 2 : 4;
@@ -158,8 +159,8 @@ export default function HomeScreen() {
           scrollEnabled={false}
           keyExtractor={(item) => item.id.toString()}
           numColumns={numColumns}
-          contentContainerStyle={styles.grid}
-          columnWrapperStyle={styles.gridRow}
+          contentContainerStyle={commonStyles.grid}
+          columnWrapperStyle={commonStyles.gridRow}
           renderItem={({ item }) => (
             <View style={{ width: cardWidth }}>
               <BookCard
@@ -177,8 +178,8 @@ export default function HomeScreen() {
           data={books2}
           keyExtractor={(item) => item.id.toString()}
           numColumns={numColumns}
-          contentContainerStyle={styles.grid}
-          columnWrapperStyle={styles.gridRow}
+          contentContainerStyle={commonStyles.grid}
+          columnWrapperStyle={commonStyles.gridRow}
           scrollEnabled={false}
           renderItem={({ item }) => (
             <View style={{ width: cardWidth }}>
@@ -197,8 +198,8 @@ export default function HomeScreen() {
           data={books3}
           keyExtractor={(item) => item.id.toString()}
           numColumns={numColumns}
-          contentContainerStyle={styles.grid}
-          columnWrapperStyle={styles.gridRow}
+          contentContainerStyle={commonStyles.grid}
+          columnWrapperStyle={commonStyles.gridRow}
           scrollEnabled={false}
           renderItem={({ item }) => (
             <View style={{ width: cardWidth }}>
@@ -223,94 +224,11 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 100,
   },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginBottom: 20,
-  },
-  coverContentCenter: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 8,
-  },
-  buddismLabel: {
-    color: "#B8A566",
-    fontSize: 10,
-    marginBottom: 4,
-  },
-  buddismTitle: {
-    color: "white",
-    fontSize: 16,
-    textAlign: "center",
-    lineHeight: 18,
-  },
-  antiqueAuthor: {
-    color: "#9FAABD",
-    fontSize: 18,
-    marginBottom: 4,
-  },
-  antiqueCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#C84545",
-    marginBottom: 6,
-  },
-  antiqueTitle: {
-    color: "#9FAABD",
-    fontSize: 10,
-    textAlign: "center",
-    lineHeight: 12,
-  },
-  economyAuthor: {
-    color: "#8B7355",
-    fontSize: 9,
-  },
-  grid: {
-    padding: 16,
-    paddingBottom: 80,
-  },
-  gridRow: {
-    justifyContent: "space-between",
-  },
-  economyTitle: {
-    color: "#6B5540",
-    fontSize: 11,
-    textAlign: "center",
-  },
-  economySubtitle: {
-    color: "#8B7355",
-    fontSize: 8,
-    marginTop: 4,
-  },
-  structTitle: {
-    color: "#B8A890",
-    fontSize: 9,
-    textAlign: "center",
-  },
-  structSubtitle: {
-    color: "#8B7A65",
-    fontSize: 8,
-    textAlign: "center",
-  },
-  worldTitle: {
-    color: "white",
-    fontSize: 12,
-    textAlign: "center",
-  },
-  worldSubtitle: {
-    color: "#D4B896",
-    fontSize: 8,
-    textAlign: "center",
-  },
-  worldTitle2: {
-    color: "#D4B896",
-    fontSize: 12,
-    textAlign: "center",
-  },
-  worldSubtitle2: {
-    color: "#8B6545",
-    fontSize: 9,
-    textAlign: "center",
-  },
+  // grid: {
+  //   padding: 16,
+  //   paddingBottom: 80,
+  // },
+  // gridRow: {
+  //   justifyContent: "space-between",
+  // },
 });

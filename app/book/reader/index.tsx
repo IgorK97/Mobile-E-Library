@@ -13,6 +13,8 @@ import {
   Text,
   View,
 } from "react-native";
+import "@/i18n";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Bookmark,

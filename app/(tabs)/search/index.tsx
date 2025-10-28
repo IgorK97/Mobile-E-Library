@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import "@/i18n";
 
 export default function BookFilters() {
   const [open, setOpen] = useState(false);
