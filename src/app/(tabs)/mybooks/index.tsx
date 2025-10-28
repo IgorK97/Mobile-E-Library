@@ -14,8 +14,8 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { commonStyles } from "@/src/styles/common";
-import { Colors } from "@/src/constants/theme";
+import { commonStyles } from "@/src/constants/common";
+import { Colors, Typography } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 const books: Book[] = [
   {
@@ -189,7 +189,7 @@ export default function MyBooks() {
         </View>
         <Text
           style={{
-            ...styles.headerTitle,
+            ...Typography.headerTitle,
             color:
               color === "light"
                 ? Colors.light.headerTitle.color
@@ -228,7 +228,7 @@ export default function MyBooks() {
           >
             <Text
               style={[
-                styles.tabText,
+                Typography.tabText,
                 activaTab === tab.id && {
                   color:
                     color === "light"
@@ -279,10 +279,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 8,
-  },
+
   tabsContainer: {
     borderBottomWidth: 1,
     height: 50,
@@ -293,8 +290,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomWidth: 2,
     borderBottomColor: "transparent",
-  },
-  tabText: {
-    fontSize: 14,
   },
 });

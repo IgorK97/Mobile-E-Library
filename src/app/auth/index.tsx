@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import "@/src/i18n";
+import { Colors, Typography } from "@/src/constants/theme";
 
 interface MyError {
   username: string | null;
@@ -168,7 +169,7 @@ export default function AuthScreen() {
         )}
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>
+          <Text style={Typography.defaultButtonText}>
             {isRegister ? "Зарегистрироваться" : "Войти"}
           </Text>
         </TouchableOpacity>
@@ -207,7 +208,7 @@ function InputField({
     <View style={styles.inputContainer}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={[styles.input, error && styles.inputError]}
+        style={[styles.input, error && Colors.default.inputError]}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
@@ -215,7 +216,7 @@ function InputField({
         placeholder={label}
         placeholderTextColor="#aaa"
       />
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text style={Typography.errorText}>{error}</Text>}
     </View>
   );
 }
@@ -243,8 +244,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
-  inputError: { borderColor: "#D32F2F" },
-  errorText: { color: "#D32F2F", fontSize: 12, marginTop: 4 },
   button: {
     backgroundColor: "#D32F2F",
     borderRadius: 10,
@@ -252,7 +251,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
-  buttonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
   switchButton: { marginTop: 20 },
   switchText: { textAlign: "center", color: "#D32F2F" },
 });

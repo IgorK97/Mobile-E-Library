@@ -6,21 +6,24 @@
 import { Platform, StyleSheet } from "react-native";
 const tintColorLight = "#D32F2F";
 const tintColorDark = "#fff";
+const errorColor = "#D32F2F";
+const baseAppColor = "#D32F2F";
+const baseBackgroundColor = "#fff";
 
 export const Colors = {
   light: {
     text: "#11181C",
     subText: "#6B7280",
-    highlightedText: "#D32F2F",
-    background: "#fff",
+    highlightedText: baseAppColor,
+    background: baseBackgroundColor,
     tint: tintColorLight,
     icon: "#687076",
     tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
-    tabButtonSelected: "#D32F2F",
+    tabButtonSelected: baseAppColor,
     borderBottomColor: "#E0E0E0",
     headerIcon: {
-      backgroundColor: "#D32F2F",
+      backgroundColor: baseAppColor,
     },
     headerTitle: {
       color: "#000",
@@ -29,13 +32,13 @@ export const Colors = {
       color: "#666",
     },
     tabTextSelected: {
-      color: "#D32F2F",
+      color: baseAppColor,
     },
     userIcon: "#A855F7",
     chevronRight: "#9CA3AF",
     avatarPlaceholder: "#F3E8FF",
     saveButton: {
-      backgroundColor: "#D32F2F",
+      backgroundColor: baseAppColor,
       borderColor: "#fff",
     },
   },
@@ -43,7 +46,7 @@ export const Colors = {
     text: "#ECEDEE",
     subText: "#6B7280",
 
-    highlightedText: "#D32F2F",
+    highlightedText: baseAppColor,
 
     background: "#151718",
     tint: tintColorDark,
@@ -52,7 +55,7 @@ export const Colors = {
     tabIconSelected: tintColorDark,
     borderBottomColor: "#E0E0E0",
     headerIcon: {
-      backgroundColor: "#fff",
+      backgroundColor: baseBackgroundColor,
     },
     headerTitle: {
       color: "#fff",
@@ -65,15 +68,16 @@ export const Colors = {
     chevronRight: "#9CA3AF",
     avatarPlaceholder: "#F3E8FF",
     saveButton: {
-      backgroundColor: "#D32F2F",
+      backgroundColor: baseAppColor,
       borderColor: "#fff",
     },
   },
   default: {
     input: {
-      backgroundColor: "#fff",
+      backgroundColor: baseBackgroundColor,
       borderColor: "#ddd",
     },
+    inputError: { borderColor: "#D32F2F" },
   },
 };
 
@@ -113,30 +117,34 @@ export const FontSizes = {
 };
 
 export const Typography = StyleSheet.create({
-  title: {
-    fontFamily: Fonts.sans,
-    fontWeight: 700,
-    fontSize: FontSizes.lg,
+  defaultTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    textAlign: "center",
+    marginBottom: 10,
   },
-  subtitle: {
-    fontFamily: Fonts.sans,
-    fontWeight: 500,
-    fontSize: FontSizes.md,
-  },
-  body: {
-    fontFamily: Fonts.sans,
-    fontWeight: 400,
-    fontSize: FontSizes.sm,
-  },
-  caption: {
-    fontFamily: Fonts.sans,
-    fontWeight: 400,
-    fontSize: FontSizes.xs,
+  headerTitle: {
+    fontSize: 18,
+    marginLeft: 8,
   },
   sectionTitle: {
     fontSize: FontSizes.md,
     fontWeight: "600",
-    color: "#D32F2F",
+    color: baseAppColor,
     marginBottom: 8,
+    paddingHorizontal: 16,
   },
+  tabText: {
+    fontSize: FontSizes.sm,
+  },
+  subTitle: {
+    fontSize: FontSizes.md,
+    fontWeight: 600,
+  },
+  errorText: {
+    color: errorColor,
+    fontSize: 12,
+    marginTop: 4,
+  },
+  defaultButtonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
 });

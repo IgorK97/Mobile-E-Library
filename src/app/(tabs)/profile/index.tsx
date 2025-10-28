@@ -19,9 +19,9 @@ import { router } from "expo-router";
 import { ArrowLeft, Camera, ChevronRight, User } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/i18n";
-import { Colors } from "@/src/constants/theme";
+import { Colors, FontSizes, Typography } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
-import { commonStyles } from "@/src/styles/common";
+import { commonStyles } from "@/src/constants/common";
 
 export default function ProfileScreen() {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
@@ -75,7 +75,7 @@ export default function ProfileScreen() {
   };
 
   const rowText = {
-    fontSize: 15,
+    fontSize: FontSizes.md,
     color: color === "light" ? Colors.light.text : Colors.dark.text,
   };
 
@@ -107,17 +107,10 @@ export default function ProfileScreen() {
             <User size={24} color={Colors.light.userIcon} />
           </View>
           <View>
+            <Text style={rowText}>{t("profile.reader")}</Text>
             <Text
               style={{
-                fontSize: 15,
-                color: color === "light" ? Colors.light.text : Colors.dark.text,
-              }}
-            >
-              {t("profile.reader")}
-            </Text>
-            <Text
-              style={{
-                fontSize: 13,
+                fontSize: FontSizes.xs,
                 color:
                   color === "light"
                     ? Colors.light.subText
@@ -131,7 +124,7 @@ export default function ProfileScreen() {
         <View style={styles.section}>
           <Text
             style={[
-              styles.sectionTitle,
+              Typography.sectionTitle,
               {
                 color:
                   color === "light"
@@ -164,7 +157,7 @@ export default function ProfileScreen() {
         <View style={styles.section}>
           <Text
             style={[
-              styles.sectionTitle,
+              Typography.sectionTitle,
               {
                 color:
                   color === "light"
@@ -221,9 +214,8 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
                 <Text
                   style={{
-                    fontSize: 15,
+                    ...Typography.subTitle,
                     color: Colors.light.text,
-                    fontWeight: 600,
                   }}
                 >
                   Настройки профиля
@@ -291,7 +283,7 @@ export default function ProfileScreen() {
                   </View>
                   <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: FontSizes.md,
                       color:
                         color === "light"
                           ? Colors.light.subText
@@ -336,9 +328,8 @@ export default function ProfileScreen() {
                 >
                   <Text
                     style={{
+                      ...Typography.subTitle,
                       color: "#fff",
-                      fontSize: 16,
-                      fontWeight: "600",
                     }}
                   >
                     Сохранить изменения
@@ -377,9 +368,8 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
                 <Text
                   style={{
-                    fontSize: 15,
+                    ...Typography.subTitle,
                     color: Colors.light.text,
-                    fontWeight: 600,
                   }}
                 >
                   Безопасность
@@ -428,9 +418,8 @@ export default function ProfileScreen() {
                   >
                     <Text
                       style={{
+                        ...Typography.subTitle,
                         color: "#fff",
-                        fontSize: 16,
-                        fontWeight: "600",
                       }}
                     >
                       Сохранить изменения
@@ -475,11 +464,11 @@ const styles = StyleSheet.create({
   section: {
     paddingVertical: 16,
   },
-  sectionTitle: {
-    fontSize: 15,
-    marginBottom: 8,
-    paddingHorizontal: 16,
-  },
+  // sectionTitle: {
+  //   fontSize: 15,
+  //   marginBottom: 8,
+  //   paddingHorizontal: 16,
+  // },
   row: {
     flexDirection: "row",
     alignItems: "center",

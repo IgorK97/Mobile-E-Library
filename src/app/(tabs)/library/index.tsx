@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { FlatList, ScrollView, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "@/src/i18n";
-import { commonStyles } from "@/src/styles/common";
+import { commonStyles } from "@/src/constants/common";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 import { Colors } from "@/src/constants/theme";
 const books1: Book[] = [

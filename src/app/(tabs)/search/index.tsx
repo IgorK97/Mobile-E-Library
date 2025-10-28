@@ -123,13 +123,13 @@ export default function BookFilters() {
         ]}
         onPress={() => setOpen(true)}
       >
-        <Text style={styles.buttonText}>Фильтры</Text>
+        <Text style={Typography.defaultButtonText}>Фильтры</Text>
       </TouchableOpacity>
 
       <Modal visible={open} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.title}>Фильтры</Text>
+            <Text style={Typography.defaultTitle}>Фильтры</Text>
 
             <ScrollView style={styles.scrollArea}>
               <FilterSection title="Языки">
@@ -304,12 +304,10 @@ const styles = StyleSheet.create({
   },
   searchInput: { flex: 1, height: 40 },
   button: {
-    // backgroundColor: "#D32F2F",
     padding: 12,
     borderRadius: 10,
     alignItems: "center",
   },
-  buttonText: { color: "#fff", fontWeight: "600" },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.4)",
@@ -323,12 +321,7 @@ const styles = StyleSheet.create({
     maxHeight: "90%",
     position: "relative",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
-    textAlign: "center",
-    marginBottom: 10,
-  },
+
   scrollArea: { paddingHorizontal: 20, paddingBottom: 10 },
   section: { marginBottom: 20 },
 

@@ -31,8 +31,6 @@ export default function TabLayout() {
         options={{
           title: "Главное",
           tabBarIcon: ({ color }) => (
-            // <IconSymbol size={28} name="house.fill" color={color} />
-            // <Feather size={28} name="book" color={color} />
             <FontAwesome name="book" size={24} color={color} />
           ),
         }}
@@ -42,7 +40,6 @@ export default function TabLayout() {
         options={{
           title: "Поиск",
           tabBarIcon: ({ color }) => (
-            // <IconSymbol size={28} name="magnifyingglass" color={color} />
             <Ionicons size={28} name="search" color={color} />
           ),
         }}
@@ -52,7 +49,6 @@ export default function TabLayout() {
         options={{
           title: "Мои книги",
           tabBarIcon: ({ color }) => (
-            // <IconSymbol size={28} name="books.vertical.fill" color={color} />
             <FontAwesome size={28} name="bookmark" color={color} />
           ),
         }}
@@ -62,31 +58,10 @@ export default function TabLayout() {
         options={{
           title: "Профиль",
           tabBarIcon: ({ color }) => (
-            // <IconSymbol size={28} name="person.fill" color={color} />
             <AntDesign size={28} name="user" color={color} />
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="book"
-        options={{
-          href: null,
-        }}
-      /> */}
-      {/* <Tabs.Screen
-        name="book/reader/index"
-        options={{
-          href: null,
-          title: "Читалка",
-        }}
-      />
-      <Tabs.Screen
-        name="book/reviews/index"
-        options={{
-          href: null,
-          title: "Отзывы",
-        }}
-      /> */}
     </Tabs>
   );
 }
