@@ -11,7 +11,7 @@ import { Button, IconButton, MD3Colors, Text } from "react-native-paper";
 import { contrast, resolveTheme } from "@/src/constants/reader-theme";
 import { useBookmarksStyles } from "@/src/styles/bookmarksStyles";
 import { useTranslation } from "react-i18next";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 interface Props {
   onClose: () => void;
 }

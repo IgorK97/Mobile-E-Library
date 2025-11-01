@@ -7,7 +7,7 @@ import { useColorScheme } from "@/src/hooks/use-color-scheme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {

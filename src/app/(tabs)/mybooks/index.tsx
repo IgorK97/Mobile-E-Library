@@ -1,9 +1,9 @@
 import { BookCard } from "@/src/components/library/book-card";
-import { Book } from "@/src/types/types";
+import { Book } from "@/src/shared/types/types";
 import { router } from "expo-router";
 import { BookOpen } from "lucide-react-native";
 import { useState } from "react";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -29,7 +29,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -49,7 +49,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -69,7 +69,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -89,7 +89,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -109,7 +109,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -129,7 +129,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",

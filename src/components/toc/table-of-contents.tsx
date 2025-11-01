@@ -17,7 +17,7 @@ import Section from "./section";
 import { contrast, resolveTheme } from "@/src/constants/reader-theme";
 import { useTocStyles } from "@/src/styles/tocStyles";
 
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { useTranslation } from "react-i18next";
 interface Props {
   onPressSection: (section: SectionType) => void;

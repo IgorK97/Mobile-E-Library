@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import "@/src/i18n";
+import "@/src/shared/i18n";
 
 import { useSearchStyles } from "@/src/styles/searchStyles";
 import { useTypography } from "@/src/styles/fontStyles";

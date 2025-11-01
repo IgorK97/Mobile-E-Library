@@ -1,10 +1,17 @@
-import { Book } from "@/src/types/types";
+import { Book } from "@/src/shared/types/types";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { ArrowLeft, Bookmark, Heart } from "lucide-react-native";
+import {
+  ArrowLeft,
+  Bookmark,
+  Heart,
+  Download,
+  CircleX,
+  CircleFadingArrowUp,
+} from "lucide-react-native";
 import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { useBookStyles } from "@/src/styles/bookStyles";
 import {
   favColor,
@@ -23,7 +30,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -43,7 +50,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -63,7 +70,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -83,7 +90,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -103,7 +110,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -123,7 +130,7 @@ const books: Book[] = [
     year: 1993,
     description:
       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("../../assets/images/book_1.png"),
+    imageUrl: require("@assets/images/book_1.png"),
     genres: [
       "Философия",
       "Культурология",
@@ -139,6 +146,9 @@ export default function BookDetailsScreen() {
   console.log(id);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isDownloaded, setIsDownloaded] = useState<boolean>(false);
+  const [isNewBookVersionAvailable, setIsNewBookVersionAvailable] =
+    useState<boolean>(false);
   const router = useRouter();
   const { t } = useTranslation();
   const styles = useBookStyles();
@@ -153,6 +163,25 @@ export default function BookDetailsScreen() {
           <ArrowLeft size={24} color="#000" />
         </TouchableOpacity>
         <View style={styles.headerIcons}>
+          <TouchableOpacity
+            onPress={() => setIsDownloaded(!isDownloaded)}
+            style={styles.iconButton}
+          >
+            {!isDownloaded ? (
+              <Download size={24} color={"#000"} fill="#fff" />
+            ) : (
+              <CircleX size={24} color={"#000"} />
+            )}
+          </TouchableOpacity>
+          {isNewBookVersionAvailable && (
+            <TouchableOpacity
+              onPress={() =>
+                setIsNewBookVersionAvailable(!isNewBookVersionAvailable)
+              }
+            >
+              <CircleFadingArrowUp size={24} color={"#000"} />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() => setIsBookmarked(!isBookmarked)}
             style={styles.iconButton}

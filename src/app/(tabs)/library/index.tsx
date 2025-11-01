@@ -1,10 +1,10 @@
 import { BookCard } from "@/src/components/library/book-card";
 import { SectionHeader } from "@/src/components/library/section-header";
-import { Book } from "@/src/types/types";
+import { Book } from "@/src/shared/types/types";
 import { useRouter } from "expo-router";
 import { FlatList, ScrollView, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { commonStyles } from "@/src/constants/common";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 import { Colors } from "@/src/constants/theme";

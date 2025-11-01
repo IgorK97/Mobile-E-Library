@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { useTranslation } from "react-i18next";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { Colors } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 import { useAuthStyles } from "@/src/styles/authStyles";

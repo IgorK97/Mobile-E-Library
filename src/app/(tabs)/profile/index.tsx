@@ -13,7 +13,7 @@ import {
 import { router } from "expo-router";
 import { ArrowLeft, ChevronRight, User } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { Colors, FontSizes } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 import { useProfileStyles } from "@/src/styles/profileStyles";

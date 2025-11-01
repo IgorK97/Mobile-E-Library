@@ -11,7 +11,7 @@ import {
 import { ReviewCard } from "@/src/components/reviews/review-card";
 import Feather from "@expo/vector-icons/Feather";
 import { useTranslation } from "react-i18next";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 import { useReviewStyles } from "@/src/styles/reviewStyles";
 import { router } from "expo-router";
 import { Star } from "lucide-react-native";

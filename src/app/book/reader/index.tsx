@@ -10,7 +10,7 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import "@/src/i18n";
+import "@/src/shared/i18n";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Bookmark } from "@epubjs-react-native/core/lib/typescript/types";
