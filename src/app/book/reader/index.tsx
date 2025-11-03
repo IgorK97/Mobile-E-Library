@@ -1,6 +1,7 @@
 import { Reader, useReader, Themes } from "@epubjs-react-native/core";
 import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import { Directory, File, Paths } from "expo-file-system";
+// import * as FileSystem from "expo-file-system/legacy";
 import React, { useEffect, useRef, useState } from "react";
 import { TableOfContents } from "@/src/components/toc/table-of-contents";
 import {
@@ -11,6 +12,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import "@/src/shared/i18n";
+import { BookService } from "@/src/scripts/services/BookService";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Bookmark } from "@epubjs-react-native/core/lib/typescript/types";
@@ -26,7 +28,7 @@ import { ReaderHeader } from "@/src/components/reader/reader-header";
 import { ReaderFooter } from "@/src/components/reader/reader-footer";
 import { BookmarksList } from "@/src/components/bookmarks/bookmark-list";
 
-const url = process.env.EXPO_PUBLIC_API_BASE_DEV_URL + "/api/Book/book.epub";
+const url = process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Book/book.epub";
 
 const dest = new Directory(Paths.cache, "files");
 const dbm: Bookmark[] = [];
@@ -77,12 +79,42 @@ export default function ReaderScreen() {
   useEffect(() => {
     const funcLoad = async () => {
       try {
-        if (dest.exists) dest.delete();
-        dest.create();
-        const output = await File.downloadFileAsync(url, dest);
-        console.log(output.exists);
+        const b = {
+          id: 1,
+          title: "Буддизм в Японии",
+          author: "Т.П. Григорьева",
+          rating: 4.5,
+          reviewCount: 10,
+          pages: 704,
+          year: 1993,
+          description:
+            "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+          imageUrl: require("@assets/images/book_1.png"),
+          genres: [
+            "Философия",
+            "Культурология",
+            "Религия",
+            "Буддизм",
+            "Восток",
+            "Япония",
+          ],
+        };
+        // const output = await File.downloadFileAsync(url, Paths.document);
+        const output = await BookService.saveToStorage("1.epub", url);
+        const res = await output.base64();
         console.log(output.uri);
-        const res = output.base64Sync();
+        // const uri = await BookService.saveToStorage(b);
+        // const file = new File(uri);
+        // if (dest.exists) dest.delete();
+        // dest.create();
+        // const output = await File.downloadFileAsync(url, dest);
+        // console.log(file.exists);
+        // console.log(file.uri);
+        // const res = await file.base64();
+        // const res = await FileSystem.readAsStringAsync(uri, {
+        //   encoding: FileSystem.EncodingType.Base64,
+        // });
+        // console.log(res);
         setEpubAsset(res);
       } catch (error) {
         console.error(error);
