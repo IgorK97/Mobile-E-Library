@@ -163,7 +163,10 @@ export default function HomeScreen() {
                 bookInfo={item}
                 key={item.id}
                 onPress={() =>
-                  router.push({ pathname: "/book", params: { id: item.id } })
+                  router.navigate({
+                    pathname: "/[id]",
+                    params: { id: 1 },
+                  })
                 }
               />
             </View>
@@ -183,7 +186,12 @@ export default function HomeScreen() {
               <BookCard
                 bookInfo={item}
                 key={item.id}
-                onPress={() => router.push("/book")}
+                onPress={() =>
+                  router.navigate({
+                    pathname: "/[id]",
+                    params: { id: 1 },
+                  })
+                }
               />
             </View>
           )}
@@ -202,7 +210,12 @@ export default function HomeScreen() {
               <BookCard
                 bookInfo={item}
                 key={item.id}
-                onPress={() => router.push("/book")}
+                onPress={() =>
+                  router.navigate({
+                    pathname: "/[id]",
+                    params: { id: 1 },
+                  })
+                }
               />
             </View>
           )}

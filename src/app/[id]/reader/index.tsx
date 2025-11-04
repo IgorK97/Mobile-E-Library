@@ -27,14 +27,14 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/components/reader/reader-header";
 import { ReaderFooter } from "@/src/components/reader/reader-footer";
 import { BookmarksList } from "@/src/components/bookmarks/bookmark-list";
-
-const url = process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Book/book.epub";
+import { useLocalSearchParams } from "expo-router";
 
 const dest = new Directory(Paths.cache, "files");
 const dbm: Bookmark[] = [];
 export default function ReaderScreen() {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const { id } = useLocalSearchParams();
 
   const { theme, changeFontSize, changeFontFamily, changeTheme, goToLocation } =
     useReader();
@@ -99,8 +99,11 @@ export default function ReaderScreen() {
             "Япония",
           ],
         };
+        const url =
+          process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Book/book.epub";
+
         // const output = await File.downloadFileAsync(url, Paths.document);
-        const output = await BookService.saveToStorage("1.epub", url);
+        const output = await BookService.saveToStorage(`${id}.epub`, url);
         const res = await output.base64();
         console.log(output.uri);
         // const uri = await BookService.saveToStorage(b);

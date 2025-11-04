@@ -22,7 +22,7 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="auth/index" options={{ headerShown: false }} />
-          <Stack.Screen name="book" options={{ headerShown: false }} />
+          <Stack.Screen name="[id]" options={{ headerShown: false }} />
 
           <Stack.Screen
             name="+not-found"
