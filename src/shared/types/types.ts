@@ -10,6 +10,7 @@ export interface Book {
   year: number;
   description: string;
   imageUrl: ImageSourcePropType;
+  imageBase64: string;
   genres: string[];
   fav?: boolean;
 }

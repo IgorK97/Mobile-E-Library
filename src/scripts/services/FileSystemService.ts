@@ -1,3 +1,4 @@
+import { Book } from "@/src/shared/types/types";
 import { File, Paths, Directory } from "expo-file-system";
 
 const downDir = `${Paths.document.uri}chronolibrisBooks/`;
@@ -21,7 +22,7 @@ export const FileSystemService = {
   //   return uri;
   // },
 
-  async downloadToStorage(bookName: string, remoteUrl: string) {
+  async downloadBookToStorage(bookName: string, remoteUrl: string) {
     ensureDirExists(downDir);
     // console.log(bookName);
     // console.log(downDir);
@@ -30,6 +31,17 @@ export const FileSystemService = {
       remoteUrl,
       new File(`${downDir}${bookName}`)
     );
+  },
+
+  async downloadMetaToStorage(book: Book) {
+    const fileName = `${downDir}${String(book.id)}-meta.json`;
+    ensureDirExists(downDir);
+    ensureFileNotExists(fileName);
+    const file = new File(fileName);
+    file.create();
+    const content = JSON.stringify(book);
+    file.write(content);
+    console.log(file.textSync());
   },
 
   deleteFile(bookName: string) {

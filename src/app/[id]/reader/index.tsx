@@ -12,6 +12,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import "@/src/shared/i18n";
+import { Asset } from "expo-asset";
 import { BookService } from "@/src/scripts/services/BookService";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -28,6 +29,7 @@ import { ReaderHeader } from "@/src/components/reader/reader-header";
 import { ReaderFooter } from "@/src/components/reader/reader-footer";
 import { BookmarksList } from "@/src/components/bookmarks/bookmark-list";
 import { useLocalSearchParams } from "expo-router";
+import { Book } from "@/src/shared/types/types";
 
 const dest = new Directory(Paths.cache, "files");
 const dbm: Bookmark[] = [];
@@ -79,7 +81,11 @@ export default function ReaderScreen() {
   useEffect(() => {
     const funcLoad = async () => {
       try {
-        const b = {
+        // const asset = Asset.fromModule("@assets/images/book_1.png");
+        // await asset.downloadAsync();
+        // const ifile = new File(asset.localUri ?? "");
+        // const array64 = await ifile.base64();
+        const b: Book = {
           id: 1,
           title: "Буддизм в Японии",
           author: "Т.П. Григорьева",
@@ -98,12 +104,15 @@ export default function ReaderScreen() {
             "Восток",
             "Япония",
           ],
+          imageBase64: "array64",
         };
+        // console.log(array64);
         const url =
           process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Book/book.epub";
 
         // const output = await File.downloadFileAsync(url, Paths.document);
-        const output = await BookService.saveToStorage(`${id}.epub`, url);
+        const output = await BookService.saveToStorage(b, url);
+        await BookService.saveMeta(b);
         const res = await output.base64();
         console.log(output.uri);
         // const uri = await BookService.saveToStorage(b);
