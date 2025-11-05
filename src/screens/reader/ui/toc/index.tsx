@@ -13,7 +13,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, Text } from "react-native-paper";
-import Section from "./section";
+import Section from "../section";
 import { contrast, resolveTheme } from "@/src/constants/reader-theme";
 import { useTocStyles } from "@/src/styles/tocStyles";
 

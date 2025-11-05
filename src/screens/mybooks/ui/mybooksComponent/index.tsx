@@ -1,24 +1,23 @@
+import { BookCard } from "@/src/components/library/book-card";
 import { Book } from "@/src/shared/types/types";
-import { useRouter, useLocalSearchParams } from "expo-router";
-import {
-  ArrowLeft,
-  Bookmark,
-  Heart,
-  Download,
-  CircleX,
-  CircleFadingArrowUp,
-} from "lucide-react-native";
+import { router } from "expo-router";
+import { BookOpen } from "lucide-react-native";
 import { useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
-import { useBookStyles } from "@/src/styles/bookStyles";
+import { useTranslation } from "react-i18next";
 import {
-  favColor,
-  unfavColor,
-  fillFavColor,
-  fillUnfavColor,
-} from "@/src/constants/theme";
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import { useMyBooksStyles } from "@/src/styles/mybooksStyles";
+import { useTypography } from "@/src/styles/fontStyles";
+import { commonStyles } from "@/src/constants/common";
+import { Colors } from "@/src/constants/theme";
+import { useColorScheme } from "@/src/hooks/use-color-scheme";
 const books: Book[] = [
   {
     id: 1,
@@ -147,128 +146,89 @@ const books: Book[] = [
     imageBase64: "",
   },
 ];
-export default function BookDetailsScreen() {
-  const { id } = useLocalSearchParams();
-  console.log(id);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [isDownloaded, setIsDownloaded] = useState<boolean>(false);
-  const [isNewBookVersionAvailable, setIsNewBookVersionAvailable] =
-    useState<boolean>(false);
-  const router = useRouter();
+export const MyBooksComponent = () => {
+  const [activaTab, setActiveTab] = useState("favorites");
+  const { width } = useWindowDimensions();
+  const numColumns = width < 500 ? 2 : 4;
+  const cardWidth = width / numColumns - 24;
+  const tabs = [
+    { id: "favorites", label: "Избранное" },
+    { id: "downloaded", label: "Загруженные" },
+    { id: "reading", label: "История чтения" },
+    { id: "read", label: "Прочитанные" },
+  ];
+  const color = useColorScheme();
+  const styles = useMyBooksStyles();
+  const typography = useTypography();
   const { t } = useTranslation();
-  const styles = useBookStyles();
-
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...commonStyles.defaultContainer,
+        backgroundColor:
+          color === "light" ? Colors.light.background : Colors.dark.background,
+      }}
+    >
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.iconButton}
-        >
-          <ArrowLeft size={24} color="#000" />
-        </TouchableOpacity>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity
-            onPress={() => setIsDownloaded(!isDownloaded)}
-            style={styles.iconButton}
-          >
-            {!isDownloaded ? (
-              <Download size={24} color={"#000"} fill="#fff" />
-            ) : (
-              <CircleX size={24} color={"#000"} />
-            )}
-          </TouchableOpacity>
-          {isNewBookVersionAvailable && (
-            <TouchableOpacity
-              onPress={() =>
-                setIsNewBookVersionAvailable(!isNewBookVersionAvailable)
-              }
-            >
-              <CircleFadingArrowUp size={24} color={"#000"} />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            onPress={() => setIsBookmarked(!isBookmarked)}
-            style={styles.iconButton}
-          >
-            <Bookmark
-              size={24}
-              color={isBookmarked ? favColor : "#000"}
-              fill={"none"}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => setIsFavorite(!isFavorite)}
-            style={styles.iconButton}
-          >
-            <Heart
-              size={24}
-              color={isFavorite ? favColor : "#000"}
-              fill={isFavorite ? fillFavColor : fillUnfavColor}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.coverContainer}>
-          <Image
-            source={books[0].imageUrl}
-            style={styles.cover}
-            resizeMode="contain"
+        <View style={styles.headerIcon}>
+          <BookOpen
+            size={20}
+            color={
+              color === "light"
+                ? Colors.light.background
+                : Colors.dark.background
+            }
           />
         </View>
+        <Text style={typography.headerTitle}>{t("mybooks.my_books")}</Text>
+      </View>
 
-        <View style={styles.infoContainer}>
-          <View style={styles.textCenter}>
-            <Text style={styles.author}>{books[0].author}</Text>
-            <Text style={styles.title}>{books[0].title}</Text>
-          </View>
-          <Text style={styles.reviewText}>
-            {books[0].reviewCount} {t("book.review_count")}
-          </Text>
-        </View>
-        <Text style={styles.metaText}>
-          {books[0].pages} {t("book.p")} | {books[0].year}
-        </Text>
-
-        <TouchableOpacity
-          style={styles.readButton}
-          onPress={() => router.push(`/book/reader`)}
-        >
-          <Text style={styles.readButtonText}>{t("book.read")}</Text>
-        </TouchableOpacity>
-        <View style={styles.aboutSection}>
-          <Text style={styles.aboutTitle}>{t("book.about")}</Text>
-          <Text style={styles.aboutText}>{books[0].description}</Text>
-        </View>
-        <View style={styles.genresSection}>
-          <Text style={styles.sectionTitle}>{t("book.genres")}</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.genresContainer}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.tabsContainer}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
+        {tabs.map((tab) => (
+          <TouchableOpacity
+            key={tab.id}
+            style={[
+              styles.tabButton,
+              activaTab === tab.id && styles.tabButtonSelected,
+            ]}
+            onPress={() => setActiveTab(tab.id)}
           >
-            {books[0].genres?.map((genre, index) => (
-              <TouchableOpacity key={index} style={styles.genreChip}>
-                <Text style={styles.genreText}>{genre}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-        <TouchableOpacity
-          style={styles.reviewsButton}
-          onPress={() => {
-            router.push(`/book/reviews`);
-          }}
-        >
-          <Text style={styles.reviewsButtonText}>
-            {t("book.view_all_reviews")}
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={[
+                typography.tabText,
+                activaTab === tab.id && typography.tabTextSelected,
+              ]}
+            >
+              {tab.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
+
+      <FlatList
+        data={books}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={numColumns}
+        contentContainerStyle={commonStyles.grid}
+        columnWrapperStyle={commonStyles.gridRow}
+        style={{ gap: 5, marginBottom: 5 }}
+        renderItem={({ item }) => (
+          <View style={{ width: cardWidth }}>
+            <BookCard
+              bookInfo={item}
+              key={item.id}
+              onPress={() =>
+                router.push({ pathname: "/[id]", params: { id: item.id } })
+              }
+            />
+          </View>
+        )}
+      />
     </View>
   );
-}
+};
