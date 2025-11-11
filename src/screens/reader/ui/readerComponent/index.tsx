@@ -33,7 +33,12 @@ import { Book } from "@/src/shared/types/types";
 
 const dest = new Directory(Paths.cache, "files");
 const dbm: Bookmark[] = [];
-export const ReaderComponent = () => {
+
+interface ReaderProps {
+  onNavigate: () => void;
+}
+
+export const ReaderComponent = ({ onNavigate }: ReaderProps) => {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams();
@@ -185,7 +190,13 @@ export const ReaderComponent = () => {
         onPress={() => setIsFullScreen(!isFullScreen)}
         style={StyleSheet.absoluteFill}
       ></Pressable>
-      {!isFullScreen && <ReaderHeader author="Автор" title="Название книги" />}
+      {!isFullScreen && (
+        <ReaderHeader
+          author="Автор"
+          title="Название книги"
+          onNavigate={onNavigate}
+        />
+      )}
       {!isFullScreen && (
         <ReaderFooter
           currentFontSize={currentFontSize}

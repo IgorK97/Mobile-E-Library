@@ -19,7 +19,11 @@ import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useProfileStyles } from "@/src/screens/profile/ui/profileComponent/profileStyles";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
-export const Profile = () => {
+interface ProfileProps {
+  onNavigate: () => void;
+}
+
+export const Profile = ({ onNavigate }: ProfileProps) => {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [isSecurityModalVisible, setIsSecurityModalVisible] = useState(false);
   const [isRegistered, setIsRegistered] = useState(true);
@@ -114,10 +118,10 @@ export const Profile = () => {
             // onPress={() => router.navigate(`/auth`)}
             onPress={() => {
               if (isRegistered) setIsRegistered(!isRegistered);
-              else
-                router.navigate({
-                  pathname: "/auth",
-                });
+              else onNavigate();
+              // router.navigate({
+              //   pathname: "/auth",
+              // });
             }}
           >
             <Text

@@ -1,8 +1,7 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ScrollView,
-  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -13,7 +12,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 import { useReviewStyles } from "@/src/screens/reviews/ui/reviewsComponent/reviewStyles";
-import { router } from "expo-router";
+// import { router } from "expo-router";
 import { Star } from "lucide-react-native";
 interface Review {
   id: string;
@@ -73,7 +72,11 @@ const mockReviews: Review[] = [
   },
 ];
 
-export const Reviews = () => {
+interface ReviewsProps {
+  onNavigate: () => void;
+}
+
+export const Reviews = ({ onNavigate }: ReviewsProps) => {
   const [sortBy, setSortBy] = useState("highest");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newReview, setNewReview] = useState("");
@@ -96,7 +99,7 @@ export const Reviews = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => onNavigate()}
           style={styles.backButton}
         >
           <Feather name="arrow-left" size={24} color="#000" />

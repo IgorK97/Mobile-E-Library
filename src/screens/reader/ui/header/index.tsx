@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+// import { router } from "expo-router";
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 
@@ -10,9 +10,10 @@ import { useReaderHeaderStyles } from "@/src/screens/reader/ui/header/readerHead
 interface Props {
   author: string;
   title: string;
+  onNavigate: () => void;
 }
 
-export function ReaderHeader({ author, title }: Props) {
+export function ReaderHeader({ author, title, onNavigate }: Props) {
   const { theme } = useReader();
   const colors = resolveTheme(theme);
   const styles = useReaderHeaderStyles();
@@ -23,7 +24,7 @@ export function ReaderHeader({ author, title }: Props) {
         backgroundColor: colors.background,
       }}
     >
-      <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
+      <TouchableOpacity style={styles.iconButton} onPress={() => onNavigate()}>
         <ArrowLeft size={24} color="#D32F2F" />
       </TouchableOpacity>
       <View style={styles.headerText}>
