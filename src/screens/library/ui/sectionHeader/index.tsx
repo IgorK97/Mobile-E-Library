@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { useSectionHeaderStyles } from "@/src/styles/sectionHeader";
+import { useSectionHeaderStyles } from "@/src/screens/library/ui/sectionHeader/sectionHeader";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 interface SectionHeaderProps {

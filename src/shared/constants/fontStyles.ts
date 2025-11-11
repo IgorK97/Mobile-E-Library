@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { FontSizes } from "@/src/constants/theme";
-import { useThemeColor } from "@/src/hooks/use-theme-color";
+import { FontSizes } from "@/src/shared/constants/theme";
+import { useThemeColor } from "@/src/shared/hooks/use-theme-color";
 export const useTypography = () => {
   return StyleSheet.create({
     defaultTitle: {

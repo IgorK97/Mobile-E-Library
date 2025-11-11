@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { useThemeColor } from "@/src/hooks/use-theme-color";
+import { useThemeColor } from "@/src/shared/hooks/use-theme-color";
 
 export const useProfileStyles = () => {
   return StyleSheet.create({

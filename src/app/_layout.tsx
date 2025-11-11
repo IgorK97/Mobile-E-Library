@@ -1,4 +1,4 @@
-import { useColorScheme } from "@/src/hooks/use-color-scheme";
+import { useColorScheme } from "@/src/shared/hooks/use-color-scheme";
 import { ReaderProvider } from "@epubjs-react-native/core";
 import {
   DarkTheme,

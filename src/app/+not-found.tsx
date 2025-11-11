@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import { StyleSheet } from "react-native";
 
-import { ThemedText } from "@/src/components/ui/themed-text";
-import { ThemedView } from "@/src/components/ui/themed-view";
+import { ThemedText } from "@/src/shared/ui/themed-text";
+import { ThemedView } from "@/src/shared/ui/themed-view";
 import "@/src/shared/i18n";
 import { useTranslation } from "react-i18next";
 

@@ -8,19 +8,19 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { useBookCardStyles } from "@/src/styles/bookCardStyles";
+import { useBookCardStyles } from "@/src/entities/books/ui/book-card/bookCardStyles";
 import {
   favColor,
   fillFavColor,
   fillUnfavColor,
   unfavColor,
-} from "@/src/constants/theme";
+} from "@/src/shared/constants/theme";
 interface BookCardProps {
   bookInfo: Book;
   onPress?: () => void;
 }
 
-export function BookCard({ bookInfo, onPress }: BookCardProps) {
+export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
   const [isFavorite, setIsFavorite] = useState(bookInfo.fav || false);
   const { width } = useWindowDimensions();
   const numColumns = width < 500 ? 2 : 4;
@@ -56,4 +56,4 @@ export function BookCard({ bookInfo, onPress }: BookCardProps) {
       <Text style={styles.bookAuthor}>{bookInfo.author}</Text>
     </View>
   );
-}
+};

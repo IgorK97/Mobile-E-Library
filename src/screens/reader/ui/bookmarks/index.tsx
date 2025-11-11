@@ -8,8 +8,8 @@ import {
 } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, IconButton, MD3Colors, Text } from "react-native-paper";
-import { contrast, resolveTheme } from "@/src/constants/reader-theme";
-import { useBookmarksStyles } from "@/src/styles/bookmarksStyles";
+import { contrast, resolveTheme } from "@/src/shared/constants/reader-theme";
+import { useBookmarksStyles } from "@/src/screens/reader/ui/bookmarks/bookmarksStyles";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 interface Props {

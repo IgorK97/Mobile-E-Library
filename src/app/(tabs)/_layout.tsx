@@ -1,9 +1,9 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { HapticTab } from "@/src/components/ui/haptic-tab";
-import { Colors } from "@/src/constants/theme";
-import { useColorScheme } from "@/src/hooks/use-color-scheme";
+import { HapticTab } from "@/src/shared/ui/haptic-tab";
+import { Colors } from "@/src/shared/constants/theme";
+import { useColorScheme } from "@/src/shared/hooks/use-color-scheme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";

@@ -12,8 +12,8 @@ import { useTranslation } from "react-i18next";
 
 import "@/src/shared/i18n";
 
-import { useSearchStyles } from "@/src/styles/searchStyles";
-import { useTypography } from "@/src/styles/fontStyles";
+import { useSearchStyles } from "@/src/screens/search/searchStyles";
+import { useTypography } from "@/src/shared/constants/fontStyles";
 
 export default function SearchComponent() {
   const [open, setOpen] = useState(false);

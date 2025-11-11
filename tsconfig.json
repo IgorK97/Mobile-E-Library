@@ -16,6 +16,6 @@
     "**/*.png",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "src/scripts/services/trash.js"
+    "src/shared/services/trash.js"
   ]
 }

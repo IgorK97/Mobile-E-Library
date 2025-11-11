@@ -14,8 +14,8 @@ import {
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Button, Text } from "react-native-paper";
 import Section from "../section";
-import { contrast, resolveTheme } from "@/src/constants/reader-theme";
-import { useTocStyles } from "@/src/styles/tocStyles";
+import { contrast, resolveTheme } from "@/src/shared/constants/reader-theme";
+import { useTocStyles } from "@/src/screens/reader/ui/toc/tocStyles";
 
 import "@/src/shared/i18n";
 import { useTranslation } from "react-i18next";

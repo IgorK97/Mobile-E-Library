@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import "@/src/shared/i18n";
 import { Asset } from "expo-asset";
-import { BookService } from "@/src/scripts/services/BookService";
+import { BookService } from "@/src/shared/services/BookService";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Bookmark } from "@epubjs-react-native/core/lib/typescript/types";
@@ -22,7 +22,7 @@ import {
   MAX_FONT_SIZE,
   MIN_FONT_SIZE,
   themes,
-} from "@/src/constants/reader-theme";
+} from "@/src/shared/constants/reader-theme";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/screens/reader/ui/header";
