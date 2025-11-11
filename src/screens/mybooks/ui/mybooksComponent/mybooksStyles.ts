@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { useThemeColor } from "@/src/shared/hooks/use-theme-color";
+import { useThemeColor } from "@/src/shared/lib/hooks/use-theme-color";
 
 export const useMyBooksStyles = () => {
   return StyleSheet.create({

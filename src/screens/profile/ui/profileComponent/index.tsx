@@ -16,10 +16,10 @@ import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 import { Colors, FontSizes } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
-import { useProfileStyles } from "@/src/screens/profile/profileStyles";
+import { useProfileStyles } from "@/src/screens/profile/ui/profileComponent/profileStyles";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
-export default function ProfileComponent() {
+export const Profile = () => {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [isSecurityModalVisible, setIsSecurityModalVisible] = useState(false);
 
@@ -267,4 +267,4 @@ export default function ProfileComponent() {
       </Modal>
     </View>
   );
-}
+};

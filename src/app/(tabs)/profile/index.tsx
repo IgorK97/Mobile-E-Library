@@ -1,5 +1,5 @@
 import "@/src/shared/i18n";
-import ProfileComponent from "@/src/screens/profile";
+import ProfileComponent from "@/src/screens/profile/ui/profileComponent";
 
 export default function ProfileScreen() {
   return <ProfileComponent />;

@@ -12,10 +12,10 @@ import { useTranslation } from "react-i18next";
 
 import "@/src/shared/i18n";
 
-import { useSearchStyles } from "@/src/screens/search/searchStyles";
+import { useSearchStyles } from "@/src/screens/search/ui/searchComponent/searchStyles";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
-export default function SearchComponent() {
+export const Search = () => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -230,7 +230,7 @@ export default function SearchComponent() {
       </Modal>
     </View>
   );
-}
+};
 
 interface GenreTreeProps {
   tree: { [key: string]: any };

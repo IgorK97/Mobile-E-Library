@@ -1,5 +1,5 @@
 import "@/src/shared/i18n";
-import SearchComponent from "@/src/screens/search";
+import SearchComponent from "@/src/screens/search/ui/searchComponent";
 
 export default function SearchScreen() {
   return <SearchComponent />;
