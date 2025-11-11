@@ -1,1 +1,1 @@
-export { HomeComponent } from "./ui/libraryComponent";
+export { Library } from "./ui/libraryComponent";

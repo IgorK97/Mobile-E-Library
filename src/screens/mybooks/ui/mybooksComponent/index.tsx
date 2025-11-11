@@ -1,6 +1,6 @@
 import { BookCard } from "@/src/entities/books";
 import { Book } from "@/src/shared/types/types";
-import { router } from "expo-router";
+// import { router } from "expo-router";
 import { BookOpen } from "lucide-react-native";
 import { useState } from "react";
 import "@/src/shared/i18n";
@@ -146,7 +146,12 @@ const books: Book[] = [
     imageBase64: "",
   },
 ];
-export const MyBooksComponent = () => {
+
+interface MyBooksProps {
+  onNavigateToBook: (id: number) => void;
+}
+
+export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
   const [activaTab, setActiveTab] = useState("favorites");
   const { width } = useWindowDimensions();
   const numColumns = width < 500 ? 2 : 4;
@@ -223,7 +228,8 @@ export const MyBooksComponent = () => {
               bookInfo={item}
               key={item.id}
               onPress={() =>
-                router.push({ pathname: "/[id]", params: { id: item.id } })
+                // router.push({ pathname: "/[id]", params: { id: item.id } })
+                onNavigateToBook(item.id)
               }
             />
           </View>

@@ -17,7 +17,7 @@ import {
 } from "@/src/shared/lib/constants/theme";
 interface BookCardProps {
   bookInfo: Book;
-  onPress?: () => void;
+  onPress: () => void;
 }
 
 export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {

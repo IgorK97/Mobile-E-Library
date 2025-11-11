@@ -15,7 +15,11 @@ import "@/src/shared/i18n";
 import { useSearchStyles } from "@/src/screens/search/ui/searchComponent/searchStyles";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
-export const Search = () => {
+interface SearchProps {
+  onNavigateToBook: (bookId: number) => void;
+}
+
+export const Search = ({ onNavigateToBook }: SearchProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 

@@ -1,1 +1,1 @@
-export { MyBooksComponent } from "./ui/mybooksComponent";
+export { MyBooks } from "./ui/mybooksComponent";

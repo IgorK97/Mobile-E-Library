@@ -1,7 +1,7 @@
 import { BookCard } from "@/src/entities/books";
 import { SectionHeader } from "./../sectionHeader";
 import { Book } from "@/src/shared/types/types";
-import { useRouter } from "expo-router";
+// import { useRouter } from "expo-router";
 import { FlatList, ScrollView, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "@/src/shared/i18n";
@@ -140,8 +140,13 @@ const books3 = [
     imageBase64: "",
   },
 ];
-export const HomeComponent = () => {
-  const router = useRouter();
+
+interface LibraryProps {
+  onNavigateToBook: (id: number) => void;
+}
+
+export const Library = ({ onNavigateToBook }: LibraryProps) => {
+  // const router = useRouter();
   const { width } = useWindowDimensions();
   const numColumns = 2;
   const cardWidth = width / numColumns - 24;
@@ -169,10 +174,11 @@ export const HomeComponent = () => {
                 bookInfo={item}
                 key={item.id}
                 onPress={() =>
-                  router.navigate({
-                    pathname: "/[id]",
-                    params: { id: 1 },
-                  })
+                  // router.navigate({
+                  //   pathname: "/[id]",
+                  //   params: { id: 1 },
+                  // })
+                  onNavigateToBook(item.id)
                 }
               />
             </View>
@@ -193,10 +199,11 @@ export const HomeComponent = () => {
                 bookInfo={item}
                 key={item.id}
                 onPress={() =>
-                  router.navigate({
-                    pathname: "/[id]",
-                    params: { id: 1 },
-                  })
+                  // router.navigate({
+                  //   pathname: "/[id]",
+                  //   params: { id: 1 },
+                  // })
+                  onNavigateToBook(item.id)
                 }
               />
             </View>
@@ -217,10 +224,11 @@ export const HomeComponent = () => {
                 bookInfo={item}
                 key={item.id}
                 onPress={() =>
-                  router.navigate({
-                    pathname: "/[id]",
-                    params: { id: 1 },
-                  })
+                  // router.navigate({
+                  //   pathname: "/[id]",
+                  //   params: { id: 1 },
+                  // })
+                  onNavigateToBook(item.id)
                 }
               />
             </View>
