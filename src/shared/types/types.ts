@@ -23,3 +23,45 @@ export interface DownloadedBook {
   lastOpenedAt?: string;
   progress?: number;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface BooksListresponse {
+  books: Book[];
+  total: number;
+  page: number;
+  hasMore: boolean;
+}
+
+export interface BooksFilter {
+  includedGenres?: number[];
+  excludedGenres?: number[];
+  page?: number;
+  limit?: number;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
+export interface ApiError {
+  message: string;
+  code: number;
+  details?: any;
+}

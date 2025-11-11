@@ -15,152 +15,25 @@ import "@/src/shared/i18n";
 import { useBookStyles } from "@/src/screens/library/ui/libraryComponent/bookStyles";
 import {
   favColor,
-  unfavColor,
+  // unfavColor,
   fillFavColor,
   fillUnfavColor,
 } from "@/src/shared/lib/constants/theme";
-// const books: Book[] = [
-//   {
-//     id: 1,
-//     title: "Буддизм в Японии",
-//     author: "Т.П. Григорьева",
-//     rating: 4.5,
-//     reviewCount: 10,
-//     pages: 704,
-//     year: 1993,
-//     description:
-//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-//     imageUrl: require("@assets/images/book_1.png"),
-//     genres: [
-//       "Философия",
-//       "Культурология",
-//       "Религия",
-//       "Буддизм",
-//       "Восток",
-//       "Япония",
-//     ],
-//     imageBase64: "",
-//   },
-//   {
-//     id: 2,
-//     title: "Буддизм в Японии",
-//     author: "Т.П. Григорьева",
-//     rating: 4.5,
-//     reviewCount: 10,
-//     pages: 704,
-//     year: 1993,
-//     description:
-//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-//     imageUrl: require("@assets/images/book_1.png"),
-//     genres: [
-//       "Философия",
-//       "Культурология",
-//       "Религия",
-//       "Буддизм",
-//       "Восток",
-//       "Япония",
-//     ],
-//     imageBase64: "",
-//   },
-//   {
-//     id: 3,
-//     title: "Буддизм в Японии",
-//     author: "Т.П. Григорьева",
-//     rating: 4.5,
-//     reviewCount: 10,
-//     pages: 704,
-//     year: 1993,
-//     description:
-//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-//     imageUrl: require("@assets/images/book_1.png"),
-//     genres: [
-//       "Философия",
-//       "Культурология",
-//       "Религия",
-//       "Буддизм",
-//       "Восток",
-//       "Япония",
-//     ],
-//     imageBase64: "",
-//   },
-//   {
-//     id: 4,
-//     title: "Буддизм в Японии",
-//     author: "Т.П. Григорьева",
-//     rating: 4.5,
-//     reviewCount: 10,
-//     pages: 704,
-//     year: 1993,
-//     description:
-//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-//     imageUrl: require("@assets/images/book_1.png"),
-//     genres: [
-//       "Философия",
-//       "Культурология",
-//       "Религия",
-//       "Буддизм",
-//       "Восток",
-//       "Япония",
-//     ],
-//     imageBase64: "",
-//   },
-//   {
-//     id: 5,
-//     title: "Буддизм в Японии",
-//     author: "Т.П. Григорьева",
-//     rating: 4.5,
-//     reviewCount: 10,
-//     pages: 704,
-//     year: 1993,
-//     description:
-//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-//     imageUrl: require("@assets/images/book_1.png"),
-//     genres: [
-//       "Философия",
-//       "Культурология",
-//       "Религия",
-//       "Буддизм",
-//       "Восток",
-//       "Япония",
-//     ],
-//     imageBase64: "",
-//   },
-//   {
-//     id: 6,
-//     title: "Буддизм в Японии",
-//     author: "Т.П. Григорьева",
-//     rating: 4.5,
-//     reviewCount: 10,
-//     pages: 704,
-//     year: 1993,
-//     description:
-//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-//     imageUrl: require("@assets/images/book_1.png"),
-//     genres: [
-//       "Философия",
-//       "Культурология",
-//       "Религия",
-//       "Буддизм",
-//       "Восток",
-//       "Япония",
-//     ],
-//     imageBase64: "",
-//   },
-// ];
+import { useStore } from "@/src/shared/lib/store/globalStore";
 
 interface BookDetailsProps {
   onNavigateToReviews: (id: number) => void;
   onNavigateToRead: (id: number) => void;
   onNavigateToBack: () => void;
-  bookInfo: Book;
+  // bookInfo: Book;
 }
 
 export const BookDetails = ({
   onNavigateToReviews,
   onNavigateToRead,
   onNavigateToBack,
-  bookInfo,
-}: BookDetailsProps) => {
+}: // bookInfo,
+BookDetailsProps) => {
   // const { id } = useLocalSearchParams();
   // console.log(id);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -171,12 +44,17 @@ export const BookDetails = ({
   // const router = useRouter();
   const { t } = useTranslation();
   const styles = useBookStyles();
-
+  const { currentBook, setCurrentBook } = useStore();
+  const bookInfo = currentBook;
+  if (!bookInfo) return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => onNavigateToBack()}
+          onPress={() => {
+            setCurrentBook(null);
+            onNavigateToBack();
+          }}
           style={styles.iconButton}
         >
           <ArrowLeft size={24} color="#000" />

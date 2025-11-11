@@ -18,6 +18,7 @@ import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 import { commonStyles } from "@/src/shared/lib/constants/common";
 import { Colors } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 const books: Book[] = [
   {
     id: 1,
@@ -166,6 +167,7 @@ export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
   const styles = useMyBooksStyles();
   const typography = useTypography();
   const { t } = useTranslation();
+  const { setCurrentBook } = useStore();
   return (
     <View
       style={{
@@ -229,7 +231,10 @@ export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
               key={item.id}
               onPress={() =>
                 // router.push({ pathname: "/[id]", params: { id: item.id } })
-                onNavigateToBook(item.id)
+                {
+                  setCurrentBook(item);
+                  onNavigateToBook(item.id);
+                }
               }
             />
           </View>

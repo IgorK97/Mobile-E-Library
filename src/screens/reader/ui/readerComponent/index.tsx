@@ -1,10 +1,16 @@
 import { Reader, useReader, Themes } from "@epubjs-react-native/core";
 import { useFileSystem } from "@epubjs-react-native/expo-file-system";
-import { Directory, Paths } from "expo-file-system";
+// import { Directory, Paths } from "expo-file-system";
 // import * as FileSystem from "expo-file-system/legacy";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TableOfContents } from "@/src/screens/reader/ui/toc";
-import { Pressable, StyleSheet, View, useWindowDimensions } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import "@/src/shared/i18n";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,17 +26,20 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/screens/reader/ui/header";
 import { ReaderFooter } from "@/src/screens/reader/ui/footer";
 import { BookmarksList } from "@/src/screens/reader/ui/bookmarks";
+import { Book } from "@/src/shared/types/types";
+import { BookService } from "@/src/shared/services/BookService";
 // import { useLocalSearchParams } from "expo-router";
 
-const dest = new Directory(Paths.cache, "files");
+// const dest = new Directory(Paths.cache, "files");
 const dbm: Bookmark[] = [];
 
 interface ReaderProps {
   onNavigate: () => void;
-  bookContent: string;
+  // bookContent: string;
+  bookId: number;
 }
 
-export const ReaderComponent = ({ onNavigate, bookContent }: ReaderProps) => {
+export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   // const { id } = useLocalSearchParams();
@@ -73,6 +82,51 @@ export const ReaderComponent = ({ onNavigate, bookContent }: ReaderProps) => {
     setCurrentFontFamily(nextFontFamily);
     changeFontFamily(nextFontFamily);
   };
+  const [epubAsset, setEpubAsset] = useState<string | null>(null);
+  useEffect(() => {
+    const funcLoad = async () => {
+      try {
+        const b: Book = {
+          id: 1,
+          title: "Буддизм в Японии",
+          author: "Т.П. Григорьева",
+          rating: 4.5,
+          reviewCount: 10,
+          pages: 704,
+          year: 1993,
+          description:
+            "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+          imageUrl: require("@assets/images/book_1.png"),
+          genres: [
+            "Философия",
+            "Культурология",
+            "Религия",
+            "Буддизм",
+            "Восток",
+            "Япония",
+          ],
+          imageBase64: "array64",
+        };
+
+        const url =
+          process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Book/book.epub";
+
+        const output = await BookService.saveToStorage(b, url);
+        await BookService.saveMeta(b);
+        const res = await output.base64();
+        console.log(output.uri);
+
+        setEpubAsset(res);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    funcLoad();
+  }, []);
+
+  if (epubAsset === null) {
+    return <Text>...</Text>;
+  }
 
   return (
     <GestureHandlerRootView
@@ -91,7 +145,7 @@ export const ReaderComponent = ({ onNavigate, bookContent }: ReaderProps) => {
         }}
       >
         <Reader
-          src={bookContent}
+          src={epubAsset}
           fileSystem={useFileSystem}
           initialBookmarks={dbm}
           onAddBookmark={(bookmark) => {

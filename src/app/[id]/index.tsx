@@ -23,30 +23,30 @@ export default function BookDetailsScreen() {
       },
     });
   };
-  const book: Book = {
-    id: 1,
-    title: "Буддизм в Японии",
-    author: "Т.П. Григорьева",
-    rating: 4.5,
-    reviewCount: 10,
-    pages: 704,
-    year: 1993,
-    description:
-      "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("@assets/images/book_1.png"),
-    genres: [
-      "Философия",
-      "Культурология",
-      "Религия",
-      "Буддизм",
-      "Восток",
-      "Япония",
-    ],
-    imageBase64: "",
-  };
+  // const book: Book = {
+  //   id: 1,
+  //   title: "Буддизм в Японии",
+  //   author: "Т.П. Григорьева",
+  //   rating: 4.5,
+  //   reviewCount: 10,
+  //   pages: 704,
+  //   year: 1993,
+  //   description:
+  //     "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+  //   imageUrl: require("@assets/images/book_1.png"),
+  //   genres: [
+  //     "Философия",
+  //     "Культурология",
+  //     "Религия",
+  //     "Буддизм",
+  //     "Восток",
+  //     "Япония",
+  //   ],
+  //   imageBase64: "",
+  // };
   return (
     <BookDetails
-      bookInfo={book}
+      // bookInfo={book}
       onNavigateToBack={navigateToBack}
       onNavigateToRead={navigateToRead}
       onNavigateToReviews={navigateToReviews}

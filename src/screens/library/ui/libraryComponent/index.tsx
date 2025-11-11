@@ -8,6 +8,7 @@ import "@/src/shared/i18n";
 import { commonStyles } from "@/src/shared/lib/constants/common";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { Colors } from "@/src/shared/lib/constants/theme";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 const books1: Book[] = [
   {
     id: 1,
@@ -151,6 +152,8 @@ export const Library = ({ onNavigateToBook }: LibraryProps) => {
   const numColumns = 2;
   const cardWidth = width / numColumns - 24;
   const color = useColorScheme();
+  const { setCurrentBook } = useStore();
+
   return (
     <SafeAreaView
       style={{
@@ -173,13 +176,10 @@ export const Library = ({ onNavigateToBook }: LibraryProps) => {
               <BookCard
                 bookInfo={item}
                 key={item.id}
-                onPress={() =>
-                  // router.navigate({
-                  //   pathname: "/[id]",
-                  //   params: { id: 1 },
-                  // })
-                  onNavigateToBook(item.id)
-                }
+                onPress={() => {
+                  setCurrentBook(item);
+                  onNavigateToBook(item.id);
+                }}
               />
             </View>
           )}
@@ -198,13 +198,10 @@ export const Library = ({ onNavigateToBook }: LibraryProps) => {
               <BookCard
                 bookInfo={item}
                 key={item.id}
-                onPress={() =>
-                  // router.navigate({
-                  //   pathname: "/[id]",
-                  //   params: { id: 1 },
-                  // })
-                  onNavigateToBook(item.id)
-                }
+                onPress={() => {
+                  setCurrentBook(item);
+                  onNavigateToBook(item.id);
+                }}
               />
             </View>
           )}
@@ -223,13 +220,10 @@ export const Library = ({ onNavigateToBook }: LibraryProps) => {
               <BookCard
                 bookInfo={item}
                 key={item.id}
-                onPress={() =>
-                  // router.navigate({
-                  //   pathname: "/[id]",
-                  //   params: { id: 1 },
-                  // })
-                  onNavigateToBook(item.id)
-                }
+                onPress={() => {
+                  setCurrentBook(item);
+                  onNavigateToBook(item.id);
+                }}
               />
             </View>
           )}

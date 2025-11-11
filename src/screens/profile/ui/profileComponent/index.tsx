@@ -10,7 +10,6 @@ import {
   View,
 } from "react-native";
 
-import { router } from "expo-router";
 import { ArrowLeft, ChevronRight, User } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
@@ -18,6 +17,7 @@ import { Colors, FontSizes } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useProfileStyles } from "@/src/screens/profile/ui/profileComponent/profileStyles";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 
 interface ProfileProps {
   onNavigate: () => void;
@@ -28,8 +28,10 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
   const [isSecurityModalVisible, setIsSecurityModalVisible] = useState(false);
   const [isRegistered, setIsRegistered] = useState(true);
 
-  const [userName, setUserName] = useState("Читатель");
-  const [userEmail, setUserEmail] = useState("email@mail.ru");
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+
+  const { user, setUser } = useStore();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -43,7 +45,7 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
     color === "light" ? Colors.light.chevronRight : Colors.dark.chevronRight;
 
   const handleSaveProfile = () => {
-    console.log(userName, userEmail);
+    // console.log(userName, userEmail);
     setIsProfileModalVisible(false);
   };
 
@@ -56,6 +58,9 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
 
   const styles = useProfileStyles();
   const typography = useTypography();
+  // if (!user) {
+  //   setUser({ name: "Читатель", email: "email@mail.ru" });
+  // }
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -64,7 +69,7 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
             <User size={24} color={Colors.light.userIcon} />
           </View>
           <View>
-            <Text style={typography.rowText}>{userName}</Text>
+            <Text style={typography.rowText}>{user ? user.name : "Гость"}</Text>
             <Text
               style={{
                 fontSize: FontSizes.xs,
@@ -74,7 +79,7 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
                     : Colors.dark.subText,
               }}
             >
-              {userEmail}
+              {user ? user.email : ""}
             </Text>
           </View>
         </View>
@@ -117,8 +122,10 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
             style={styles.row}
             // onPress={() => router.navigate(`/auth`)}
             onPress={() => {
-              if (isRegistered) setIsRegistered(!isRegistered);
-              else onNavigate();
+              if (isRegistered) {
+                setUser(null);
+                setIsRegistered(!isRegistered);
+              } else onNavigate();
               // router.navigate({
               //   pathname: "/auth",
               // });
