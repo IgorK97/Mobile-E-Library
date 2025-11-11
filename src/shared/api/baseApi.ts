@@ -29,24 +29,14 @@ export abstract class BaseApi {
           message: response.statusText,
         }));
 
-        throw new ApiException({
-          message: errorData.message || "API request failed",
-          code: response.status,
-          details: errorData,
-        });
+        throw new Error(
+          `${errorData.message || "API request failed"}, ${response.status}`
+        );
       }
 
       return await response.json();
     } catch (error) {
-      if (error instanceof ApiException) {
-        throw error;
-      }
-
-      throw new ApiException({
-        message: "Network error",
-        code: 0,
-        details: error,
-      });
+      throw error;
     }
   }
 
@@ -70,11 +60,9 @@ export abstract class BaseApi {
         message: response.statusText,
       }));
 
-      throw new ApiException({
-        message: errorData.message || "API request failed",
-        code: response.status,
-        details: errorData,
-      });
+      throw new Error(
+        `${errorData.message || "API request failed"}, ${response.status}`
+      );
     }
 
     return await response.blob();

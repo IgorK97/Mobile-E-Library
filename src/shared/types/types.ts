@@ -30,7 +30,7 @@ export interface User {
   email: string;
 }
 
-export interface BooksListresponse {
+export interface BooksListResponse {
   books: Book[];
   total: number;
   page: number;
@@ -63,5 +63,4 @@ export interface AuthResponse {
 export interface ApiError {
   message: string;
   code: number;
-  details?: any;
 }
