@@ -22,6 +22,7 @@ import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 export const Profile = () => {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [isSecurityModalVisible, setIsSecurityModalVisible] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(true);
 
   const [userName, setUserName] = useState("Читатель");
   const [userEmail, setUserEmail] = useState("email@mail.ru");
@@ -110,7 +111,8 @@ export const Profile = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.row}
-            onPress={() => router.navigate(`/auth`)}
+            // onPress={() => router.navigate(`/auth`)}
+            onPress={() => setIsRegistered(!isRegistered)}
           >
             <Text
               style={[
@@ -123,7 +125,7 @@ export const Profile = () => {
                 },
               ]}
             >
-              {t("profile.exit")}
+              {isRegistered ? t("profile.exit") : t("profile.enter")}
             </Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
