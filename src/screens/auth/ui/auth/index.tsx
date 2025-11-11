@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+// import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -34,8 +34,12 @@ interface FormValues {
   phone: string;
 }
 
-export const Auth = () => {
-  const router = useRouter();
+interface AuthProps {
+  onNavigate: () => void;
+}
+
+export const Auth = ({ onNavigate }: AuthProps) => {
+  // const router = useRouter();
   const [isRegister, setIsRegister] = useState(false);
   const [form, setForm] = useState<FormValues>({
     username: "",
@@ -116,10 +120,12 @@ export const Auth = () => {
 
     if (isRegister) {
       Alert.alert(t("auth.alert_title_reg"), t("alert_text_reg"));
-      router.push("/(tabs)/library");
+      // router.push("/(tabs)/library");
+      onNavigate();
     } else {
       Alert.alert(t("auth.alert_title_auth"), t("auth.alert_text_auth"));
-      router.push("/(tabs)/library");
+      // router.push("/(tabs)/library");
+      onNavigate();
     }
   };
 

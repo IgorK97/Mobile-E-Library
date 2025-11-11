@@ -28,7 +28,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/screens/reader/ui/header";
 import { ReaderFooter } from "@/src/screens/reader/ui/footer";
 import { BookmarksList } from "@/src/screens/reader/ui/bookmarks";
-import { useLocalSearchParams } from "expo-router";
+// import { useLocalSearchParams } from "expo-router";
 import { Book } from "@/src/shared/types/types";
 
 const dest = new Directory(Paths.cache, "files");
@@ -41,7 +41,7 @@ interface ReaderProps {
 export const ReaderComponent = ({ onNavigate }: ReaderProps) => {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const { id } = useLocalSearchParams();
+  // const { id } = useLocalSearchParams();
 
   const { theme, changeFontSize, changeFontFamily, changeTheme, goToLocation } =
     useReader();
