@@ -112,7 +112,13 @@ export const Profile = () => {
           <TouchableOpacity
             style={styles.row}
             // onPress={() => router.navigate(`/auth`)}
-            onPress={() => setIsRegistered(!isRegistered)}
+            onPress={() => {
+              if (isRegistered) setIsRegistered(!isRegistered);
+              else
+                router.navigate({
+                  pathname: "/auth",
+                });
+            }}
           >
             <Text
               style={[

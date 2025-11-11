@@ -1,8 +1,8 @@
 import "@/src/shared/i18n";
-import ProfileComponent from "@/src/screens/profile/ui/profileComponent";
+import { Profile } from "@/src/screens/profile";
 
 export default function ProfileScreen() {
-  return <ProfileComponent />;
+  return <Profile />;
   // const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   // const [isSecurityModalVisible, setIsSecurityModalVisible] = useState(false);
 

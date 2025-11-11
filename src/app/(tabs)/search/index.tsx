@@ -1,8 +1,8 @@
 import "@/src/shared/i18n";
-import SearchComponent from "@/src/screens/search/ui/searchComponent";
+import {Search} from "@/src/screens/search";
 
 export default function SearchScreen() {
-  return <SearchComponent />;
+  return <Search />;
   // const [open, setOpen] = useState(false);
   // const [search, setSearch] = useState("");
 
