@@ -14,10 +14,10 @@ import {
   View,
 } from "react-native";
 import { useMyBooksStyles } from "@/src/screens/mybooks/ui/mybooksComponent/mybooksStyles";
-import { useTypography } from "@/src/shared/constants/fontStyles";
-import { commonStyles } from "@/src/shared/constants/common";
-import { Colors } from "@/src/shared/constants/theme";
-import { useColorScheme } from "@/src/shared/hooks/use-color-scheme";
+import { useTypography } from "@/src/shared/lib/constants/fontStyles";
+import { commonStyles } from "@/src/shared/lib/constants/common";
+import { Colors } from "@/src/shared/lib/constants/theme";
+import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 const books: Book[] = [
   {
     id: 1,

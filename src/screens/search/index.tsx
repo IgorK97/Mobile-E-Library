@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 
 import { useSearchStyles } from "@/src/screens/search/searchStyles";
-import { useTypography } from "@/src/shared/constants/fontStyles";
+import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
 export default function SearchComponent() {
   const [open, setOpen] = useState(false);

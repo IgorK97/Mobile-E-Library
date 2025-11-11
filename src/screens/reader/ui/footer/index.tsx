@@ -7,7 +7,7 @@ import {
   MAX_FONT_SIZE,
   MIN_FONT_SIZE,
   resolveTheme,
-} from "@/src/shared/constants/reader-theme";
+} from "@/src/shared/lib/constants/reader-theme";
 
 import Slider from "@react-native-community/slider";
 import { useDebounceCallback } from "usehooks-ts";

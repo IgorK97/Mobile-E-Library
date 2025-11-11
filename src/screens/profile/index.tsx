@@ -14,10 +14,10 @@ import { router } from "expo-router";
 import { ArrowLeft, ChevronRight, User } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
-import { Colors, FontSizes } from "@/src/shared/constants/theme";
-import { useColorScheme } from "@/src/shared/hooks/use-color-scheme";
+import { Colors, FontSizes } from "@/src/shared/lib/constants/theme";
+import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useProfileStyles } from "@/src/screens/profile/profileStyles";
-import { useTypography } from "@/src/shared/constants/fontStyles";
+import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
 export default function ProfileComponent() {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);

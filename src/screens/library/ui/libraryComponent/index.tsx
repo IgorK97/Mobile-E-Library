@@ -5,9 +5,9 @@ import { useRouter } from "expo-router";
 import { FlatList, ScrollView, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "@/src/shared/i18n";
-import { commonStyles } from "@/src/shared/constants/common";
-import { useColorScheme } from "@/src/shared/hooks/use-color-scheme";
-import { Colors } from "@/src/shared/constants/theme";
+import { commonStyles } from "@/src/shared/lib/constants/common";
+import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
+import { Colors } from "@/src/shared/lib/constants/theme";
 const books1: Book[] = [
   {
     id: 1,

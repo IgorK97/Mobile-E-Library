@@ -12,10 +12,9 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
-import { Colors } from "@/src/shared/constants/theme";
-import { useColorScheme } from "@/src/shared/hooks/use-color-scheme";
+import { Colors } from "@/src/shared/lib/constants/theme";
 import { useAuthStyles } from "@/src/screens/auth/ui/auth/authStyles";
-import { useTypography } from "@/src/shared/constants/fontStyles";
+import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 import { Auth } from "@/src/screens/auth";
 
 interface MyError {

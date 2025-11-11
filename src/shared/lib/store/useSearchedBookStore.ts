@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Book } from "../shared/types/types";
+import { Book } from "../../types/types";
 
 interface SearchedBookState {
   searchResults: Book[];

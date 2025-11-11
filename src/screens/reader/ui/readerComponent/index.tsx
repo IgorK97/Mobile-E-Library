@@ -22,7 +22,7 @@ import {
   MAX_FONT_SIZE,
   MIN_FONT_SIZE,
   themes,
-} from "@/src/shared/constants/reader-theme";
+} from "@/src/shared/lib/constants/reader-theme";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/screens/reader/ui/header";

@@ -18,7 +18,7 @@ import {
   unfavColor,
   fillFavColor,
   fillUnfavColor,
-} from "@/src/shared/constants/theme";
+} from "@/src/shared/lib/constants/theme";
 import { BookDetails } from "@/src/screens/book";
 const books: Book[] = [
   {

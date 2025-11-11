@@ -2,7 +2,7 @@ import { Section as SectionType, useReader } from "@epubjs-react-native/core";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { IconButton, MD3Colors, Text } from "react-native-paper";
-import { contrast } from "@/src/shared/constants/reader-theme";
+import { contrast } from "@/src/shared/lib/constants/reader-theme";
 import { useSectionStyles } from "@/src/screens/reader/ui/section/sectionStyles";
 interface Props {
   searchTerm: string;

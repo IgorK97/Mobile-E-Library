@@ -3,7 +3,7 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 
 import { useReader } from "@epubjs-react-native/core";
-import { resolveTheme } from "@/src/shared/constants/reader-theme";
+import { resolveTheme } from "@/src/shared/lib/constants/reader-theme";
 import { ArrowLeft } from "lucide-react-native";
 import { useReaderHeaderStyles } from "@/src/screens/reader/ui/header/readerHeaderStyles";
 

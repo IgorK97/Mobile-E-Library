@@ -14,7 +14,7 @@ import {
   fillFavColor,
   fillUnfavColor,
   unfavColor,
-} from "@/src/shared/constants/theme";
+} from "@/src/shared/lib/constants/theme";
 interface BookCardProps {
   bookInfo: Book;
   onPress?: () => void;
