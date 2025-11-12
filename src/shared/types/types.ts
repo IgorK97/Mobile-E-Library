@@ -64,3 +64,9 @@ export interface ApiError {
   message: string;
   code: number;
 }
+
+export interface Genre {
+  id: number;
+  name: string;
+  genres?: Genre[];
+}

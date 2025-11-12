@@ -109,7 +109,7 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
         };
 
         const url =
-          process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Book/book.epub";
+          process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Books/book.epub";
 
         const output = await BookService.saveToStorage(b, url);
         await BookService.saveMeta(b);

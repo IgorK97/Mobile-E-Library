@@ -31,37 +31,6 @@ export class BooksApi extends BaseApi {
     });
   }
 
-  //   async getBooksList(filter: BooksFilter = {}): Promise<BooksListResponse> {
-  //     const params = new URLSearchParams();
-
-  //     if (filter.includedGenres) {
-  //       filter.includedGenres.forEach((genre) =>
-  //         params.append("includedGenres", String(genre))
-  //       );
-  //     }
-
-  //     if (filter.excludedGenres) {
-  //       filter.excludedGenres.forEach((genre) =>
-  //         params.append("excludedGenres", String(genre))
-  //       );
-  //     }
-
-  //     if (filter.page) {
-  //       params.append("page", filter.page.toString());
-  //     }
-
-  //     if (filter.limit) {
-  //       params.append("limit", filter.limit.toString());
-  //     }
-
-  //     const queryString = params.toString();
-  //     const endpoint = `/books${queryString ? `?${queryString}` : ""}`;
-
-  //     return await this.request<BooksListResponse>(endpoint, {
-  //       headers: this.getAuthHeaders(),
-  //     });
-  //   }
-
   async getBookEpub(bookId: string): Promise<Blob> {
     return await this.requestBlob(`/books/${bookId}/epub`, {
       headers: this.getAuthHeaders(),
@@ -73,13 +42,4 @@ export class BooksApi extends BaseApi {
       headers: this.getAuthHeaders(),
     });
   }
-
-  //   async searchBooks(
-  //     query: string,
-  //     filter?: Omit<BooksFilter, "searchQuery">
-  //   ): Promise<BooksListResponse> {
-  //     return await this.getBooksList({
-  //       ...filter,
-  //     });
-  //   }
 }

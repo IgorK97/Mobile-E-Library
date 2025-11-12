@@ -1,5 +1,3 @@
-// import { ApiError } from "../types/types";
-
 export abstract class BaseApi {
   protected baseUrl: string;
 

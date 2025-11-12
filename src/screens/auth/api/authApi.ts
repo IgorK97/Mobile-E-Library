@@ -1,4 +1,3 @@
-// api/AuthApi.ts
 import { BaseApi } from "@/src/shared/api/baseApi";
 import {
   LoginData,
@@ -9,20 +8,15 @@ import {
 
 export class AuthApi extends BaseApi {
   private token: string | null = null;
-  private refreshToken: string | null = null;
 
   constructor(baseUrl: string) {
     super(baseUrl);
-    this.loadTokens();
+    this.loadToken();
   }
 
-  private async loadTokens() {
-    // Загрузка токенов из SecureStore или AsyncStorage
-    // Например, из Zustand store
-  }
+  private async loadToken() {}
 
-  private async saveTokens(token: string) {
-    // Сохранение токенов
+  private async saveToken(token: string) {
     this.token = token;
   }
 
@@ -46,7 +40,7 @@ export class AuthApi extends BaseApi {
       body: JSON.stringify(loginData),
     });
 
-    await this.saveTokens(response.token);
+    await this.saveToken(response.token);
     return response;
   }
 
@@ -56,7 +50,7 @@ export class AuthApi extends BaseApi {
       body: JSON.stringify(registerData),
     });
 
-    await this.saveTokens(response.token);
+    await this.saveToken(response.token);
     return response;
   }
 
@@ -67,27 +61,11 @@ export class AuthApi extends BaseApi {
     });
 
     this.token = null;
-    this.refreshToken = null;
-    // Очистка из хранилища
   }
 
-  async refreshAuth(): Promise<AuthResponse> {
-    if (!this.refreshToken) {
-      throw new Error("No refresh token available");
-    }
-
-    const response = await this.request<AuthResponse>("/auth/refresh", {
-      method: "POST",
-      body: JSON.stringify({ refreshToken: this.refreshToken }),
-    });
-
-    await this.saveTokens(response.token);
-    return response;
-  }
-
-  async getCurrentUser(): Promise<User> {
-    return await this.request<User>("/auth/me", {
-      headers: this.getAuthHeaders(),
-    });
-  }
+  // async getCurrentUser(): Promise<User> {
+  //   return await this.request<User>("/auth/me", {
+  //     headers: this.getAuthHeaders(),
+  //   });
+  // }
 }
