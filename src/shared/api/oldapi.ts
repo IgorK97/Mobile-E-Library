@@ -4,7 +4,7 @@
 // // </auto-generated>
 // //----------------------
 
-// /* eslint-disable */
+// // /* eslint-disable */
 // // ReSharper disable InconsistentNaming
 
 // export class BookmarksClient {
@@ -249,17 +249,11 @@
 //         this.baseUrl = baseUrl ?? "http://localhost:5169";
 //     }
 
-//     getReviews(bookId: number, lastId: number | null | undefined, limit: number | undefined): Promise<FileResponse> {
-//         let url_ = this.baseUrl + "/api/Reviews/{bookId}?";
+//     getReviews(bookId: number): Promise<FileResponse> {
+//         let url_ = this.baseUrl + "/api/Reviews/{bookId}";
 //         if (bookId === undefined || bookId === null)
 //             throw new globalThis.Error("The parameter 'bookId' must be defined.");
 //         url_ = url_.replace("{bookId}", encodeURIComponent("" + bookId));
-//         if (lastId !== undefined && lastId !== null)
-//             url_ += "lastId=" + encodeURIComponent("" + lastId) + "&";
-//         if (limit === null)
-//             throw new globalThis.Error("The parameter 'limit' cannot be null.");
-//         else if (limit !== undefined)
-//             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
 //         url_ = url_.replace(/[?&]$/, "");
 
 //         let options_: RequestInit = {
@@ -296,7 +290,7 @@
 //         return Promise.resolve<FileResponse>(null as any);
 //     }
 
-//     createReview(command: CreateReviewCommand): Promise<FileResponse> {
+//     createReview(command: CreateReviewRequest): Promise<FileResponse> {
 //         let url_ = this.baseUrl + "/api/Reviews";
 //         url_ = url_.replace(/[?&]$/, "");
 
@@ -338,7 +332,7 @@
 //         return Promise.resolve<FileResponse>(null as any);
 //     }
 
-//     rateReview(request: RateReviewCommand): Promise<FileResponse> {
+//     rateReview(request: RateReviewRequest): Promise<FileResponse> {
 //         let url_ = this.baseUrl + "/api/Reviews/rate";
 //         url_ = url_.replace(/[?&]$/, "");
 
@@ -429,17 +423,19 @@
 //         return Promise.resolve<FileResponse>(null as any);
 //     }
 
-//     getBooks(selectionId: number, lastId: number | null | undefined, limit: number | undefined): Promise<FileResponse> {
+//     getBooks(selectionId: number, page: number | undefined, pageSize: number | undefined): Promise<FileResponse> {
 //         let url_ = this.baseUrl + "/api/Selections/{selectionId}/books?";
 //         if (selectionId === undefined || selectionId === null)
 //             throw new globalThis.Error("The parameter 'selectionId' must be defined.");
 //         url_ = url_.replace("{selectionId}", encodeURIComponent("" + selectionId));
-//         if (lastId !== undefined && lastId !== null)
-//             url_ += "lastId=" + encodeURIComponent("" + lastId) + "&";
-//         if (limit === null)
-//             throw new globalThis.Error("The parameter 'limit' cannot be null.");
-//         else if (limit !== undefined)
-//             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+//         if (page === null)
+//             throw new globalThis.Error("The parameter 'page' cannot be null.");
+//         else if (page !== undefined)
+//             url_ += "page=" + encodeURIComponent("" + page) + "&";
+//         if (pageSize === null)
+//             throw new globalThis.Error("The parameter 'pageSize' cannot be null.");
+//         else if (pageSize !== undefined)
+//             url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
 //         url_ = url_.replace(/[?&]$/, "");
 
 //         let options_: RequestInit = {
@@ -528,17 +524,19 @@
 //         return Promise.resolve<FileResponse>(null as any);
 //     }
 
-//     getShelfBooks(shelfId: number, lastId: number | null | undefined, limit: number | undefined): Promise<FileResponse> {
+//     getShelfBooks(shelfId: number, page: number | undefined, pageSize: number | undefined): Promise<FileResponse> {
 //         let url_ = this.baseUrl + "/api/Shelves/{shelfId}/books?";
 //         if (shelfId === undefined || shelfId === null)
 //             throw new globalThis.Error("The parameter 'shelfId' must be defined.");
 //         url_ = url_.replace("{shelfId}", encodeURIComponent("" + shelfId));
-//         if (lastId !== undefined && lastId !== null)
-//             url_ += "lastId=" + encodeURIComponent("" + lastId) + "&";
-//         if (limit === null)
-//             throw new globalThis.Error("The parameter 'limit' cannot be null.");
-//         else if (limit !== undefined)
-//             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+//         if (page === null)
+//             throw new globalThis.Error("The parameter 'page' cannot be null.");
+//         else if (page !== undefined)
+//             url_ += "page=" + encodeURIComponent("" + page) + "&";
+//         if (pageSize === null)
+//             throw new globalThis.Error("The parameter 'pageSize' cannot be null.");
+//         else if (pageSize !== undefined)
+//             url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
 //         url_ = url_.replace(/[?&]$/, "");
 
 //         let options_: RequestInit = {
@@ -674,7 +672,7 @@
 //         this.baseUrl = baseUrl ?? "http://localhost:5169";
 //     }
 
-//     register(request: RegisterUserCommand): Promise<FileResponse> {
+//     register(request: RegisterRequest): Promise<FileResponse> {
 //         let url_ = this.baseUrl + "/api/Users/register";
 //         url_ = url_.replace(/[?&]$/, "");
 
@@ -716,7 +714,7 @@
 //         return Promise.resolve<FileResponse>(null as any);
 //     }
 
-//     login(request: LoginUserCommand): Promise<FileResponse> {
+//     login(request: LoginRequest): Promise<FileResponse> {
 //         let url_ = this.baseUrl + "/api/Users/login";
 //         url_ = url_.replace(/[?&]$/, "");
 
@@ -769,7 +767,7 @@
 //     bookmarkId?: number;
 // }
 
-// export interface CreateReviewCommand {
+// export interface CreateReviewRequest {
 //     bookId?: number;
 //     userId?: number;
 //     title?: string | undefined;
@@ -778,20 +776,20 @@
 //     userName?: string | undefined;
 // }
 
-// export interface RateReviewCommand {
+// export interface RateReviewRequest {
 //     reviewId?: number;
 //     userId?: number;
 //     score?: number;
 // }
 
-// export interface RegisterUserCommand {
+// export interface RegisterRequest {
 //     name?: string;
 //     familyName?: string;
 //     email?: string;
 //     password?: string;
 // }
 
-// export interface LoginUserCommand {
+// export interface LoginRequest {
 //     email?: string;
 //     password?: string;
 // }

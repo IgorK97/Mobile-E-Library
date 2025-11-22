@@ -78,26 +78,69 @@ export interface FileResponse {
   headers?: { [name: string]: any };
 }
 
+export interface AddBookmarkCommand {
+  bookId?: number;
+  userId?: number;
+  mark?: string;
+}
+
+export interface RemoveBookmarkCommand {
+  bookmarkId?: number;
+}
+
 export class ApiException extends Error {
-    override message: string;
-    status: number;
-    response: string;
-    headers: { [key: string]: any; };
-    result: any;
+  override message: string;
+  status: number;
+  response: string;
+  headers: { [key: string]: any };
+  result: any;
 
-    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-        super();
+  constructor(
+    message: string,
+    status: number,
+    response: string,
+    headers: { [key: string]: any },
+    result: any
+  ) {
+    super();
 
-        this.message = message;
-        this.status = status;
-        this.response = response;
-        this.headers = headers;
-        this.result = result;
-    }
+    this.message = message;
+    this.status = status;
+    this.response = response;
+    this.headers = headers;
+    this.result = result;
+  }
 
-    protected isApiException = true;
+  protected isApiException = true;
 
-    static isApiException(obj: any): obj is ApiException {
-        return obj.isApiException === true;
-    }
+  static isApiException(obj: any): obj is ApiException {
+    return obj.isApiException === true;
+  }
+}
+
+export interface RateReviewCommand {
+  reviewId?: number;
+  userId?: number;
+  score?: number;
+}
+
+export interface CreateReviewCommand {
+  bookId?: number;
+  userId?: number;
+  title?: string | undefined;
+  description?: string | undefined;
+  score?: number;
+  userName?: string | undefined;
+}
+
+export interface RegisterUserCommand {
+  name?: string;
+  familyName?: string;
+  email?: string;
+  password?: string;
+}
+
+export interface LoginUserCommand {
+  email?: string;
+  password?: string;
 }
