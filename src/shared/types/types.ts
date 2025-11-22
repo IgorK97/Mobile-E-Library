@@ -144,3 +144,16 @@ export interface LoginUserCommand {
   email?: string;
   password?: string;
 }
+
+export interface SelectionDetails {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  limit: number;
+  hasNext: boolean;
+  lastId: number | null;
+}

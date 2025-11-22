@@ -28,7 +28,7 @@ import { ReaderFooter } from "@/src/screens/reader/ui/footer";
 import { BookmarksList } from "@/src/screens/reader/ui/bookmarks";
 import { Book } from "@/src/shared/types/types";
 import { BookService } from "@/src/shared/services/BookService";
-import { useBookFile } from "@/src/shared/lib/hooks/use-book";
+import { useBookFile } from "@/src/shared/lib/hooks/use-books";
 import * as FileSystem from "expo-file-system/legacy";
 // import { useLocalSearchParams } from "expo-router";
 
