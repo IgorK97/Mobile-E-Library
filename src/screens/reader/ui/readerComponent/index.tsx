@@ -28,6 +28,8 @@ import { ReaderFooter } from "@/src/screens/reader/ui/footer";
 import { BookmarksList } from "@/src/screens/reader/ui/bookmarks";
 import { Book } from "@/src/shared/types/types";
 import { BookService } from "@/src/shared/services/BookService";
+import { useBookFile } from "@/src/shared/lib/hooks/use-book";
+import * as FileSystem from "expo-file-system/legacy";
 // import { useLocalSearchParams } from "expo-router";
 
 // const dest = new Directory(Paths.cache, "files");
@@ -42,6 +44,9 @@ interface ReaderProps {
 export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+
+  const { file, fileName, loading } = useBookFile(bookId);
+
   // const { id } = useLocalSearchParams();
 
   const { theme, changeFontSize, changeFontFamily, changeTheme, goToLocation } =
@@ -83,49 +88,96 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
     changeFontFamily(nextFontFamily);
   };
   const [epubAsset, setEpubAsset] = useState<string | null>(null);
+  const blobToBase64 = (blob: Blob): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => resolve(reader.result as string);
+      reader.readAsDataURL(blob);
+    });
   useEffect(() => {
-    const funcLoad = async () => {
+    // if (!file) return;
+    // console.log("tutu");
+    // const convert = async () => {
+    //   const base64 = await blobToBase64(file);
+    //   setEpubAsset(base64);
+    // };
+
+    // convert();
+    if (!file) return;
+
+    const saveAndOpen = async () => {
       try {
-        const b: Book = {
-          id: 1,
-          title: "Буддизм в Японии",
-          author: "Т.П. Григорьева",
-          rating: 4.5,
-          reviewCount: 10,
-          pages: 704,
-          year: 1993,
-          description:
-            "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-          imageUrl: require("@assets/images/book_1.png"),
-          genres: [
-            "Философия",
-            "Культурология",
-            "Религия",
-            "Буддизм",
-            "Восток",
-            "Япония",
-          ],
-          imageBase64: "array64",
-        };
+        // 1. Конвертируем Blob в Base64 (как и раньше)
+        const dataUri = await blobToBase64(file);
 
-        const url =
-          process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Books/book.epub";
+        // 2. Очищаем от префикса, чтобы получить чистые данные для записи
+        const pureBase64 = dataUri.split(",")[1];
 
-        const output = await BookService.saveToStorage(b, url);
-        await BookService.saveMeta(b);
-        const res = await output.base64();
-        console.log(output.uri);
+        // 3. Формируем путь куда сохранить (например, в папку кэша или документов)
+        // Генерируем имя файла (можно взять из headers, если передали, или просто random)
+        const fileUri = FileSystem.documentDirectory + "temp_book.epub";
 
-        setEpubAsset(res);
-      } catch (error) {
-        console.error(error);
+        // 4. Записываем файл на диск
+        await FileSystem.writeAsStringAsync(fileUri, pureBase64, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        console.log("Книга сохранена по пути:", fileUri);
+
+        // 5. Передаем путь к файлу (URI) в читалку
+        // Многие читалки (например, epubjs-rn) отлично принимают URI
+        setEpubAsset(fileUri);
+      } catch (e) {
+        console.error("Ошибка сохранения файла:", e);
       }
     };
-    funcLoad();
-  }, []);
 
-  if (epubAsset === null) {
-    return <Text>...</Text>;
+    saveAndOpen();
+  }, [file]);
+  // useEffect(() => {
+  //   const funcLoad = async () => {
+  //     try {
+  //       const b: Book = {
+  //         id: 1,
+  //         title: "Буддизм в Японии",
+  //         author: "Т.П. Григорьева",
+  //         rating: 4.5,
+  //         reviewCount: 10,
+  //         pages: 704,
+  //         year: 1993,
+  //         description:
+  //           "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+  //         imageUrl: require("@assets/images/book_1.png"),
+  //         genres: [
+  //           "Философия",
+  //           "Культурология",
+  //           "Религия",
+  //           "Буддизм",
+  //           "Восток",
+  //           "Япония",
+  //         ],
+  //         imageBase64: "array64",
+  //       };
+
+  //       const url =
+  //         process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Books/book.epub";
+
+  //       const output = await BookService.saveToStorage(b, url);
+  //       await BookService.saveMeta(b);
+  //       const res = await output.base64();
+  //       console.log(output.uri);
+
+  //       setEpubAsset(res);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   funcLoad();
+  // }, []);
+
+  if (epubAsset === null || loading) {
+    return <Text>Загрузка...</Text>;
   }
 
   return (
