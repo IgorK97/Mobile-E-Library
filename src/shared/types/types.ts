@@ -1,18 +1,58 @@
 import { ImageSourcePropType } from "react-native";
 
-export interface Book {
+export interface BookListItem {
   id: number;
   title: string;
-  author: string;
-  rating: number;
-  reviewCount: number;
-  pages: number;
-  year: number;
+  coverUri: string | null;
+  averageRating: number;
+  ratingsCount: number;
+  isFavorite: boolean;
+  authors: string[];
+
+  // id: number;
+  // title: string;
+  // author: string;
+  // rating: number;
+  // reviewCount: number;
+  // pages: number;
+  // year: number;
+  // description: string;
+  // imageUrl: ImageSourcePropType;
+  // imageBase64: string;
+  // genres: string[];
+  // fav?: boolean;
+}
+
+export interface PersonDetails {
+  id: number;
+  fullName: string;
+}
+
+export interface BookPersonGroupDetails {
+  role: number;
+  persons: PersonDetails[];
+}
+
+export interface PublisherDetails {
+  id: number;
+  name: string;
+}
+
+export interface BookDetails {
+  id: number;
+  title: string;
+  year: number | null;
   description: string;
-  imageUrl: ImageSourcePropType;
-  imageBase64: string;
-  genres: string[];
-  fav?: boolean;
+  isbn: string | null;
+  averageRating: number;
+  ratingsCount: number;
+  reviewsCount: number;
+  coverUri: string | null;
+  isAvailable: boolean;
+  publisher: PublisherDetails | null;
+  country: string | null;
+  language: string;
+  participants: BookPersonGroupDetails[];
 }
 
 export interface DownloadedBook {
@@ -31,7 +71,7 @@ export interface User {
 }
 
 export interface BooksListResponse {
-  books: Book[];
+  books: BookListItem[];
   total: number;
   page: number;
   hasMore: boolean;

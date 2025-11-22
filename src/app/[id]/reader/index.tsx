@@ -2,7 +2,7 @@ import "@/src/shared/i18n";
 import { ReaderComponent } from "@/src/screens/reader";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Book } from "@/src/shared/types/types";
+import { BookListItem } from "@/src/shared/types/types";
 import { BookService } from "@/src/shared/services/BookService";
 import { Text } from "react-native";
 

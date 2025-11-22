@@ -1,13 +1,14 @@
-import { Book } from "@/src/shared/types/types";
+import { BookListItem } from "@/src/shared/types/types";
 import { Heart } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-  Image,
+  // Image,
   Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
 } from "react-native";
+import { Image } from "expo-image";
 import { useBookCardStyles } from "@/src/entities/books/ui/book-card/bookCardStyles";
 import {
   favColor,
@@ -16,27 +17,40 @@ import {
   unfavColor,
 } from "@/src/shared/lib/constants/theme";
 interface BookCardProps {
-  bookInfo: Book;
+  bookInfo: BookListItem;
   onPress: () => void;
 }
 
 export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(bookInfo.fav || false);
+  const [isFavorite, setIsFavorite] = useState(bookInfo.isFavorite || false);
   const { width } = useWindowDimensions();
   const numColumns = width < 500 ? 2 : 4;
   const cardWidth = width / numColumns - 24;
   const styles = useBookCardStyles();
+  console.log(`${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${bookInfo.coverUri}`);
   return (
     <View style={styles.card}>
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={onPress}
-        style={[styles.cardImage, { width: cardWidth }]}
+        // style={[styles.cardImage, { width: cardWidth }]}
+        style={{
+          width: 100,
+          height: 150,
+          borderRadius: 8,
+        }}
       >
         <Image
-          source={bookInfo.imageUrl}
-          style={styles.image}
-          resizeMode="contain"
+          source={{
+            uri: `http://192.168.3.5:80/covers/2/MainFile.png`,
+          }}
+          style={{
+            width: 100,
+            height: 150,
+            borderRadius: 8,
+          }}
+          // style={styles.image}
+          // resizeMode="contain"
         />
         <TouchableOpacity
           onPress={(e) => {
@@ -53,7 +67,7 @@ export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
         </TouchableOpacity>
       </TouchableOpacity>
       <Text style={styles.bookTitle}>{bookInfo.title}</Text>
-      <Text style={styles.bookAuthor}>{bookInfo.author}</Text>
+      {/* <Text style={styles.bookAuthor}>{bookInfo.author}</Text> */}
     </View>
   );
 };

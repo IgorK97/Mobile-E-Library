@@ -1,16 +1,16 @@
-import { Book } from "@/src/shared/types/types";
+import { BookListItem } from "@/src/shared/types/types";
 import { FileSystemService } from "./FileSystemService";
-function getFileName(book: Book) {
+function getFileName(book: BookListItem) {
   const fileName = `${book.id}.epub`;
   return fileName;
 }
 export const BookService = {
-  async saveToStorage(book: Book, url: string) {
+  async saveToStorage(book: BookListItem, url: string) {
     const bookName = getFileName(book);
 
     return await FileSystemService.downloadBookToStorage(bookName, url);
   },
-  async saveMeta(book: Book) {
+  async saveMeta(book: BookListItem) {
     await FileSystemService.downloadMetaToStorage(book);
   },
 

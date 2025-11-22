@@ -1,4 +1,4 @@
-import { Book } from "@/src/shared/types/types";
+// import { BookListItem } from "@/src/shared/types/types";
 // import { useRouter, useLocalSearchParams } from "expo-router";
 import {
   ArrowLeft,
@@ -9,7 +9,14 @@ import {
   CircleFadingArrowUp,
 } from "lucide-react-native";
 import { useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 import { useBookStyles } from "@/src/screens/library/ui/libraryComponent/bookStyles";
@@ -20,6 +27,7 @@ import {
   fillUnfavColor,
 } from "@/src/shared/lib/constants/theme";
 import { useStore } from "@/src/shared/lib/store/globalStore";
+import { useBookDetails } from "@/src/shared/lib/hooks/use-book-details";
 
 interface BookDetailsProps {
   onNavigateToReviews: (id: number) => void;
@@ -27,6 +35,20 @@ interface BookDetailsProps {
   onNavigateToBack: () => void;
   // bookInfo: Book;
 }
+// interface Book {
+//   id: number;
+//   title: string;
+//   author: string;
+//   rating: number;
+//   reviewCount: number;
+//   pages: number;
+//   year: number;
+//   description: string;
+//   imageUrl: ImageSourcePropType;
+//   imageBase64: string;
+//   genres: string[];
+//   fav?: boolean;
+// }
 
 export const BookDetails = ({
   onNavigateToReviews,
@@ -45,7 +67,14 @@ BookDetailsProps) => {
   const { t } = useTranslation();
   const styles = useBookStyles();
   const { currentBook, setCurrentBook } = useStore();
-  const bookInfo = currentBook;
+
+  const bookId = currentBook ? currentBook.id : null;
+
+  // 💡 Используем хук для загрузки полных деталей
+  const { data: fullBookDetails, isLoading, error } = useBookDetails(bookId);
+
+  const bookInfo = fullBookDetails;
+
   if (!bookInfo) return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
   return (
     <View style={styles.container}>
@@ -106,7 +135,7 @@ BookDetailsProps) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.coverContainer}>
           <Image
-            source={bookInfo.imageUrl}
+            source={{ uri: bookInfo.coverUri ?? undefined }}
             style={styles.cover}
             resizeMode="contain"
           />
@@ -114,16 +143,16 @@ BookDetailsProps) => {
 
         <View style={styles.infoContainer}>
           <View style={styles.textCenter}>
-            <Text style={styles.author}>{bookInfo.author}</Text>
+            {/* <Text style={styles.author}>{bookInfo.participantsauthor}</Text> */}
             <Text style={styles.title}>{bookInfo.title}</Text>
           </View>
           <Text style={styles.reviewText}>
-            {bookInfo.reviewCount} {t("book.review_count")}
+            {bookInfo.reviewsCount} {t("book.review_count")}
           </Text>
         </View>
-        <Text style={styles.metaText}>
+        {/* <Text style={styles.metaText}>
           {bookInfo.pages} {t("book.p")} | {bookInfo.year}
-        </Text>
+        </Text> */}
 
         <TouchableOpacity
           style={styles.readButton}
@@ -137,7 +166,7 @@ BookDetailsProps) => {
         </View>
         <View style={styles.genresSection}>
           <Text style={styles.sectionTitle}>{t("book.genres")}</Text>
-          <ScrollView
+          {/* <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.genresContainer}
@@ -147,7 +176,7 @@ BookDetailsProps) => {
                 <Text style={styles.genreText}>{genre}</Text>
               </TouchableOpacity>
             ))}
-          </ScrollView>
+          </ScrollView> */}
         </View>
         <TouchableOpacity
           style={styles.reviewsButton}

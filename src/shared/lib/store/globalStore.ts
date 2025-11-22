@@ -1,13 +1,13 @@
 import { create } from "zustand";
-import { Book, User } from "../../types/types";
+import { BookListItem, User } from "../../types/types";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AppState {
-  currentBook: Book | null;
+  currentBook: BookListItem | null;
   user: User | null;
 
-  setCurrentBook: (book: Book | null) => void;
+  setCurrentBook: (book: BookListItem | null) => void;
   setUser: (user: User | null) => void;
   clearStore: () => void;
 }

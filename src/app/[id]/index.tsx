@@ -1,7 +1,7 @@
 import "@/src/shared/i18n";
 import { BookDetails } from "@/src/screens/bookDetails";
 import { router } from "expo-router";
-import { Book } from "@/src/shared/types/types";
+import { BookListItem } from "@/src/shared/types/types";
 
 export default function BookDetailsScreen() {
   const navigateToReviews = (bookId: number) => {

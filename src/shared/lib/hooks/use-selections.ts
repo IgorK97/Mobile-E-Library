@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { Book } from "../../types/types";
+import { BookListItem } from "../../types/types";
 import { selectionsClient } from "../../api/selectionsApi";
 
 export const useSelectionData = (
   selectionId: number,
   initialLimit: number = 10
 ) => {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<BookListItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasNext, setHasNext] = useState(true);
   const [lastId, setIsLastId] = useState<number | null>(null);

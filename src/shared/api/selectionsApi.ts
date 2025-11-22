@@ -1,6 +1,6 @@
 import { throwException } from "../lib/utils/throwing-exception";
 import {
-  Book,
+  BookListItem,
   FileResponse,
   PagedResult,
   SelectionDetails,
@@ -11,8 +11,8 @@ export class SelectionsClient {
     fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
   };
   private baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
-    undefined;
+  // protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
+  //   undefined;
 
   constructor(
     baseUrl?: string,
@@ -48,7 +48,7 @@ export class SelectionsClient {
     selectionId: number,
     lastId: number | null | undefined,
     limit: number | undefined
-  ): Promise<PagedResult<Book>> {
+  ): Promise<PagedResult<BookListItem>> {
     let url_ = `${this.baseUrl}/api/Selections/${encodeURIComponent(
       selectionId
     )}/books?`;
@@ -69,7 +69,7 @@ export class SelectionsClient {
     };
 
     return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processJsonResponse<PagedResult<Book>>(_response);
+      return this.processJsonResponse<PagedResult<BookListItem>>(_response);
     });
   }
 

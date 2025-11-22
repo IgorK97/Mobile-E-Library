@@ -1,4 +1,4 @@
-import { Book } from "@/src/shared/types/types";
+import { BookListItem } from "@/src/shared/types/types";
 import { File, Paths, Directory } from "expo-file-system";
 
 const downDir = `${Paths.document.uri}chronolibrisBooks/`;
@@ -33,7 +33,7 @@ export const FileSystemService = {
     );
   },
 
-  async downloadMetaToStorage(book: Book) {
+  async downloadMetaToStorage(book: BookListItem) {
     const fileName = `${downDir}${String(book.id)}-meta.json`;
     ensureDirExists(downDir);
     ensureFileNotExists(fileName);

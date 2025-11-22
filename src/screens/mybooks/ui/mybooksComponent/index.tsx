@@ -1,5 +1,5 @@
 import { BookCard } from "@/src/entities/books";
-import { Book } from "@/src/shared/types/types";
+import { BookListItem } from "@/src/shared/types/types";
 // import { router } from "expo-router";
 import { BookOpen } from "lucide-react-native";
 import { useState } from "react";
@@ -19,134 +19,134 @@ import { commonStyles } from "@/src/shared/lib/constants/common";
 import { Colors } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useStore } from "@/src/shared/lib/store/globalStore";
-const books: Book[] = [
-  {
-    id: 1,
-    title: "Буддизм в Японии",
-    author: "Т.П. Григорьева",
-    rating: 4.5,
-    reviewCount: 10,
-    pages: 704,
-    year: 1993,
-    description:
-      "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("@assets/images/book_1.png"),
-    genres: [
-      "Философия",
-      "Культурология",
-      "Религия",
-      "Буддизм",
-      "Восток",
-      "Япония",
-    ],
-    imageBase64: "",
-  },
-  {
-    id: 2,
-    title: "Буддизм в Японии",
-    author: "Т.П. Григорьева",
-    rating: 4.5,
-    reviewCount: 10,
-    pages: 704,
-    year: 1993,
-    description:
-      "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("@assets/images/book_1.png"),
-    genres: [
-      "Философия",
-      "Культурология",
-      "Религия",
-      "Буддизм",
-      "Восток",
-      "Япония",
-    ],
-    imageBase64: "",
-  },
-  {
-    id: 3,
-    title: "Буддизм в Японии",
-    author: "Т.П. Григорьева",
-    rating: 4.5,
-    reviewCount: 10,
-    pages: 704,
-    year: 1993,
-    description:
-      "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("@assets/images/book_1.png"),
-    genres: [
-      "Философия",
-      "Культурология",
-      "Религия",
-      "Буддизм",
-      "Восток",
-      "Япония",
-    ],
-    imageBase64: "",
-  },
-  {
-    id: 4,
-    title: "Буддизм в Японии",
-    author: "Т.П. Григорьева",
-    rating: 4.5,
-    reviewCount: 10,
-    pages: 704,
-    year: 1993,
-    description:
-      "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("@assets/images/book_1.png"),
-    genres: [
-      "Философия",
-      "Культурология",
-      "Религия",
-      "Буддизм",
-      "Восток",
-      "Япония",
-    ],
-    imageBase64: "",
-  },
-  {
-    id: 5,
-    title: "Буддизм в Японии",
-    author: "Т.П. Григорьева",
-    rating: 4.5,
-    reviewCount: 10,
-    pages: 704,
-    year: 1993,
-    description:
-      "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("@assets/images/book_1.png"),
-    genres: [
-      "Философия",
-      "Культурология",
-      "Религия",
-      "Буддизм",
-      "Восток",
-      "Япония",
-    ],
-    imageBase64: "",
-  },
-  {
-    id: 6,
-    title: "Буддизм в Японии",
-    author: "Т.П. Григорьева",
-    rating: 4.5,
-    reviewCount: 10,
-    pages: 704,
-    year: 1993,
-    description:
-      "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-    imageUrl: require("@assets/images/book_1.png"),
-    genres: [
-      "Философия",
-      "Культурология",
-      "Религия",
-      "Буддизм",
-      "Восток",
-      "Япония",
-    ],
-    imageBase64: "",
-  },
-];
+// const books: BookListItem[] = [
+//   {
+//     id: 1,
+//     title: "Буддизм в Японии",
+//     // author: "Т.П. Григорьева",
+//     rating: 4.5,
+//     reviewCount: 10,
+//     pages: 704,
+//     year: 1993,
+//     description:
+//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+//     imageUrl: require("@assets/images/book_1.png"),
+//     genres: [
+//       "Философия",
+//       "Культурология",
+//       "Религия",
+//       "Буддизм",
+//       "Восток",
+//       "Япония",
+//     ],
+//     imageBase64: "",
+//   },
+//   {
+//     id: 2,
+//     title: "Буддизм в Японии",
+//     author: "Т.П. Григорьева",
+//     rating: 4.5,
+//     reviewCount: 10,
+//     pages: 704,
+//     year: 1993,
+//     description:
+//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+//     imageUrl: require("@assets/images/book_1.png"),
+//     genres: [
+//       "Философия",
+//       "Культурология",
+//       "Религия",
+//       "Буддизм",
+//       "Восток",
+//       "Япония",
+//     ],
+//     imageBase64: "",
+//   },
+//   {
+//     id: 3,
+//     title: "Буддизм в Японии",
+//     author: "Т.П. Григорьева",
+//     rating: 4.5,
+//     reviewCount: 10,
+//     pages: 704,
+//     year: 1993,
+//     description:
+//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+//     imageUrl: require("@assets/images/book_1.png"),
+//     genres: [
+//       "Философия",
+//       "Культурология",
+//       "Религия",
+//       "Буддизм",
+//       "Восток",
+//       "Япония",
+//     ],
+//     imageBase64: "",
+//   },
+//   {
+//     id: 4,
+//     title: "Буддизм в Японии",
+//     author: "Т.П. Григорьева",
+//     rating: 4.5,
+//     reviewCount: 10,
+//     pages: 704,
+//     year: 1993,
+//     description:
+//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+//     imageUrl: require("@assets/images/book_1.png"),
+//     genres: [
+//       "Философия",
+//       "Культурология",
+//       "Религия",
+//       "Буддизм",
+//       "Восток",
+//       "Япония",
+//     ],
+//     imageBase64: "",
+//   },
+//   {
+//     id: 5,
+//     title: "Буддизм в Японии",
+//     author: "Т.П. Григорьева",
+//     rating: 4.5,
+//     reviewCount: 10,
+//     pages: 704,
+//     year: 1993,
+//     description:
+//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+//     imageUrl: require("@assets/images/book_1.png"),
+//     genres: [
+//       "Философия",
+//       "Культурология",
+//       "Религия",
+//       "Буддизм",
+//       "Восток",
+//       "Япония",
+//     ],
+//     imageBase64: "",
+//   },
+//   {
+//     id: 6,
+//     title: "Буддизм в Японии",
+//     author: "Т.П. Григорьева",
+//     rating: 4.5,
+//     reviewCount: 10,
+//     pages: 704,
+//     year: 1993,
+//     description:
+//       "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
+//     imageUrl: require("@assets/images/book_1.png"),
+//     genres: [
+//       "Философия",
+//       "Культурология",
+//       "Религия",
+//       "Буддизм",
+//       "Восток",
+//       "Япония",
+//     ],
+//     imageBase64: "",
+//   },
+// ];
 
 interface MyBooksProps {
   onNavigateToBook: (id: number) => void;
@@ -217,7 +217,7 @@ export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
         ))}
       </ScrollView>
 
-      <FlatList
+      {/* <FlatList
         data={books}
         keyExtractor={(item) => item.id.toString()}
         numColumns={numColumns}
@@ -239,7 +239,7 @@ export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
             />
           </View>
         )}
-      />
+      /> */}
     </View>
   );
 };
