@@ -42,7 +42,7 @@ export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
       >
         <Image
           source={{
-            uri: `http://192.168.3.5:80/covers/2/MainFile.png`,
+            uri: `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${bookInfo.coverUri}`,
           }}
           style={{
             width: 100,

@@ -1,9 +1,11 @@
 import { BookCard } from "@/src/entities/books";
+import { selectionsClient } from "@/src/shared/api/selectionsApi";
 import { commonStyles } from "@/src/shared/lib/constants/common";
 import { Colors } from "@/src/shared/lib/constants/theme";
 import { useSelectionData } from "@/src/shared/lib/hooks/use-selections";
-import { BookListItem } from "@/src/shared/types/types";
+import { BookListItem, PagedResult } from "@/src/shared/types/types";
 import { AntDesign } from "@expo/vector-icons";
+import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   TouchableOpacity,
@@ -15,6 +17,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+interface SelectionDataState {
+  books: BookListItem[];
+  isLoading: boolean;
+  lastId: number | null;
+  error: string | null;
+  hasNext: boolean;
+}
+
 interface SelectionListViewProps {
   selectionId: number;
   title: string;
@@ -24,6 +34,8 @@ interface SelectionListViewProps {
   setCurrentBook: (book: BookListItem) => void;
 }
 
+const PAGE_SIZE = 10;
+
 export const SelectionListView = ({
   selectionId,
   title,
@@ -31,18 +43,67 @@ export const SelectionListView = ({
   onNavigateToBook,
   setCurrentBook,
 }: SelectionListViewProps) => {
-  const { books, isLoading, hasNext, error, fetchNext } = useSelectionData(
-    selectionId,
-    20
-  );
-
   const { width } = useWindowDimensions();
   const color = useColorScheme();
   const numColumns = 2;
   const cardWidth = width / numColumns - 24;
 
+  const initialDataState: SelectionDataState = {
+    books: [],
+    isLoading: true,
+    error: null,
+    hasNext: true,
+    lastId: null,
+  };
+
+  const [booksCollectionState, setBooksCollectionState] =
+    useState<SelectionDataState>(initialDataState);
+
+  const { books, isLoading, error, hasNext, lastId } = booksCollectionState;
+
+  const fetchData = useCallback(
+    async (selectionId: number) => {
+      if (!hasNext) return;
+
+      setBooksCollectionState((prev) => ({
+        ...prev,
+        isLoading: true,
+        error: null,
+      }));
+
+      try {
+        const result: PagedResult<BookListItem> =
+          await selectionsClient.getBooks(selectionId, lastId, PAGE_SIZE);
+        setBooksCollectionState((prev) => ({
+          ...prev,
+          books: [...prev.books, ...result.items],
+          isLoading: false,
+          error: null,
+          hasNext: result.hasNext,
+          lastId: result.lastId,
+        }));
+      } catch (e) {
+        console.error(`Ошибка загрузки подборки ${selectionId}:`, e);
+        setBooksCollectionState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: "Не удалось загрузить подборку",
+        }));
+      }
+    },
+    [hasNext, lastId]
+  );
+
+  const fetchNext = () => {
+    // Проверяем, что не загружается и есть следующая страница
+    if (!isLoading && hasNext) {
+      fetchData(selectionId);
+    }
+  };
+
   const renderFooter = () => {
     if (!isLoading) return null;
+
     return (
       <View style={{ paddingVertical: 20 }}>
         <ActivityIndicator size="large" />
