@@ -1,1 +1,1 @@
-export { BookDetails } from "./ui/bookDetails";
+export { BookDetailsComponent as BookDetails } from "./ui/bookDetails";

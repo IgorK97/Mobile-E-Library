@@ -86,7 +86,7 @@ export const Library = ({
   const color = useColorScheme();
   const { setCurrentBook } = useStore();
 
-  const selectionIds = useMemo(() => [1, 2, 3], []);
+  const selectionIds = useMemo(() => [2, 1, 3], []);
 
   const initialDataState: SelectionDataState = {
     books: [],
@@ -109,6 +109,8 @@ export const Library = ({
     ],
     [selectionIds]
   );
+  console.log("ttttt");
+  console.log(selectionStates);
 
   useEffect(() => {
     const fetchData = async (
@@ -125,6 +127,8 @@ export const Library = ({
           isLoading: false,
           error: null,
         });
+        // console.log(selectionId);
+        // console.log(result);
       } catch (e) {
         console.error(`Ошибка загрузки подборки ${selectionId}:`, e);
         setState((prev) => ({
@@ -155,6 +159,7 @@ export const Library = ({
       title: "Экономическая история",
       data: historyEconomicsState,
     },
+
     { id: selectionIds[2], title: "История мира", data: worldHistoryState },
   ];
 

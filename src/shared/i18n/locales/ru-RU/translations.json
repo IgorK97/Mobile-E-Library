@@ -83,6 +83,7 @@
   },
   "book": {
     "review_count": "отзывов",
+    "ratings_count": "оценок",
     "p": "стр.",
     "read": "Читать",
     "about": "О книге",

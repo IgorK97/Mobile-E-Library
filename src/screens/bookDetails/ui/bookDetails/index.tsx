@@ -28,29 +28,36 @@ import {
 } from "@/src/shared/lib/constants/theme";
 import { useStore } from "@/src/shared/lib/store/globalStore";
 import { useBookDetails } from "@/src/shared/lib/hooks/use-book-details";
-
+import { useReferenceData } from "@/src/shared/contexts/ReferenceDataProvider";
+import { BookDetails } from "@/src/shared/types/types";
 interface BookDetailsProps {
   onNavigateToReviews: (id: number) => void;
   onNavigateToRead: (id: number) => void;
   onNavigateToBack: () => void;
-  // bookInfo: Book;
 }
-// interface Book {
-//   id: number;
-//   title: string;
-//   author: string;
-//   rating: number;
-//   reviewCount: number;
-//   pages: number;
-//   year: number;
-//   description: string;
-//   imageUrl: ImageSourcePropType;
-//   imageBase64: string;
-//   genres: string[];
-//   fav?: boolean;
-// }
 
-export const BookDetails = ({
+function getAuthorsString(
+  authorRoleId: number,
+  bookDetails: BookDetails
+): string {
+  // 1. Найти группу участников с ролью "Автор"
+  const authorGroup = bookDetails.participants.find(
+    (group) => group.role === authorRoleId
+  );
+
+  // 2. Проверить, найдена ли группа авторов, и есть ли в ней персоны
+  if (!authorGroup || authorGroup.persons.length === 0) {
+    return "Неизвестный автор"; // Возвращаем заглушку, если авторы не найдены
+  }
+
+  // 3. Извлечь имена (fullName) и объединить их в строку
+  const authorNames = authorGroup.persons.map((person) => person.fullName);
+
+  // 4. Объединить имена запятой и пробелом
+  return authorNames.join(", ");
+}
+
+export const BookDetailsComponent = ({
   onNavigateToReviews,
   onNavigateToRead,
   onNavigateToBack,
@@ -73,9 +80,22 @@ BookDetailsProps) => {
   // 💡 Используем хук для загрузки полных деталей
   const { data: fullBookDetails, isLoading, error } = useBookDetails(bookId);
 
+  const { roles } = useReferenceData();
+
+  const authorRoleId = roles.find((role) => role.name === "Автор")?.id ?? 1; // Получаем ID роли "Автор"
+
   const bookInfo = fullBookDetails;
 
+  console.log("BUBUBU", bookInfo?.participants.length);
+
+  bookInfo?.participants.forEach((p) => {
+    console.log("KUKUKU");
+    console.log(p.role);
+    p.persons.forEach((person) => console.log(person));
+  });
+
   if (!bookInfo) return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
+  const authors: string = getAuthorsString(authorRoleId, bookInfo);
   return (
     <View style={{ ...styles.container, paddingVertical: 20 }}>
       <View style={styles.header}>
@@ -147,16 +167,16 @@ BookDetailsProps) => {
 
         <View style={styles.infoContainer}>
           <View style={styles.textCenter}>
-            {/* <Text style={styles.author}>{bookInfo.participantsauthor}</Text> */}
+            <Text style={styles.author}>{authors}</Text>
             <Text style={styles.title}>{bookInfo.title}</Text>
           </View>
           <Text style={styles.reviewText}>
             {bookInfo.reviewsCount} {t("book.review_count")}
           </Text>
         </View>
-        {/* <Text style={styles.metaText}>
-          {bookInfo.pages} {t("book.p")} | {bookInfo.year}
-        </Text> */}
+        <Text style={styles.metaText}>
+          {bookInfo.ratingsCount} {t("book.ratings_count")} | {bookInfo.year}
+        </Text>
 
         <TouchableOpacity
           style={styles.readButton}
