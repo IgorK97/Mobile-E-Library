@@ -55,6 +55,11 @@ export interface PublisherDetails {
   name: string;
 }
 
+export interface ThemeDeatils {
+  id: number;
+  name: string;
+}
+
 export interface BookDetails {
   id: number;
   title: string;
@@ -70,6 +75,7 @@ export interface BookDetails {
   country: string | null;
   language: string;
   participants: BookPersonGroupDetails[];
+  themes: ThemeDeatils[];
 }
 
 export interface DownloadedBook {

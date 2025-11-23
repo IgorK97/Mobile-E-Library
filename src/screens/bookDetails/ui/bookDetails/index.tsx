@@ -189,18 +189,18 @@ BookDetailsProps) => {
           <Text style={styles.aboutText}>{bookInfo.description}</Text>
         </View>
         <View style={styles.genresSection}>
-          <Text style={styles.sectionTitle}>{t("book.genres")}</Text>
-          {/* <ScrollView
+          <Text style={styles.sectionTitle}>{t("book.themes")}</Text>
+          <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.genresContainer}
           >
-            {bookInfo.genres?.map((genre, index) => (
+            {bookInfo.themes?.map((theme, index) => (
               <TouchableOpacity key={index} style={styles.genreChip}>
-                <Text style={styles.genreText}>{genre}</Text>
+                <Text style={styles.genreText}>{theme.name}</Text>
               </TouchableOpacity>
             ))}
-          </ScrollView> */}
+          </ScrollView>
         </View>
         <TouchableOpacity
           style={styles.reviewsButton}
