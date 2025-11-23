@@ -30,7 +30,24 @@ export interface PersonDetails {
 
 export interface BookPersonGroupDetails {
   role: number;
+  // roleName: string;
   persons: PersonDetails[];
+}
+
+export interface RoleDetails {
+  id: number;
+  name: string;
+}
+
+export interface CachedRoles {
+  roles: RoleDetails[];
+  timestamp: number;
+}
+
+export interface ReferenceContextState {
+  roles: RoleDetails[];
+  isLoading: boolean;
+  error: string | null;
 }
 
 export interface PublisherDetails {

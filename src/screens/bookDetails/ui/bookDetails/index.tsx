@@ -77,7 +77,7 @@ BookDetailsProps) => {
 
   if (!bookInfo) return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, paddingVertical: 20 }}>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
@@ -135,7 +135,11 @@ BookDetailsProps) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.coverContainer}>
           <Image
-            source={{ uri: bookInfo.coverUri ?? undefined }}
+            source={{
+              uri: bookInfo.coverUri
+                ? `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${bookInfo.coverUri}`
+                : undefined,
+            }}
             style={styles.cover}
             resizeMode="contain"
           />

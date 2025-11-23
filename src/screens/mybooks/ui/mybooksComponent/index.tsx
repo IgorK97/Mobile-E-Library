@@ -172,6 +172,7 @@ export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
     <View
       style={{
         ...commonStyles.defaultContainer,
+        paddingVertical: 30,
         backgroundColor:
           color === "light" ? Colors.light.background : Colors.dark.background,
       }}

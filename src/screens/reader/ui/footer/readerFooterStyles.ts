@@ -9,6 +9,7 @@ export const useReaderFooterStyles = () => {
       right: 0,
       paddingVertical: 20,
       paddingHorizontal: 16,
+      paddingBottom: 50,
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",

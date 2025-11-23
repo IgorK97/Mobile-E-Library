@@ -37,7 +37,7 @@ const usePagination = () => {
     try {
       const result: PagedResult<BookListItem> = await selectionsClient.getBooks(
         selectionId,
-        lastId, // Используем lastId из замыкания
+        lastId,
         limit
       );
 

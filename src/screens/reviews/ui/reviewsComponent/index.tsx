@@ -96,7 +96,9 @@ export const Reviews = ({ onNavigate }: ReviewsProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{ ...styles.container, paddingVertical: 30, paddingBottom: 10 }}
+    >
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => onNavigate()}

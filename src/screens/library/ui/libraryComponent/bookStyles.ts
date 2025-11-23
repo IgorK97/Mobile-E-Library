@@ -8,7 +8,7 @@ export const useBookStyles = () => {
       marginRight: 5,
     },
     scrollContainer: {
-      paddingBottom: 80,
+      paddingBottom: 40,
       justifyContent: "center",
       alignItems: "center",
       marginLeft: 5,

@@ -98,7 +98,7 @@ export const Search = ({ onNavigateToBook }: SearchProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, paddingVertical: 30 }}>
       <View style={styles.searchBar}>
         <Feather
           name="search"

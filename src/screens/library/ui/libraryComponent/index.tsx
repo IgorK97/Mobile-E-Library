@@ -190,11 +190,13 @@ export const Library = ({
     <SafeAreaView
       style={{
         flex: 1,
+        // paddingBottom: 10,
+        // marginBottom: 10,
         backgroundColor:
           color === "light" ? Colors.light.background : Colors.dark.background,
       }}
     >
-      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 10 }}>
         {dataSections.map((section) => (
           <SelectionSection
             key={section.id}
