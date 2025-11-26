@@ -43,6 +43,7 @@ export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
   //   { id: "reading", label: "История чтения" },
   //   { id: "read", label: "Прочитанные" },
   // ];
+  //  const setCurrentBook = useStore((state) => state.setCurrentBook);
   const color = useColorScheme();
   const styles = useMyBooksStyles();
   const typography = useTypography();
@@ -97,8 +98,11 @@ export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <BookListByCategory CategoryId={activeTab} />
-      {/* Enter Component Here*/}
+      <BookListByCategory
+        CategoryId={activeTab}
+        onNavigateToBook={onNavigateToBook}
+        setCurrentBook={setCurrentBook}
+      />
     </View>
   );
 };

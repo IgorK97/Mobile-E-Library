@@ -42,11 +42,6 @@ export const SelectionListView = ({
   const numColumns = 2;
   const cardWidth = width / numColumns - 24;
 
-  // const [booksCollectionState, setBooksCollectionState] =
-  //   useState<SelectionDataState>(initialDataState);
-
-  // const { books, isLoading, error, hasNext, lastId } = booksCollectionState;
-
   const {
     books,
     refreshing,
@@ -59,108 +54,11 @@ export const SelectionListView = ({
     initialLoader,
   } = usePagination();
 
-  // 1. Оборачиваем fetchData в useCallback
-  // const fetchData = useCallback(async () => {
-  //   // Вся логика проверки 'hasNext' и 'isLoading' должна быть в начале
-  //   if (!hasNext || isLoading) {
-  //     // Это предотвратит лишние запросы во время загрузки или если нет больше страниц
-  //     return;
-  //   }
-
-  //   setBooksCollectionState((prev) => ({
-  //     ...prev,
-  //     // Устанавливаем isLoading в true только если hasNext = true
-  //     // и мы не в процессе загрузки (проверено выше).
-  //     isLoading: true,
-  //     error: null,
-  //   }));
-
-  //   try {
-  //     const result: PagedResult<BookListItem> = await selectionsClient.getBooks(
-  //       selectionId,
-  //       lastId, // Используем lastId из замыкания
-  //       PAGE_SIZE
-  //     );
-
-  //     setBooksCollectionState((prev) => ({
-  //       ...prev,
-  //       books: [...prev.books, ...result.items],
-  //       isLoading: false,
-  //       error: null,
-  //       hasNext: result.hasNext,
-  //       lastId: result.lastId, // Обновляем lastId для следующего запроса
-  //     }));
-  //   } catch (e) {
-  //     console.error(`Ошибка загрузки подборки ${selectionId}:`, e);
-  //     setBooksCollectionState((prev) => ({
-  //       ...prev,
-  //       isLoading: false,
-  //       error: "Не удалось загрузить подборку",
-  //     }));
-  //   }
-  // }, [hasNext, lastId, selectionId, isLoading]); // Включаем все используемые состояния/пропсы
-
-  // 2. Используем fetchData в useEffect для первичной загрузки
-  // useEffect(() => {
-  //   // При смене selectionId сбрасываем состояние
-  //   setBooksCollectionState(initialDataState);
-
-  //   // Вызываем первую загрузку.
-  //   // Поскольку initialDataState устанавливает hasNext: true и isLoading: true,
-  //   // нам нужно либо вызвать fetchData напрямую, либо убедиться,
-  //   // что он сработает, несмотря на isLoading: true
-
-  //   // **ВАЖНО:** Если initialDataState устанавливает isLoading: true,
-  //   // а fetchData проверяет `if (!hasNext || isLoading) return;`, то первая загрузка не произойдет.
-  //   // Изменим логику: первичный вызов должен игнорировать isLoading.
-
-  //   // Мы можем создать отдельную функцию для начальной загрузки или
-  //   // изменить initialDataState, чтобы isLoading был false,
-  //   // а fetchData вызывался сразу. Но проще всего запустить загрузку здесь.
-
-  //   // Запускаем загрузку, используя только что установленный initialDataState
-  //   // ВАЖНО: fetchData, вызванная здесь, замкнет старые (initial) значения состояния.
-  //   // Для первой загрузки можно использовать отдельный асинхронный блок.
-  //   const initialFetch = async () => {
-  //     try {
-  //       const result: PagedResult<BookListItem> =
-  //         await selectionsClient.getBooks(
-  //           selectionId,
-  //           null, // lastId для первого запроса всегда null
-  //           PAGE_SIZE
-  //         );
-
-  //       setBooksCollectionState({
-  //         books: result.items,
-  //         isLoading: false,
-  //         error: null,
-  //         hasNext: result.hasNext,
-  //         lastId: result.lastId,
-  //       });
-  //     } catch (e) {
-  //       console.error(`Ошибка первичной загрузки подборки ${selectionId}:`, e);
-  //       setBooksCollectionState((prev) => ({
-  //         ...prev,
-  //         isLoading: false,
-  //         error: "Не удалось загрузить подборку при инициализации",
-  //       }));
-  //     }
-  //   };
-
-  //   initialFetch();
-  // }, [selectionId]);
-
-  // 3. Упрощаем fetchNext
-  // const fetchNext = () => {
-  //   fetchData(); // fetchData сам проверяет hasNext и isLoading
-  // };
-
   useEffect(() => {
     fetchBooks(selectionId, null, PAGE_SIZE);
   }, []);
 
   const renderFooter = () => {
-    // ... (без изменений)
     if (!loadingMore) return null;
 
     return (

@@ -1,5 +1,11 @@
 import { throwException } from "../lib/utils/throwing-exception";
-import { FileResponse, UpdateReadingProgressCommand } from "../types/types";
+import {
+  BookListItem,
+  FileResponse,
+  GetReadBooksQuery,
+  PagedResult,
+  UpdateReadingProgressCommand,
+} from "../types/types";
 import { BookDetails } from "../types/types";
 export class BooksClient {
   private http: {
@@ -85,6 +91,78 @@ export class BooksClient {
       });
     }
     return Promise.resolve<FileResponse>(null as any);
+  }
+
+  getReadBooks(query: GetReadBooksQuery): Promise<PagedResult<BookListItem>> {
+    // let url_ = `${this.baseUrl}/api/Books/readbooks`;
+    // const content_ = JSON.stringify(query);
+    // console.log(content_);
+    // let options_: RequestInit = {
+    //   body: content_,
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "application/json",
+    //   },
+    // };
+
+    const { UserId, LastId, Limit } = query;
+    let url_ = `${this.baseUrl}/api/Books/readbooks?`;
+    url_ += `userId=${encodeURIComponent(UserId)}&`;
+    // 1. Формируем строку запроса из параметров
+    if (LastId !== null && LastId !== undefined) {
+      url_ += `lastId=${encodeURIComponent(LastId)}&`;
+    }
+    if (Limit !== undefined) {
+      url_ += `limit=${encodeURIComponent(Limit)}&`;
+    }
+    url_ = url_.replace(/[?&]$/, "");
+    console.log(url_);
+    // 2. Вставляем строку запроса в URL
+
+    // 3. Убираем body и Content-Type
+    let options_: RequestInit = {
+      method: "GET", // Метод остается GET
+      headers: {
+        // Content-Type: "application/json" здесь не нужен, так как нет тела
+        Accept: "application/octet-stream",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processJsonResponseForReadBooks<PagedResult<BookListItem>>(
+        _response
+      );
+    });
+  }
+
+  protected async processJsonResponseForReadBooks<T>(
+    response: Response
+  ): Promise<T> {
+    const status = response.status;
+    const headers: any = {};
+    response.headers.forEach((v, k) => (headers[k] = v));
+
+    if (status === 200) {
+      return response.json() as Promise<T>;
+    } else if (status >= 400) {
+      const responseText = await response.text();
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        responseText,
+        headers
+      );
+    } else {
+      // Неожиданный статус
+      const responseText = await response.text();
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        responseText,
+        headers
+      );
+    }
   }
 
   /**

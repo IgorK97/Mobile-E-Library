@@ -226,3 +226,9 @@ export interface UpdateReadingProgressCommand {
   bookId: number;
   readingProgress: number;
 }
+
+export interface GetReadBooksQuery {
+  UserId: number;
+  LastId: number | null;
+  Limit: number;
+}

@@ -30,7 +30,6 @@ export default function LibraryScreen() {
         title={activeSelection.title}
         onGoBack={goBackToLibrary}
         onNavigateToBook={navigateToBook}
-        // Передаем функцию из стора, чтобы обновить текущую книгу перед навигацией
         setCurrentBook={setCurrentBook}
       />
     );
