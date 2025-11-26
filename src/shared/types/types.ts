@@ -220,3 +220,9 @@ export interface PagedResult<T> {
   hasNext: boolean;
   lastId: number | null;
 }
+
+export interface UpdateReadingProgressCommand {
+  userId: number;
+  bookId: number;
+  readingProgress: number;
+}

@@ -12,6 +12,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import "@/src/shared/i18n";
+import { booksClient } from "@/src/shared/api/booksApi";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Bookmark } from "@epubjs-react-native/core/lib/typescript/types";
@@ -50,8 +51,14 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
 
   // const { id } = useLocalSearchParams();
 
-  const { theme, changeFontSize, changeFontFamily, changeTheme, goToLocation } =
-    useReader();
+  const {
+    theme,
+    changeFontSize,
+    changeFontFamily,
+    changeTheme,
+    goToLocation,
+    currentLocation,
+  } = useReader();
 
   const bookmarksListRef = useRef<BottomSheetModal>(null);
   const tableOfContentsRef = useRef<BottomSheetModal>(null);
@@ -72,6 +79,15 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
       setCurrentFontSize(currentFontSize - 1);
       changeFontSize(`${currentFontSize - 1}px`);
     }
+  };
+
+  const onNavigateBack = () => {
+    booksClient.updateReadingProgress({
+      userId: 1,
+      bookId: bookId,
+      readingProgress: currentLocation?.start.percentage ?? 0,
+    });
+    onNavigate();
   };
 
   const switchTheme = () => {
@@ -235,7 +251,7 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
         <ReaderHeader
           author="Автор"
           title="Название книги"
-          onNavigate={onNavigate}
+          onNavigate={onNavigateBack}
         />
       )}
       {!isFullScreen && (

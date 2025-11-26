@@ -1,5 +1,5 @@
 import { throwException } from "../lib/utils/throwing-exception";
-import { FileResponse } from "../types/types";
+import { FileResponse, UpdateReadingProgressCommand } from "../types/types";
 import { BookDetails } from "../types/types";
 export class BooksClient {
   private http: {
@@ -85,6 +85,62 @@ export class BooksClient {
       });
     }
     return Promise.resolve<FileResponse>(null as any);
+  }
+
+  /**
+   * Отправляет прогресс чтения на сервер.
+   * Эндпоинт: POST /api/Books/{bookId}/progress
+   */
+  updateReadingProgress(command: UpdateReadingProgressCommand): Promise<void> {
+    let url_ = this.baseUrl + "/api/Books/{bookId}/progress";
+
+    if (command.bookId === undefined || command.bookId === null)
+      throw new Error("The parameter 'command.bookId' must be defined.");
+
+    // Заменяем {bookId} в URL
+    url_ = url_.replace("{bookId}", encodeURIComponent("" + command.bookId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(command);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json", // Обычно API возвращает json или void
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processUpdateReadingProgress(_response);
+    });
+  }
+
+  protected async processUpdateReadingProgress(
+    response: Response
+  ): Promise<void> {
+    const status = response.status;
+
+    // 204 No Content - это успешный ответ для этого эндпоинта
+    // 200 OK - на случай, если сервер решит что-то вернуть
+    if (status === 200 || status === 204) {
+      return;
+    }
+
+    // Обработка ошибок
+    const _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    }
+
+    const responseText = await response.text();
+    return throwException(
+      "An unexpected server error occurred.",
+      status,
+      responseText,
+      _headers
+    );
   }
 
   getBookMetadata(bookId: number): Promise<BookDetails | null> {
