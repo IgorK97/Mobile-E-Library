@@ -71,6 +71,8 @@ export interface BookDetails {
   reviewsCount: number;
   coverUri: string | null;
   isAvailable: boolean;
+  isFavorite: boolean;
+  isRead: boolean;
   publisher: PublisherDetails | null;
   country: string | null;
   language: string;

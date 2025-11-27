@@ -8,7 +8,7 @@ import {
   CircleX,
   CircleFadingArrowUp,
 } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   ImageSourcePropType,
@@ -30,6 +30,7 @@ import { useStore } from "@/src/shared/lib/store/globalStore";
 import { useBookDetails } from "@/src/shared/lib/hooks/use-book-details";
 import { useReferenceData } from "@/src/shared/contexts/ReferenceDataProvider";
 import { BookDetails } from "@/src/shared/types/types";
+import { shelvesClient } from "@/src/shared/api/shelvesApi";
 interface BookDetailsProps {
   onNavigateToReviews: (id: number) => void;
   onNavigateToRead: (id: number) => void;
@@ -79,23 +80,75 @@ BookDetailsProps) => {
 
   // 💡 Используем хук для загрузки полных деталей
   const { data: fullBookDetails, isLoading, error } = useBookDetails(bookId);
-
+  const [currentDetailedBook, setCurrentDetailedBook] =
+    useState<BookDetails | null>(null);
+  useEffect(() => {
+    if (fullBookDetails) {
+      setCurrentDetailedBook(fullBookDetails);
+    }
+  }, [fullBookDetails]);
   const { roles } = useReferenceData();
 
   const authorRoleId = roles.find((role) => role.name === "Автор")?.id ?? 1; // Получаем ID роли "Автор"
 
-  const bookInfo = fullBookDetails;
+  // const bookInfo = fullBookDetails;
 
-  console.log("BUBUBU", bookInfo?.participants.length);
+  console.log("I AM HERE", fullBookDetails);
+  console.log(" I AM HERE V2", currentDetailedBook);
+  console.log("BUBUBU", currentDetailedBook?.participants.length);
 
-  bookInfo?.participants.forEach((p) => {
+  currentDetailedBook?.participants.forEach((p) => {
     console.log("KUKUKU");
     console.log(p.role);
     p.persons.forEach((person) => console.log(person));
   });
 
-  if (!bookInfo) return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
-  const authors: string = getAuthorsString(authorRoleId, bookInfo);
+  if (!currentDetailedBook)
+    return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
+  const authors: string = getAuthorsString(authorRoleId, currentDetailedBook);
+
+  const toggleFavorite = async () => {
+    if (!currentDetailedBook) return;
+
+    const shelfId = 1; // избранное
+    const bookId = currentDetailedBook.id;
+
+    const isNowFavorite = !currentDetailedBook.isFavorite;
+
+    // отправляем запрос
+    const success = isNowFavorite
+      ? await shelvesClient.addBookToShelf(shelfId, bookId)
+      : await shelvesClient.removeBookFromShelf(shelfId, bookId);
+
+    if (success) {
+      // обновляем локально
+      setCurrentDetailedBook({
+        ...currentDetailedBook,
+        isFavorite: isNowFavorite,
+      });
+    }
+  };
+
+  const toggleRead = async () => {
+    if (!currentDetailedBook) return;
+
+    const shelfId = 2; // прочитано
+    const bookId = currentDetailedBook.id;
+
+    const isNowRead = !currentDetailedBook.isRead;
+
+    const success = isNowRead
+      ? await shelvesClient.addBookToShelf(shelfId, bookId)
+      : await shelvesClient.removeBookFromShelf(shelfId, bookId);
+
+    if (success) {
+      setCurrentDetailedBook({
+        ...currentDetailedBook,
+        isRead: isNowRead,
+      });
+    }
+  };
+
   return (
     <View style={{ ...styles.container, paddingVertical: 20 }}>
       <View style={styles.header}>
@@ -129,24 +182,28 @@ BookDetailsProps) => {
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            onPress={() => setIsBookmarked(!isBookmarked)}
+            onPress={() => {
+              toggleRead();
+            }}
             style={styles.iconButton}
           >
             <Bookmark
               size={24}
-              color={isBookmarked ? favColor : "#000"}
+              color={currentDetailedBook?.isRead ? favColor : "#000"}
               fill={"none"}
             />
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => setIsFavorite(!isFavorite)}
+            onPress={() => toggleFavorite()}
             style={styles.iconButton}
           >
             <Heart
               size={24}
-              color={isFavorite ? favColor : "#000"}
-              fill={isFavorite ? fillFavColor : fillUnfavColor}
+              color={currentDetailedBook?.isFavorite ? favColor : "#000"}
+              fill={
+                currentDetailedBook?.isFavorite ? fillFavColor : fillUnfavColor
+              }
             />
           </TouchableOpacity>
         </View>
@@ -156,8 +213,8 @@ BookDetailsProps) => {
         <View style={styles.coverContainer}>
           <Image
             source={{
-              uri: bookInfo.coverUri
-                ? `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${bookInfo.coverUri}`
+              uri: currentDetailedBook.coverUri
+                ? `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${currentDetailedBook.coverUri}`
                 : undefined,
             }}
             style={styles.cover}
@@ -168,25 +225,28 @@ BookDetailsProps) => {
         <View style={styles.infoContainer}>
           <View style={styles.textCenter}>
             <Text style={styles.author}>{authors}</Text>
-            <Text style={styles.title}>{bookInfo.title}</Text>
+            <Text style={styles.title}>{currentDetailedBook.title}</Text>
           </View>
           <Text style={styles.reviewText}>
-            {bookInfo.reviewsCount} {t("book.review_count")}
+            {currentDetailedBook.reviewsCount} {t("book.review_count")}
           </Text>
         </View>
         <Text style={styles.metaText}>
-          {bookInfo.ratingsCount} {t("book.ratings_count")} | {bookInfo.year}
+          {currentDetailedBook.ratingsCount} {t("book.ratings_count")} |{" "}
+          {currentDetailedBook.year}
         </Text>
 
         <TouchableOpacity
           style={styles.readButton}
-          onPress={() => onNavigateToRead(bookInfo.id)}
+          onPress={() => onNavigateToRead(currentDetailedBook.id)}
         >
           <Text style={styles.readButtonText}>{t("book.read")}</Text>
         </TouchableOpacity>
         <View style={styles.aboutSection}>
           <Text style={styles.aboutTitle}>{t("book.about")}</Text>
-          <Text style={styles.aboutText}>{bookInfo.description}</Text>
+          <Text style={styles.aboutText}>
+            {currentDetailedBook.description}
+          </Text>
         </View>
         <View style={styles.genresSection}>
           <Text style={styles.sectionTitle}>{t("book.themes")}</Text>
@@ -195,7 +255,7 @@ BookDetailsProps) => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.genresContainer}
           >
-            {bookInfo.themes?.map((theme, index) => (
+            {currentDetailedBook.themes?.map((theme, index) => (
               <TouchableOpacity key={index} style={styles.genreChip}>
                 <Text style={styles.genreText}>{theme.name}</Text>
               </TouchableOpacity>
@@ -206,7 +266,7 @@ BookDetailsProps) => {
           style={styles.reviewsButton}
           onPress={() => {
             // router.push(`/book/reviews`);
-            onNavigateToReviews(bookInfo.id);
+            onNavigateToReviews(currentDetailedBook.id);
           }}
         >
           <Text style={styles.reviewsButtonText}>

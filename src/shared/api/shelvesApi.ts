@@ -388,6 +388,35 @@ export class ShelvesClient {
       headers
     );
   }
+  addBookToShelf(shelfId: number, bookId: number): Promise<boolean> {
+    const url_ = `${this.baseUrl}/api/Shelves/${shelfId}/books/${bookId}`;
+
+    const options_: RequestInit = {
+      method: "POST",
+      headers: { Accept: "application/json" },
+    };
+
+    return this.http.fetch(url_, options_).then(async (response) => {
+      if (response.ok) return true;
+      await this.processJsonResponse(response);
+      return false;
+    });
+  }
+
+  removeBookFromShelf(shelfId: number, bookId: number): Promise<boolean> {
+    const url_ = `${this.baseUrl}/api/Shelves/${shelfId}/books/${bookId}`;
+
+    const options_: RequestInit = {
+      method: "DELETE",
+      headers: { Accept: "application/json" },
+    };
+
+    return this.http.fetch(url_, options_).then(async (response) => {
+      if (response.ok) return true;
+      await this.processJsonResponse(response);
+      return false;
+    });
+  }
 }
 
 export const shelvesClient = new ShelvesClient(
