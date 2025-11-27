@@ -345,7 +345,7 @@ export class ShelvesClient {
   ): Promise<PagedResult<BookListItem>> {
     let url_ = `${this.baseUrl}/api/Shelves/${encodeURIComponent(
       shelfId
-    )}/books?`;
+    )}/books?userId=1&`;
 
     if (lastId !== null && lastId !== undefined) {
       url_ += `lastId=${encodeURIComponent(lastId)}&`;

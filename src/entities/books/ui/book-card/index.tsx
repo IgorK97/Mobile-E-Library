@@ -16,18 +16,28 @@ import {
   fillUnfavColor,
   unfavColor,
 } from "@/src/shared/lib/constants/theme";
+import { shelvesClient } from "@/src/shared/api/shelvesApi";
 interface BookCardProps {
   bookInfo: BookListItem;
   onPress: () => void;
 }
 
 export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(bookInfo.isFavorite || false);
+  const [isFavorite, setIsFavorite] = useState(bookInfo.isFavorite);
   const { width } = useWindowDimensions();
   const numColumns = width < 500 ? 2 : 4;
   const cardWidth = width / numColumns - 24;
   const styles = useBookCardStyles();
   console.log(`${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${bookInfo.coverUri}`);
+  const toggleFavorite = async () => {
+    let res = false;
+
+    if (!isFavorite) res = await shelvesClient.addBookToShelf(1, bookInfo.id);
+    // Временно захардкодил shelfId
+    else res = await shelvesClient.removeBookFromShelf(1, bookInfo.id);
+
+    if (res) setIsFavorite(!isFavorite);
+  };
   return (
     <View style={styles.card}>
       <TouchableOpacity
@@ -53,9 +63,10 @@ export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
           // resizeMode="contain"
         />
         <TouchableOpacity
-          onPress={(e) => {
+          onPress={async (e) => {
             e.stopPropagation?.();
-            setIsFavorite(!isFavorite);
+            await toggleFavorite();
+            // setIsFavorite(!isFavorite);
           }}
           style={styles.favoriteButton}
         >

@@ -85,7 +85,8 @@ export const BookListByCategory = ({
 
   useEffect(() => {
     if (CategoryId === -1) finalFetch(1, null, 10);
-  }, []);
+    else if (CategoryId !== 0) finalFetch(CategoryId, null, 10);
+  }, [CategoryId]);
   const renderFooter = () => {
     if (!readLoadingMore) return null;
 
