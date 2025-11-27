@@ -21,23 +21,26 @@ export class BookmarksClient {
     this.baseUrl = baseUrl ?? "http://localhost:5169";
   }
 
-  add(command: AddBookmarkCommand): Promise<FileResponse> {
-    let url_ = this.baseUrl + "/api/Bookmarks";
-    url_ = url_.replace(/[?&]$/, "");
+  add(command: AddBookmarkCommand): Promise<boolean> {
+    let url_ = `${this.baseUrl}/api/Bookmarks`;
 
     const content_ = JSON.stringify(command);
 
     let options_: RequestInit = {
-      body: content_,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/octet-stream",
+        Accept: "application/json",
       },
+      body: content_,
     };
 
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processAdd(_response);
+    console.log(options_);
+
+    return this.http.fetch(url_, options_).then(async (response) => {
+      if (response.ok) return true;
+      // await this.processJsonResponse(response);
+      return false;
     });
   }
 

@@ -12,10 +12,16 @@ import {
 import Slider from "@react-native-community/slider";
 import { useDebounceCallback } from "usehooks-ts";
 
-import { useReaderFooterStyles } from "@/src/screens/reader/ui/footer/readerFooterStyles";
+import { useReaderFooterStyles } from "@/src/screens/reader/ui/footer/index.style";
 
 import "@/src/shared/i18n";
 import { useTranslation } from "react-i18next";
+import { bookmarksClient } from "@/src/shared/api/bookmarksApi";
+import { useStore } from "@/src/shared/lib/store/globalStore";
+import {
+  AddBookmarkCommand,
+  RemoveBookmarkCommand,
+} from "@/src/shared/types/types";
 
 interface Props {
   currentFontSize: number;
@@ -54,6 +60,7 @@ export function ReaderFooter({
   const colors = resolveTheme(theme);
   const styles = useReaderFooterStyles();
   const { t } = useTranslation();
+  const { currentBook, setCurrentBook } = useStore();
   const debounced = useDebounceCallback((percentage) => {
     injectJavascript(`
         try{
@@ -63,7 +70,7 @@ export function ReaderFooter({
             alert(error?.message);
         }`);
   }, 1000);
-  const handleChangeBookmark = () => {
+  const handleChangeBookmark = async () => {
     const location = getCurrentLocation();
 
     if (!location) return;
@@ -76,8 +83,20 @@ export function ReaderFooter({
       );
 
       if (!bookmark) return;
+      await bookmarksClient.remove({
+        userId: 1,
+        bookId: currentBook?.id, // текущая книга
+        mark: JSON.stringify(location), // передаём location
+      } as RemoveBookmarkCommand); //What if it did not save changes???
       removeBookmark(bookmark);
-    } else addBookmark(location);
+    } else {
+      await bookmarksClient.add({
+        userId: 1,
+        bookId: currentBook?.id, // текущая книга
+        mark: JSON.stringify(location), // передаём location
+      } as AddBookmarkCommand); //What if it did not save changes???
+      addBookmark(location);
+    }
   };
   return (
     <View
@@ -153,7 +172,7 @@ export function ReaderFooter({
             iconColor={MD3Colors.neutral50}
             size={20}
             animated
-            onPress={handleChangeBookmark}
+            onPress={async () => await handleChangeBookmark()}
             onLongPress={onOpenBookmarksList}
           />
         )}

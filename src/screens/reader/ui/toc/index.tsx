@@ -18,7 +18,7 @@ import {
   contrast,
   resolveTheme,
 } from "@/src/shared/lib/constants/reader-theme";
-import { useTocStyles } from "@/src/screens/reader/ui/toc/tocStyles";
+import { useTocStyles } from "@/src/screens/reader/ui/toc/index.style";
 
 import "@/src/shared/i18n";
 import { useTranslation } from "react-i18next";

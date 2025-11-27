@@ -12,7 +12,7 @@ import {
   contrast,
   resolveTheme,
 } from "@/src/shared/lib/constants/reader-theme";
-import { useBookmarksStyles } from "@/src/screens/reader/ui/bookmarks/bookmarksStyles";
+import { useBookmarksStyles } from "@/src/screens/reader/ui/bookmarks/index.style";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 interface Props {
