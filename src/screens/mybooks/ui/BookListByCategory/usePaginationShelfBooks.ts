@@ -1,51 +1,41 @@
-import { selectionsClient } from "@/src/shared/api/selectionsApi";
+import { shelvesClient } from "@/src/shared/api/shelvesApi";
 import { BookListItem, PagedResult } from "@/src/shared/types/types";
 import { useState } from "react";
 
-export interface SelectionDataState {
+export interface ShelfBooksDataState {
   books: BookListItem[];
-  //   isLoading: boolean;
   lastId: number | null;
-  //   error: string | null;
   hasNext: boolean;
 }
 
-const initialDataState: SelectionDataState = {
+const initialDataState: ShelfBooksDataState = {
   books: [],
-  //   isLoading: true,
-  //   error: null,
   hasNext: true,
   lastId: null,
 };
 
-const usePagination = () => {
+const usePaginationShelvesBooks = (shelfId: number) => {
   const [initialLoader, setInitialLoader] = useState(true);
   const [books, setBooks] = useState(initialDataState.books);
-  //   const [totalResult, setTotalResult] = useState(initialDataState.totalResult);
-  //   const [pageNo, setPageNo] = useState(initialData.pageNo);
-  //   const [totalPages, setTotalPages] = useState(initialData.totalPages);
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasNext, setHasNext] = useState(initialDataState.hasNext);
   const [lastId, setLastId] = useState<number | null>(initialDataState.lastId);
 
-  const fetchBooks = async (
-    selectionId: number,
+  const fetchShelfBooks = async (
+    shelfId: number,
     lastId: number | null,
     limit = 10
   ) => {
     try {
-      const result: PagedResult<BookListItem> = await selectionsClient.getBooks(
-        selectionId,
-        lastId,
-        limit
-      );
+      const result: PagedResult<BookListItem> =
+        await shelvesClient.getShelfBooks(shelfId, lastId, limit);
 
       setBooks(lastId === null ? result.items : [...books, ...result.items]);
       setHasNext(result.hasNext);
       setLastId(result.lastId);
     } catch (e) {
-      console.error("Error fetching books:", e);
+      console.error("Error fetching shelf books:", e);
       setHasNext(false);
     } finally {
       setInitialLoader(false);
@@ -54,18 +44,19 @@ const usePagination = () => {
     }
   };
 
-  const loadMore = (selectionId: number, limit: number) => {
+  const loadMoreShelfBooks = (limit: number) => {
     if (!loadingMore && hasNext) {
       setLoadingMore(true);
-      fetchBooks(selectionId, lastId, limit);
+      fetchShelfBooks(shelfId, lastId, limit);
     }
   };
 
-  const refresh = (selectionId: number, limit: number) => {
+  const refresh = (limit: number) => {
     setRefreshing(true);
     setLastId(null);
-    fetchBooks(selectionId, null, limit);
+    fetchShelfBooks(shelfId, null, limit);
   };
+
   return {
     books,
     initialLoader,
@@ -73,9 +64,10 @@ const usePagination = () => {
     loadingMore,
     hasNext,
     lastId,
-    fetchBooks,
-    loadMore,
+    fetchShelfBooks,
+    loadMoreShelfBooks,
     refresh,
   };
 };
-export default usePagination;
+
+export default usePaginationShelvesBooks;

@@ -28,9 +28,9 @@ interface MyBooksProps {
 export const MyBooks = ({ onNavigateToBook }: MyBooksProps) => {
   const tabs = [
     { id: 1, label: "Избранное" },
-    { id: 2, label: "Загруженные" },
+    { id: 2, label: "Прочитанные" },
     { id: -1, label: "История чтения" },
-    { id: 0, label: "Прочитанные" },
+    { id: 0, label: "Загруженные" },
   ];
 
   const [activeTab, setActiveTab] = useState(tabs[0].id);

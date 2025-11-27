@@ -3,6 +3,12 @@ import { BookDetails } from "@/src/screens/bookDetails";
 import { router } from "expo-router";
 import { BookListItem } from "@/src/shared/types/types";
 
+const shelvesType = [
+  { id: 1, title: "FAVORITES" },
+  { id: 2, title: "READ" },
+  { id: 3, title: "CUSTOM" },
+];
+
 export default function BookDetailsScreen() {
   const navigateToReviews = (bookId: number) => {
     router.navigate({

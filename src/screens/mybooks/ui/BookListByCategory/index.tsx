@@ -7,13 +7,14 @@ import {
   FlatList,
   RefreshControl,
 } from "react-native";
-import usePaginationReadBooks from "./usePagination";
+import usePaginationReadBooks from "./usePaginationReadBooks";
 import { Colors } from "@/src/shared/lib/constants/theme";
 import { commonStyles } from "@/src/shared/lib/constants/common";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BookCard } from "@/src/entities/books";
 import { BookListItem } from "@/src/shared/types/types";
 import { useEffect } from "react";
+import usePaginationShelfBooks from "./usePaginationShelfBooks";
 
 interface BookListByCategoryProps {
   CategoryId: number;
@@ -34,23 +35,59 @@ export const BookListByCategory = ({
     setCurrentBook(book);
     onNavigateToBook(book.id);
   };
+  // const {
+  //   books,
+  //   refreshing,
+  //   loadingMore,
+  //   refresh,
+  //   loadMoreReadBooks,
+  //   fetchReadBooks,
+  //   hasNext,
+  //   lastId,
+  //   initialLoader,
+  // } = usePaginationReadBooks();
+
   const {
-    books,
-    refreshing,
-    loadingMore,
-    refresh,
+    books: readBooks,
+    refreshing: readRefreshing,
+    loadingMore: readLoadingMore,
+    refresh: refreshReadBooks,
     loadMoreReadBooks,
     fetchReadBooks,
-    hasNext,
-    lastId,
-    initialLoader,
+    hasNext: readHasNext,
+    lastId: readLastId,
+    initialLoader: readInitialLoader,
   } = usePaginationReadBooks();
 
+  const {
+    books: shelfBooks,
+    refreshing: shelfRefreshing,
+    loadingMore: shelfLoadingMore,
+    refresh: refreshShelfBooks,
+    loadMoreShelfBooks,
+    fetchShelfBooks,
+    hasNext: shelfHasNext,
+    lastId: shelfLastId,
+    initialLoader: shelfInitialLoader,
+  } = usePaginationShelfBooks(CategoryId);
+
+  const isReadHistory = CategoryId === -1;
+
+  const finalBooks = isReadHistory ? readBooks : shelfBooks;
+  const finalLoadMore = isReadHistory ? loadMoreReadBooks : loadMoreShelfBooks;
+  const finalRefresh = isReadHistory ? refreshReadBooks : refreshShelfBooks;
+  const finalFetch = isReadHistory ? fetchReadBooks : fetchShelfBooks;
+  const finalInitialLoader = isReadHistory
+    ? readInitialLoader
+    : shelfInitialLoader;
+  const finalRefreshing = isReadHistory ? readRefreshing : shelfRefreshing;
+  const finalLoadingMore = isReadHistory ? readLoadingMore : shelfLoadingMore;
+
   useEffect(() => {
-    fetchReadBooks(1, null, 10);
+    if (CategoryId === -1) finalFetch(1, null, 10);
   }, []);
   const renderFooter = () => {
-    if (!loadingMore) return null;
+    if (!readLoadingMore) return null;
 
     return (
       <View style={{ paddingVertical: 20 }}>
@@ -66,11 +103,11 @@ export const BookListByCategory = ({
           color === "light" ? Colors.light.background : Colors.dark.background,
       }}
     >
-      {initialLoader ? (
+      {readInitialLoader ? (
         <ActivityIndicator style={{ marginTop: 20 }} size="large" />
       ) : (
         <FlatList
-          data={books}
+          data={finalBooks}
           keyExtractor={(item) => item.id.toString()}
           numColumns={numColumns}
           contentContainerStyle={commonStyles.grid}
@@ -85,11 +122,11 @@ export const BookListByCategory = ({
           )} // Оборачиваем renderItem в useCallback
           refreshControl={
             <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => refresh(1, 10)}
+              refreshing={readRefreshing}
+              onRefresh={() => finalRefresh(1, 10)}
             />
           }
-          onEndReached={() => loadMoreReadBooks(1, 10)} // Вызываем fetchNext безусловно
+          onEndReached={() => finalLoadMore(1, 10)} // Вызываем fetchNext безусловно
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
         />
