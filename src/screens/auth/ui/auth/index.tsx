@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 import { Colors } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
-import { useAuthStyles } from "@/src/screens/auth/ui/auth/authStyles";
+import { useAuthStyles } from "@/src/screens/auth/ui/auth/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
 interface MyError {

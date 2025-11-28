@@ -19,7 +19,7 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
-import { useBookStyles } from "@/src/screens/library/ui/libraryComponent/bookStyles";
+import { useBookStyles } from "@/src/screens/library/ui/libraryComponent/index.style";
 import {
   favColor,
   // unfavColor,

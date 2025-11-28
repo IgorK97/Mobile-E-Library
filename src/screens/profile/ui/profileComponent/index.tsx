@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
 import { Colors, FontSizes } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
-import { useProfileStyles } from "@/src/screens/profile/ui/profileComponent/profileStyles";
+import { useProfileStyles } from "@/src/screens/profile/ui/profileComponent/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 import { useStore } from "@/src/shared/lib/store/globalStore";
 

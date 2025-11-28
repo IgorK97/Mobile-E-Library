@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 import "@/src/shared/i18n";
 
-import { useSearchStyles } from "@/src/screens/search/ui/searchComponent/searchStyles";
+import { useSearchStyles } from "@/src/screens/search/ui/searchComponent/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 
 interface SearchProps {

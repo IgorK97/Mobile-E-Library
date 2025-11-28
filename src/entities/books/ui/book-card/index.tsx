@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { Image } from "expo-image";
-import { useBookCardStyles } from "@/src/entities/books/ui/book-card/bookCardStyles";
+import { useBookCardStyles } from "@/src/entities/books/ui/book-card/index.style";
 import {
   favColor,
   fillFavColor,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
-import { useReviewCardStyles } from "@/src/screens/reviews/ui/reviewCard/reviewCardStyles";
+import { useReviewCardStyles } from "@/src/screens/reviews/ui/reviewCard/index.style";
 interface ReviewCardProps {
   id: string;
   author: string;
