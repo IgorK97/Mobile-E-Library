@@ -15,7 +15,11 @@ import "@/src/shared/i18n";
 import { booksClient } from "@/src/shared/api/booksApi";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Bookmark } from "@epubjs-react-native/core/lib/typescript/types";
+import {
+  Bookmark,
+  Location,
+  Section,
+} from "@epubjs-react-native/core/lib/typescript/types";
 import {
   availableFonts,
   MAX_FONT_SIZE,
@@ -27,15 +31,26 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/screens/reader/ui/header";
 import { ReaderFooter } from "@/src/screens/reader/ui/footer";
 import { BookmarksList } from "@/src/screens/reader/ui/bookmarks";
-import { BookListItem } from "@/src/shared/types/types";
+import { BookListItem, BookmarkDetails } from "@/src/shared/types/types";
 import { BookService } from "@/src/shared/services/BookService";
 import { useBookFile } from "@/src/shared/lib/hooks/use-books";
 import * as FileSystem from "expo-file-system/legacy";
 import { FileSystemService } from "@/src/shared/services/FileSystemService";
+import { useStore } from "@/src/shared/lib/store/globalStore";
+import { bookmarksClient } from "@/src/shared/api/bookmarksApi";
 // import { useLocalSearchParams } from "expo-router";
 
 // const dest = new Directory(Paths.cache, "files");
-const dbm: Bookmark[] = [];
+interface CSharpBookmark {
+  Id: number; // Используем number для Id в TypeScript
+  Mark: string; // Строка JSON: '{"location":"...", "section":...}'
+  СreatedAt: Date; // На клиенте это может быть Date или строка ISO
+}
+interface MarkData {
+  location: Location;
+  section: Section;
+}
+// let dbm: Bookmark[] = [];
 
 interface ReaderProps {
   onNavigate: () => void;
@@ -46,6 +61,8 @@ interface ReaderProps {
 export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const { currentBook } = useStore();
+  const [booMarks, setBooMarks] = useState<Bookmark[]>([]);
 
   // const { file, fileName, loading } = useBookFile(bookId);
 
@@ -66,7 +83,26 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
   const [isFullScreen, setIsFullScreen] = useState(true);
   const [currentFontSize, setCurrentFontSize] = useState(16);
   const [currentFontFamily, setCurrentFontFamily] = useState(availableFonts[0]);
-
+  useEffect(() => {
+    if (!currentBook) return;
+    async function loadBookmakrs() {
+      const bookmarksFromDb: BookmarkDetails[] = await bookmarksClient.getAll(
+        currentBook?.id || 1,
+        1
+      );
+      const dbm = bookmarksFromDb.map((bm): Bookmark => {
+        const markData: MarkData = JSON.parse(bm.mark);
+        return {
+          id: bm.id,
+          location: markData.location,
+          section: markData.section,
+          text: "",
+        };
+      });
+      setBooMarks(dbm);
+    }
+    loadBookmakrs();
+  }, []);
   const increaseFontSize = () => {
     if (currentFontSize < MAX_FONT_SIZE) {
       setCurrentFontSize(currentFontSize + 1);
@@ -220,7 +256,7 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
         <Reader
           src={epubAsset}
           fileSystem={useFileSystem}
-          initialBookmarks={dbm}
+          initialBookmarks={booMarks}
           onAddBookmark={(bookmark) => {
             console.log(bookmark);
           }}

@@ -83,19 +83,32 @@ export function ReaderFooter({
       );
 
       if (!bookmark) return;
+      const removingBookmarkData = {
+        location: location,
+        section: bookmark.section,
+      };
       await bookmarksClient.remove({
         userId: 1,
         bookId: currentBook?.id, // текущая книга
-        mark: JSON.stringify(location), // передаём location
+        mark: JSON.stringify(removingBookmarkData), // передаём location
       } as RemoveBookmarkCommand); //What if it did not save changes???
       removeBookmark(bookmark);
     } else {
+      addBookmark(location);
+      const bookmark = bookmarks.find(
+        (item) =>
+          item.location.start.cfi === location?.start.cfi &&
+          item.location.end.cfi === location?.end.cfi
+      );
+      const addingBookmarkData = {
+        location: location,
+        section: bookmark?.section,
+      };
       await bookmarksClient.add({
         userId: 1,
         bookId: currentBook?.id, // текущая книга
-        mark: JSON.stringify(location), // передаём location
+        mark: JSON.stringify(addingBookmarkData), // передаём location
       } as AddBookmarkCommand); //What if it did not save changes???
-      addBookmark(location);
     }
   };
   return (

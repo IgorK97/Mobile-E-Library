@@ -15,6 +15,7 @@ import {
 import { useBookmarksStyles } from "@/src/screens/reader/ui/bookmarks/index.style";
 import { useTranslation } from "react-i18next";
 import "@/src/shared/i18n";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 interface Props {
   onClose: () => void;
 }
@@ -35,6 +36,7 @@ export const BookmarksList = forwardRef<Ref, Props>(({ onClose }, ref) => {
   const snapPoints = React.useMemo(() => ["50%", "75%"], []);
   const [note, setNote] = useState("");
   const [currentBookmark, setCurrentBookmark] = useState<Bookmark | null>(null);
+  const { currentBook } = useStore();
   const colors = resolveTheme(theme);
   const { t } = useTranslation();
   useEffect(() => {

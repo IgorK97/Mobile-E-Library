@@ -234,3 +234,9 @@ export interface GetReadBooksQuery {
   LastId: number | null;
   Limit: number;
 }
+
+export interface BookmarkDetails {
+  id: number;
+  mark: string;
+  createdAt: Date;
+}
