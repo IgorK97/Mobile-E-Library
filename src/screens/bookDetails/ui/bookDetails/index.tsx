@@ -31,6 +31,11 @@ import { useBookDetails } from "@/src/shared/lib/hooks/use-book-details";
 import { useReferenceData } from "@/src/shared/contexts/ReferenceDataProvider";
 import { BookDetails } from "@/src/shared/types/types";
 import { shelvesClient } from "@/src/shared/api/shelvesApi";
+import {
+  checkIfBookExists,
+  deleteLocalBook,
+  downloadAndSaveBook,
+} from "@/src/shared/services/FileSystemService";
 interface BookDetailsProps {
   onNavigateToReviews: (id: number) => void;
   onNavigateToRead: (id: number) => void;
@@ -85,11 +90,18 @@ BookDetailsProps) => {
   useEffect(() => {
     if (fullBookDetails) {
       setCurrentDetailedBook(fullBookDetails);
+      setIsDownloaded(false);
     }
+    const checkBook = async () => {
+      if (!fullBookDetails) return;
+      const result = await checkIfBookExists(fullBookDetails.id);
+      if (result !== null) setIsDownloaded(true);
+    };
+    checkBook();
   }, [fullBookDetails]);
   const { roles } = useReferenceData();
 
-  const authorRoleId = roles.find((role) => role.name === "Автор")?.id ?? 1; // Получаем ID роли "Автор"
+  const authorRoleId = roles.find((role) => role.name === "Автор")?.id ?? 1;
 
   // const bookInfo = fullBookDetails;
 
@@ -163,7 +175,17 @@ BookDetailsProps) => {
         </TouchableOpacity>
         <View style={styles.headerIcons}>
           <TouchableOpacity
-            onPress={() => setIsDownloaded(!isDownloaded)}
+            onPress={async () => {
+              if (!isDownloaded) {
+                await downloadAndSaveBook(
+                  currentDetailedBook.id,
+                  `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/api/Books/${currentDetailedBook.id}/read`
+                );
+              } else {
+                deleteLocalBook(currentDetailedBook.id);
+              }
+              setIsDownloaded(!isDownloaded);
+            }}
             style={styles.iconButton}
           >
             {!isDownloaded ? (

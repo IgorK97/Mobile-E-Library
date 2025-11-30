@@ -36,10 +36,14 @@ import {
   BookListItem,
   BookmarkDetails,
 } from "@/src/shared/types/types";
-import { BookService } from "@/src/shared/services/BookService";
+// import { BookService } from "@/src/shared/services/BookService";
 import { useBookFile } from "@/src/shared/lib/hooks/use-books";
-import * as FileSystem from "expo-file-system/legacy";
-import { FileSystemService } from "@/src/shared/services/FileSystemService";
+// import * as FileSystem from "expo-file-system/legacy";
+import { File } from "expo-file-system";
+import {
+  checkIfBookExists,
+  FileSystemService,
+} from "@/src/shared/services/FileSystemService";
 import { useStore } from "@/src/shared/lib/store/globalStore";
 import { bookmarksClient } from "@/src/shared/api/bookmarksApi";
 import {
@@ -156,15 +160,26 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
 
   useEffect(() => {
     const funcLoad = async () => {
+      if (currentBook === null) return;
       try {
-        const url = process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Books/1/read";
-        const output = await FileSystemService.downloadBookToStorage(
-          "myepub",
-          url
-        );
+        const checkResult = await checkIfBookExists(currentBook.id);
+        let res: string = "";
+        if (checkResult === null) {
+          const url =
+            process.env.EXPO_PUBLIC_BASE_DEV_URL +
+            `/api/Books/${currentBook.id}/read`;
+          const output = await FileSystemService.downloadBookToStorage(
+            "myepub",
+            url
+          );
 
-        const res = await output.base64();
-        console.log(output.uri);
+          res = await output.base64();
+          console.log(output.uri);
+        } else {
+          const localFile = new File(checkResult);
+          res = await localFile.base64();
+          console.log(localFile.uri);
+        }
 
         setEpubAsset(res);
       } catch (error) {
