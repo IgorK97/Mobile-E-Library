@@ -42,6 +42,10 @@ import * as FileSystem from "expo-file-system/legacy";
 import { FileSystemService } from "@/src/shared/services/FileSystemService";
 import { useStore } from "@/src/shared/lib/store/globalStore";
 import { bookmarksClient } from "@/src/shared/api/bookmarksApi";
+import {
+  getLocalBookmarks,
+  saveBookmarkLocally,
+} from "@/src/shared/lib/utils/bookmarkStorage";
 // import { useLocalSearchParams } from "expo-router";
 
 // const dest = new Directory(Paths.cache, "files");
@@ -88,12 +92,16 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
   const [currentFontSize, setCurrentFontSize] = useState(16);
   const [currentFontFamily, setCurrentFontFamily] = useState(availableFonts[0]);
   useEffect(() => {
-    if (!currentBook) return;
+    if (currentBook === null) return;
     async function loadBookmakrs() {
+      if (currentBook === null) return;
+
       const bookmarksFromDb: BookmarkDetails[] = await bookmarksClient.getAll(
         currentBook?.id || 1,
         1
       );
+      const localBookmarks = await getLocalBookmarks(currentBook.id);
+      console.log("localBookmarks", localBookmarks);
       const dbm = bookmarksFromDb.map((bm): Bookmark => {
         const markData: MarkData = JSON.parse(bm.mark);
         return {
@@ -145,82 +153,11 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
     changeFontFamily(nextFontFamily);
   };
   const [epubAsset, setEpubAsset] = useState<string | null>(null);
-  // const blobToBase64 = (blob: Blob): Promise<string> =>
-  //   new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onerror = reject;
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.readAsDataURL(blob);
-  //   });
-  // useEffect(() => {
-  //   // if (!file) return;
-  //   // console.log("tutu");
-  //   // const convert = async () => {
-  //   //   const base64 = await blobToBase64(file);
-  //   //   setEpubAsset(base64);
-  //   // };
 
-  //   // convert();
-  //   if (!file) return;
-
-  //   const saveAndOpen = async () => {
-  //     try {
-  //       // 1. Конвертируем Blob в Base64 (как и раньше)
-  //       const dataUri = await blobToBase64(file);
-
-  //       // 2. Очищаем от префикса, чтобы получить чистые данные для записи
-  //       const pureBase64 = dataUri.split(",")[1];
-
-  //       // 3. Формируем путь куда сохранить (например, в папку кэша или документов)
-  //       // Генерируем имя файла (можно взять из headers, если передали, или просто random)
-  //       const fileUri = FileSystem.documentDirectory + "temp_book.epub";
-
-  //       // 4. Записываем файл на диск
-  //       await FileSystem.writeAsStringAsync(fileUri, pureBase64, {
-  //         encoding: FileSystem.EncodingType.Base64,
-  //       });
-
-  //       console.log("Книга сохранена по пути:", fileUri);
-
-  //       // 5. Передаем путь к файлу (URI) в читалку
-  //       // Многие читалки (например, epubjs-rn) отлично принимают URI
-  //       setEpubAsset(fileUri);
-  //     } catch (e) {
-  //       console.error("Ошибка сохранения файла:", e);
-  //     }
-  //   };
-
-  //   saveAndOpen();
-  // }, [file]);
   useEffect(() => {
     const funcLoad = async () => {
       try {
-        // const b: Book = {
-        //   id: 1,
-        //   title: "Буддизм в Японии",
-        //   author: "Т.П. Григорьева",
-        //   rating: 4.5,
-        //   reviewCount: 10,
-        //   pages: 704,
-        //   year: 1993,
-        //   description:
-        //     "Монография является первой в отечественной литературе попыткой проследить пути становления японского буддизма и его влияние на культуру Японии.",
-        //   imageUrl: require("@assets/images/book_1.png"),
-        //   genres: [
-        //     "Философия",
-        //     "Культурология",
-        //     "Религия",
-        //     "Буддизм",
-        //     "Восток",
-        //     "Япония",
-        //   ],
-        //   imageBase64: "array64",
-        // };
-
         const url = process.env.EXPO_PUBLIC_BASE_DEV_URL + "/api/Books/1/read";
-
-        // const output = await BookService.saveToStorage(b, url);
-        // await BookService.saveMeta(b);
         const output = await FileSystemService.downloadBookToStorage(
           "myepub",
           url
@@ -237,7 +174,7 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
     funcLoad();
   }, []);
 
-  if (epubAsset === null) {
+  if (epubAsset === null || currentBook === null) {
     return <Text>Загрузка...</Text>;
   }
 
@@ -267,12 +204,18 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
               location: bookmark.location,
               section: bookmark.section,
             };
-            await bookmarksClient.add({
+
+            const result = await bookmarksClient.add({
               userId: 1,
               bookId: currentBook?.id,
               mark: JSON.stringify(addingBookmarkData),
               text: bookmark.text,
             } as AddBookmarkCommand); //What if it did not save changes???
+
+            await saveBookmarkLocally(currentBook.id, {
+              ...bookmark,
+              id: result || Date.now(),
+            });
           }}
           onRemoveBookmark={(bookmark) =>
             console.log("onRemoveBookmark", bookmark)

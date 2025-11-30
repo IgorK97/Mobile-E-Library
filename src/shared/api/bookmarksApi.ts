@@ -22,7 +22,7 @@ export class BookmarksClient {
     this.baseUrl = baseUrl ?? "http://localhost:5169";
   }
 
-  add(command: AddBookmarkCommand): Promise<boolean> {
+  add(command: AddBookmarkCommand): Promise<number> {
     let url_ = `${this.baseUrl}/api/Bookmarks`;
 
     const content_ = JSON.stringify(command);
@@ -39,9 +39,9 @@ export class BookmarksClient {
     console.log(options_);
 
     return this.http.fetch(url_, options_).then(async (response) => {
-      if (response.ok) return true;
+      if (response.ok) return response.json();
       // await this.processJsonResponse(response);
-      return false;
+      return 0;
     });
   }
 
