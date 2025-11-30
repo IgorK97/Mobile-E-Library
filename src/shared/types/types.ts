@@ -147,6 +147,7 @@ export interface AddBookmarkCommand {
   bookId?: number;
   userId?: number;
   mark?: string;
+  text?: string;
 }
 
 export interface RemoveBookmarkCommand {
@@ -238,5 +239,6 @@ export interface GetReadBooksQuery {
 export interface BookmarkDetails {
   id: number;
   mark: string;
+  text: string;
   createdAt: Date;
 }

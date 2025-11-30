@@ -22,6 +22,7 @@ import {
   AddBookmarkCommand,
   RemoveBookmarkCommand,
 } from "@/src/shared/types/types";
+// import { Location } from "@epubjs-react-native/core";
 
 interface Props {
   currentFontSize: number;
@@ -53,6 +54,8 @@ export function ReaderFooter({
     totalLocations,
     injectJavascript,
     currentLocation,
+    section,
+    landmarks,
   } = useReader();
   // const [sliderValue, setSliderValue] = useState(
   //   (currentLocation?.start.percentage || 0) * 100
@@ -91,24 +94,29 @@ export function ReaderFooter({
         userId: 1,
         bookId: currentBook?.id, // текущая книга
         mark: JSON.stringify(removingBookmarkData), // передаём location
+        text: bookmark.text,
       } as RemoveBookmarkCommand); //What if it did not save changes???
       removeBookmark(bookmark);
     } else {
+      // console.log("Location: ", location);
+      // addBookmark(location);
+      // const bookmark = bookmarks.find(
+      //   (item) =>
+      //     item.location.start.cfi === location?.start.cfi &&
+      //     item.location.end.cfi === location?.end.cfi
+      // );
+      // const addingBookmarkData = {
+      //   location: location,
+      //   section: section,
+      // };
+      // console.log("addingBookmarkData", landmarks);
+      // await bookmarksClient.add({
+      //   userId: 1,
+      //   bookId: currentBook?.id, // текущая книга
+      //   mark: JSON.stringify(addingBookmarkData), // передаём location
+      //   text: "",
+      // } as AddBookmarkCommand); //What if it did not save changes???
       addBookmark(location);
-      const bookmark = bookmarks.find(
-        (item) =>
-          item.location.start.cfi === location?.start.cfi &&
-          item.location.end.cfi === location?.end.cfi
-      );
-      const addingBookmarkData = {
-        location: location,
-        section: bookmark?.section,
-      };
-      await bookmarksClient.add({
-        userId: 1,
-        bookId: currentBook?.id, // текущая книга
-        mark: JSON.stringify(addingBookmarkData), // передаём location
-      } as AddBookmarkCommand); //What if it did not save changes???
     }
   };
   return (

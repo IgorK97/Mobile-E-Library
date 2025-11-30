@@ -31,7 +31,11 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReaderHeader } from "@/src/screens/reader/ui/header";
 import { ReaderFooter } from "@/src/screens/reader/ui/footer";
 import { BookmarksList } from "@/src/screens/reader/ui/bookmarks";
-import { BookListItem, BookmarkDetails } from "@/src/shared/types/types";
+import {
+  AddBookmarkCommand,
+  BookListItem,
+  BookmarkDetails,
+} from "@/src/shared/types/types";
 import { BookService } from "@/src/shared/services/BookService";
 import { useBookFile } from "@/src/shared/lib/hooks/use-books";
 import * as FileSystem from "expo-file-system/legacy";
@@ -96,7 +100,7 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
           id: bm.id,
           location: markData.location,
           section: markData.section,
-          text: "",
+          text: bm.text,
         };
       });
       setBooMarks(dbm);
@@ -257,8 +261,18 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
           src={epubAsset}
           fileSystem={useFileSystem}
           initialBookmarks={booMarks}
-          onAddBookmark={(bookmark) => {
-            console.log(bookmark);
+          onAddBookmark={async (bookmark) => {
+            // console.log(bookmark);
+            const addingBookmarkData = {
+              location: bookmark.location,
+              section: bookmark.section,
+            };
+            await bookmarksClient.add({
+              userId: 1,
+              bookId: currentBook?.id,
+              mark: JSON.stringify(addingBookmarkData),
+              text: bookmark.text,
+            } as AddBookmarkCommand); //What if it did not save changes???
           }}
           onRemoveBookmark={(bookmark) =>
             console.log("onRemoveBookmark", bookmark)
