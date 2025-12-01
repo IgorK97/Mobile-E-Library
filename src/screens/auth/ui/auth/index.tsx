@@ -16,6 +16,7 @@ import { Colors } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useAuthStyles } from "@/src/screens/auth/ui/auth/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
+import { login, register } from "@/src/shared/lib/store/userFunctions";
 
 interface MyError {
   username: string | null;
@@ -115,17 +116,62 @@ export const Auth = ({ onNavigate }: AuthProps) => {
     return valid;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    if (isRegister) {
-      Alert.alert(t("auth.alert_title_reg"), t("alert_text_reg"));
-      // router.push("/(tabs)/library");
-      onNavigate();
-    } else {
-      Alert.alert(t("auth.alert_title_auth"), t("auth.alert_text_auth"));
-      // router.push("/(tabs)/library");
-      onNavigate();
+    // if (isRegister) {
+    //   Alert.alert(t("auth.alert_title_reg"), t("alert_text_reg"));
+    //   // router.push("/(tabs)/library");
+    //   onNavigate();
+    // } else {
+    //   Alert.alert(t("auth.alert_title_auth"), t("auth.alert_text_auth"));
+    //   // router.push("/(tabs)/library");
+    //   onNavigate();
+    // }
+
+    try {
+      if (isRegister) {
+        const res = await register({
+          name: form.username,
+          familyName: form.fullName,
+          email: form.email,
+          password: form.password,
+        });
+
+        if (!res.success) {
+          Alert.alert(
+            t("auth.alert_title_reg"),
+            res.message || "Registration failed"
+          );
+          return;
+        }
+
+        Alert.alert(
+          t("auth.alert_title_reg"),
+          res.message || "Registration successful"
+        );
+        onNavigate();
+      } else {
+        const res = await login(form.email, form.password);
+
+        if (!res.success) {
+          Alert.alert(
+            t("auth.alert_title_auth"),
+            res.message || "Login failed"
+          );
+          return;
+        }
+        Alert.alert(
+          t("auth.alert_title_auth"),
+          res.message || "Login successful"
+        );
+        onNavigate();
+      }
+    } catch (e) {
+      Alert.alert(
+        "Error",
+        "An unexpected error occurred. Please try again later."
+      );
     }
   };
 
