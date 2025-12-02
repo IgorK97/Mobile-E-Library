@@ -264,3 +264,16 @@ export interface ReviewDetails {
   createdAt: Date;
   userVote?: boolean;
 }
+
+export interface UpdateProfileRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  userId: number;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  userId: number;
+}

@@ -19,7 +19,11 @@ import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useProfileStyles } from "@/src/screens/profile/ui/profileComponent/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 import { useStore } from "@/src/shared/lib/store/globalStore";
-import { getProfile } from "@/src/shared/api/userApi";
+import {
+  changePassword,
+  getProfile,
+  updateProfile,
+} from "@/src/shared/api/userApi";
 
 interface ProfileProps {
   onNavigate: () => void;
@@ -29,12 +33,11 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [isSecurityModalVisible, setIsSecurityModalVisible] = useState(false);
   const [isRegistered, setIsRegistered] = useState(true);
-
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [loading, setLoading] = useState(true);
-
   const { user, setUser } = useStore();
+
+  const [userName, setUserName] = useState(user?.firstName || "");
+  const [userEmail, setUserEmail] = useState(user?.email || "");
+  const [loading, setLoading] = useState(true);
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -55,6 +58,10 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
   useEffect(() => {
     loadProfile();
     console.log("USER");
+    if (user) {
+      setUserName(user.firstName);
+      setUserEmail(user.email || "");
+    }
   }, []);
   const logout = async () => {
     await SecureStore.deleteItemAsync("token");
@@ -66,12 +73,43 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
   const chevronRightColor =
     color === "light" ? Colors.light.chevronRight : Colors.dark.chevronRight;
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = async () => {
+    if (!user) return;
     // console.log(userName, userEmail);
+    if (!userName || !userEmail) {
+      return;
+    }
+    try {
+      const updatedProfile = await updateProfile({
+        firstName: userName,
+        lastName: user?.lastName || "",
+        email: userEmail,
+        userId: user.userId,
+      });
+      setUser({
+        ...user,
+        firstName: updatedProfile.firstName,
+        email: updatedProfile.email,
+      });
+    } catch (e) {}
     setIsProfileModalVisible(false);
   };
 
-  const handleSaveSecurity = () => {
+  const handleSaveSecurity = async () => {
+    if (!user) return;
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      return;
+    }
+    try {
+      await changePassword({
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        userId: user.userId,
+      });
+    } catch (e) {}
     setIsSecurityModalVisible(false);
     setCurrentPassword("");
     setNewPassword("");
