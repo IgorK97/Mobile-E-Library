@@ -62,7 +62,7 @@
     "alert_title_auth": "Авторизация",
     "alert_text_auth": "Успешный вход!",
     "l_name": "Имя пользователя",
-    "l_fullname": "Имя и Фамилия",
+    "l_fullname": "Имя",
     "l_email": "Email",
     "l_phone": "Телефон",
     "l_pass": "Пароль",

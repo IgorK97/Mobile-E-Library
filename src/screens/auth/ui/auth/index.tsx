@@ -16,7 +16,8 @@ import { Colors } from "@/src/shared/lib/constants/theme";
 import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useAuthStyles } from "@/src/screens/auth/ui/auth/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
-import { login, register } from "@/src/shared/lib/store/userFunctions";
+import { getProfile, login, register } from "@/src/shared/api/userApi";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 
 interface MyError {
   username: string | null;
@@ -60,8 +61,8 @@ export const Auth = ({ onNavigate }: AuthProps) => {
   });
 
   const { t } = useTranslation();
-
   const typography = useTypography();
+  const { setUser } = useStore();
 
   const handleChange = (field: string, value: string) => {
     setForm({ ...form, [field]: value });
@@ -119,16 +120,6 @@ export const Auth = ({ onNavigate }: AuthProps) => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    // if (isRegister) {
-    //   Alert.alert(t("auth.alert_title_reg"), t("alert_text_reg"));
-    //   // router.push("/(tabs)/library");
-    //   onNavigate();
-    // } else {
-    //   Alert.alert(t("auth.alert_title_auth"), t("auth.alert_text_auth"));
-    //   // router.push("/(tabs)/library");
-    //   onNavigate();
-    // }
-
     try {
       if (isRegister) {
         const res = await register({
@@ -150,6 +141,8 @@ export const Auth = ({ onNavigate }: AuthProps) => {
           t("auth.alert_title_reg"),
           res.message || "Registration successful"
         );
+        const resProfile = await getProfile();
+        setUser(resProfile);
         onNavigate();
       } else {
         const res = await login(form.email, form.password);
@@ -159,12 +152,14 @@ export const Auth = ({ onNavigate }: AuthProps) => {
             t("auth.alert_title_auth"),
             res.message || "Login failed"
           );
-          return;
         }
         Alert.alert(
           t("auth.alert_title_auth"),
           res.message || "Login successful"
         );
+        const resProfile = await getProfile();
+        setUser(resProfile);
+
         onNavigate();
       }
     } catch (e) {

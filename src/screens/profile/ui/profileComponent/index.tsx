@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Keyboard,
   Modal,
@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 import { ArrowLeft, ChevronRight, User } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -18,6 +19,7 @@ import { useColorScheme } from "@/src/shared/lib/hooks/use-color-scheme";
 import { useProfileStyles } from "@/src/screens/profile/ui/profileComponent/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
 import { useStore } from "@/src/shared/lib/store/globalStore";
+import { getProfile } from "@/src/shared/api/userApi";
 
 interface ProfileProps {
   onNavigate: () => void;
@@ -30,6 +32,7 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
 
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const { user, setUser } = useStore();
 
@@ -40,6 +43,25 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
   const { t } = useTranslation();
 
   const color = useColorScheme();
+  const loadProfile = async () => {
+    try {
+      const profile = await getProfile();
+      setUser(profile);
+    } catch (e) {
+      // offline fallback уже в getProfile
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    loadProfile();
+    console.log("USER");
+  }, []);
+  const logout = async () => {
+    await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("refresh");
+    await SecureStore.deleteItemAsync("profile");
+    setUser(null);
+  };
 
   const chevronRightColor =
     color === "light" ? Colors.light.chevronRight : Colors.dark.chevronRight;
@@ -58,9 +80,7 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
 
   const styles = useProfileStyles();
   const typography = useTypography();
-  // if (!user) {
-  //   setUser({ name: "Читатель", email: "email@mail.ru" });
-  // }
+  if (loading) return <Text>Loading...</Text>;
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -69,7 +89,9 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
             <User size={24} color={Colors.light.userIcon} />
           </View>
           <View>
-            <Text style={typography.rowText}>{user ? user.name : "Гость"}</Text>
+            <Text style={typography.rowText}>
+              {user ? user.firstName : "Гость"}
+            </Text>
             <Text
               style={{
                 fontSize: FontSizes.xs,
@@ -122,13 +144,15 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
             style={styles.row}
             // onPress={() => router.navigate(`/auth`)}
             onPress={() => {
-              if (isRegistered) {
-                setUser(null);
-                setIsRegistered(!isRegistered);
-              } else onNavigate();
+              // if (isRegistered) {
+              //   setUser(null);
+              //   setIsRegistered(!isRegistered);
+              // } else onNavigate();
               // router.navigate({
               //   pathname: "/auth",
               // });
+              if (user) logout();
+              else onNavigate();
             }}
           >
             <Text
@@ -142,7 +166,8 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
                 },
               ]}
             >
-              {isRegistered ? t("profile.exit") : t("profile.enter")}
+              {/* {isRegistered ? t("profile.exit") : t("profile.enter")} */}
+              {user ? t("profile.exit") : t("profile.enter")}
             </Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>

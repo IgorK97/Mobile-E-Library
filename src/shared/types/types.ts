@@ -242,3 +242,25 @@ export interface BookmarkDetails {
   text: string;
   createdAt: Date;
 }
+
+export interface UserProfile {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  userName: string;
+  phoneNumber: string;
+}
+
+export interface ReviewDetails {
+  id: number;
+  title: string;
+  userName: string;
+  text: string;
+  score: number;
+  averageRating: number;
+  likesCount: number;
+  dislikesCount: number;
+  createdAt: Date;
+  userVote?: boolean;
+}
