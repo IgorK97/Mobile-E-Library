@@ -118,13 +118,11 @@ export class BooksClient {
     }
     url_ = url_.replace(/[?&]$/, "");
     console.log(url_);
-    // 2. Вставляем строку запроса в URL
 
-    // 3. Убираем body и Content-Type
     let options_: RequestInit = {
-      method: "GET", // Метод остается GET
+      method: "GET",
       headers: {
-        // Content-Type: "application/json" здесь не нужен, так как нет тела
+
         Accept: "application/octet-stream",
       },
     };
@@ -154,7 +152,6 @@ export class BooksClient {
         headers
       );
     } else {
-      // Неожиданный статус
       const responseText = await response.text();
       return throwException(
         "An unexpected server error occurred.",
@@ -175,7 +172,6 @@ export class BooksClient {
     if (command.bookId === undefined || command.bookId === null)
       throw new Error("The parameter 'command.bookId' must be defined.");
 
-    // Заменяем {bookId} в URL
     url_ = url_.replace("{bookId}", encodeURIComponent("" + command.bookId));
     url_ = url_.replace(/[?&]$/, "");
 
@@ -186,7 +182,7 @@ export class BooksClient {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json", // Обычно API возвращает json или void
+        Accept: "application/json",
       },
     };
 
@@ -200,13 +196,10 @@ export class BooksClient {
   ): Promise<void> {
     const status = response.status;
 
-    // 204 No Content - это успешный ответ для этого эндпоинта
-    // 200 OK - на случай, если сервер решит что-то вернуть
     if (status === 200 || status === 204) {
       return;
     }
 
-    // Обработка ошибок
     const _headers: any = {};
     if (response.headers && response.headers.forEach) {
       response.headers.forEach((v: any, k: any) => (_headers[k] = v));
@@ -222,7 +215,6 @@ export class BooksClient {
   }
 
   getBookMetadata(userId: number, bookId: number): Promise<BookDetails | null> {
-    // 💡 Возвращаем Promise<BookDetails | null>
     let url_ = `${this.baseUrl}/api/Books/${encodeURIComponent(bookId)}/info?`;
     url_ += `userId=${userId}`;
     url_ = url_.replace(/[?&]$/, "");
@@ -249,7 +241,6 @@ export class BooksClient {
       }
       return response.json() as Promise<T>;
     } else if (status === 204 || status === 404) {
-      // No Content (204) или Not Found (404)
       return null as T;
     } else if (status >= 400) {
       const responseText = await response.text();

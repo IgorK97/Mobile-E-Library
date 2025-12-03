@@ -75,26 +75,13 @@ export async function getProfile(): Promise<UserProfile> {
 export async function updateProfile(
   data: UpdateProfileRequest
 ): Promise<UserProfile> {
-  // 🌟 Используем PUT для обновления существующего ресурса
   const res = await apiPost<UserProfile>("/users/profile", data);
-
-  // if (res.success) {
-  // 🌟 Обновляем кэш профиля
   await SecureStore.setItemAsync("profile", JSON.stringify(res));
   return res;
-  // }
-  // В случае ошибки, выбросим ошибку, чтобы компонент мог ее обработать
-  // throw new Error(res.message || "Failed to update profile.");
 }
 
 export async function changePassword(
   data: ChangePasswordRequest
 ): Promise<void> {
-  // 🌟 Используем POST или PUT для смены пароля
   const res = await apiPost<null>("/users/password", data);
-
-  // if (res.success) {
-  // return res;
-  // }
-  // throw new Error(res.message || "Failed to change password.");
 }

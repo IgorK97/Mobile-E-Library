@@ -52,8 +52,6 @@ export class ReviewsApiClient {
       return response.json() as Promise<T>;
     }
 
-    // Если тело пустое (например, для POST, возвращающего Ok(reviewId) или Ok(result))
-    // Возвращаем undefined или null, в зависимости от ожидаемого типа
     return response.status === 204 || response.status === 200
       ? (null as unknown as T)
       : (response.json() as Promise<T>);

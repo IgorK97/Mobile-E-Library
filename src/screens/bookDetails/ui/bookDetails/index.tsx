@@ -95,23 +95,25 @@ BookDetailsProps) => {
     error,
     fetchBookDetails,
   } = useBookDetails(bookId);
-  const [currentDetailedBook, setCurrentDetailedBook] =
-    useState<BookDetails | null>(null);
+  // const [currentDetailedBook, setCurrentDetailedBook] =
+  //   useState<BookDetails | null>(null);
   useEffect(() => {
     if (!user || !bookId) return;
-    if (fullBookDetails) {
-      setCurrentDetailedBook(fullBookDetails);
-      setIsDownloaded(false);
-    } else {
-      fetchBookDetails(user.userId, bookId);
-    }
+    // if (fullBookDetails) {
+    //   // setCurrentDetailedBook(fullBookDetails);
+    //   setIsDownloaded(false);
+    // } else {
+    //   fetchBookDetails(user.userId, bookId);
+    // }
+    setIsDownloaded(false);
+    fetchBookDetails(user.userId, bookId);
     const checkBook = async () => {
       if (!fullBookDetails) return;
       const result = await checkIfBookExists(fullBookDetails.id);
       if (result !== null) setIsDownloaded(true);
     };
     checkBook();
-  }, [fullBookDetails]);
+  }, []);
   const { roles } = useReferenceData();
 
   const authorRoleId = roles.find((role) => role.name === "Автор")?.id ?? 1;
@@ -119,28 +121,29 @@ BookDetailsProps) => {
   // const bookInfo = fullBookDetails;
 
   console.log("I AM HERE", fullBookDetails);
-  console.log(" I AM HERE V2", currentDetailedBook);
-  console.log("BUBUBU", currentDetailedBook?.participants.length);
+  console.log(" I AM HERE V2", fullBookDetails);
+  console.log("BUBUBU", fullBookDetails?.participants.length);
 
-  currentDetailedBook?.participants.forEach((p) => {
+  fullBookDetails?.participants.forEach((p) => {
     console.log("KUKUKU");
     console.log(p.role);
     p.persons.forEach((person) => console.log(person));
   });
 
-  if (!currentDetailedBook)
+  if (!fullBookDetails)
     return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
-  console.log(currentDetailedBook);
-  const authors: string = getAuthorsString(authorRoleId, currentDetailedBook);
+  console.log(fullBookDetails);
+  const authors: string = getAuthorsString(authorRoleId, fullBookDetails);
 
   const toggleFavorite = async () => {
-    if (!currentDetailedBook) return;
+    if (!user) return;
+    if (!fullBookDetails) return;
     if (!FAVORITES_SHELF_ID) return;
 
     const shelfId = FAVORITES_SHELF_ID; // избранное
-    const bookId = currentDetailedBook.id;
+    const bookId = fullBookDetails.id;
 
-    const isNowFavorite = !currentDetailedBook.isFavorite;
+    const isNowFavorite = !fullBookDetails.isFavorite;
 
     // отправляем запрос
     const success = isNowFavorite
@@ -149,31 +152,34 @@ BookDetailsProps) => {
 
     if (success) {
       // обновляем локально
-      setCurrentDetailedBook({
-        ...currentDetailedBook,
-        isFavorite: isNowFavorite,
-      });
+      // setCurrentDetailedBook({
+      //   ...currentDetailedBook,
+      //   isFavorite: isNowFavorite,
+      // });
+      fetchBookDetails(user?.userId, bookId);
     }
   };
 
   const toggleRead = async () => {
-    if (!currentDetailedBook) return;
+    if (!user) return;
+    if (!fullBookDetails) return;
     if (!READ_SHELF_ID) return;
 
     const shelfId = READ_SHELF_ID; // прочитано
-    const bookId = currentDetailedBook.id;
+    const bookId = fullBookDetails.id;
 
-    const isNowRead = !currentDetailedBook.isRead;
+    const isNowRead = !fullBookDetails.isRead;
 
     const success = isNowRead
       ? await shelvesClient.addBookToShelf(shelfId, bookId)
       : await shelvesClient.removeBookFromShelf(shelfId, bookId);
 
     if (success) {
-      setCurrentDetailedBook({
-        ...currentDetailedBook,
-        isRead: isNowRead,
-      });
+      // setCurrentDetailedBook({
+      //   ...currentDetailedBook,
+      //   isRead: isNowRead,
+      // });
+      fetchBookDetails(user?.userId, bookId);
     }
   };
 
@@ -194,11 +200,11 @@ BookDetailsProps) => {
             onPress={async () => {
               if (!isDownloaded) {
                 await downloadAndSaveBook(
-                  currentDetailedBook.id,
-                  `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/api/Books/${currentDetailedBook.id}/read`
+                  fullBookDetails.id,
+                  `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/api/Books/${fullBookDetails.id}/read`
                 );
               } else {
-                deleteLocalBook(currentDetailedBook.id);
+                deleteLocalBook(fullBookDetails.id);
               }
               setIsDownloaded(!isDownloaded);
             }}
@@ -227,7 +233,7 @@ BookDetailsProps) => {
           >
             <Bookmark
               size={24}
-              color={currentDetailedBook?.isRead ? favColor : "#000"}
+              color={fullBookDetails?.isRead ? favColor : "#000"}
               fill={"none"}
             />
           </TouchableOpacity>
@@ -238,10 +244,8 @@ BookDetailsProps) => {
           >
             <Heart
               size={24}
-              color={currentDetailedBook?.isFavorite ? favColor : "#000"}
-              fill={
-                currentDetailedBook?.isFavorite ? fillFavColor : fillUnfavColor
-              }
+              color={fullBookDetails?.isFavorite ? favColor : "#000"}
+              fill={fullBookDetails?.isFavorite ? fillFavColor : fillUnfavColor}
             />
           </TouchableOpacity>
         </View>
@@ -251,8 +255,8 @@ BookDetailsProps) => {
         <View style={styles.coverContainer}>
           <Image
             source={{
-              uri: currentDetailedBook.coverUri
-                ? `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${currentDetailedBook.coverUri}`
+              uri: fullBookDetails.coverUri
+                ? `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${fullBookDetails.coverUri}`
                 : undefined,
             }}
             style={styles.cover}
@@ -263,28 +267,26 @@ BookDetailsProps) => {
         <View style={styles.infoContainer}>
           <View style={styles.textCenter}>
             <Text style={styles.author}>{authors}</Text>
-            <Text style={styles.title}>{currentDetailedBook.title}</Text>
+            <Text style={styles.title}>{fullBookDetails.title}</Text>
           </View>
           <Text style={styles.reviewText}>
-            {currentDetailedBook.reviewsCount} {t("book.review_count")}
+            {fullBookDetails.reviewsCount} {t("book.review_count")}
           </Text>
         </View>
         <Text style={styles.metaText}>
-          {currentDetailedBook.ratingsCount} {t("book.ratings_count")} |{" "}
-          {currentDetailedBook.year}
+          {fullBookDetails.ratingsCount} {t("book.ratings_count")} |{" "}
+          {fullBookDetails.year}
         </Text>
 
         <TouchableOpacity
           style={styles.readButton}
-          onPress={() => onNavigateToRead(currentDetailedBook.id)}
+          onPress={() => onNavigateToRead(fullBookDetails.id)}
         >
           <Text style={styles.readButtonText}>{t("book.read")}</Text>
         </TouchableOpacity>
         <View style={styles.aboutSection}>
           <Text style={styles.aboutTitle}>{t("book.about")}</Text>
-          <Text style={styles.aboutText}>
-            {currentDetailedBook.description}
-          </Text>
+          <Text style={styles.aboutText}>{fullBookDetails.description}</Text>
         </View>
         <View style={styles.genresSection}>
           <Text style={styles.sectionTitle}>{t("book.themes")}</Text>
@@ -293,7 +295,7 @@ BookDetailsProps) => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.genresContainer}
           >
-            {currentDetailedBook.themes?.map((theme, index) => (
+            {fullBookDetails.themes?.map((theme, index) => (
               <TouchableOpacity key={index} style={styles.genreChip}>
                 <Text style={styles.genreText}>{theme.name}</Text>
               </TouchableOpacity>
@@ -304,7 +306,7 @@ BookDetailsProps) => {
           style={styles.reviewsButton}
           onPress={() => {
             // router.push(`/book/reviews`);
-            onNavigateToReviews(currentDetailedBook.id);
+            onNavigateToReviews(fullBookDetails.id);
           }}
         >
           <Text style={styles.reviewsButtonText}>
