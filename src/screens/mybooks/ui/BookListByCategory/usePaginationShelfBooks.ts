@@ -23,13 +23,14 @@ const usePaginationShelvesBooks = (shelfId: number) => {
   const [lastId, setLastId] = useState<number | null>(initialDataState.lastId);
 
   const fetchShelfBooks = async (
+    userId: number,
     shelfId: number,
     lastId: number | null,
     limit = 10
   ) => {
     try {
       const result: PagedResult<BookListItem> =
-        await shelvesClient.getShelfBooks(shelfId, lastId, limit);
+        await shelvesClient.getShelfBooks(userId, shelfId, lastId, limit);
 
       setBooks(lastId === null ? result.items : [...books, ...result.items]);
       setHasNext(result.hasNext);
@@ -44,17 +45,17 @@ const usePaginationShelvesBooks = (shelfId: number) => {
     }
   };
 
-  const loadMoreShelfBooks = (limit: number) => {
+  const loadMoreShelfBooks = (userId: number, limit: number) => {
     if (!loadingMore && hasNext) {
       setLoadingMore(true);
-      fetchShelfBooks(shelfId, lastId, limit);
+      fetchShelfBooks(userId, shelfId, lastId, limit);
     }
   };
 
-  const refresh = (limit: number) => {
+  const refresh = (userId: number, limit: number) => {
     setRefreshing(true);
     setLastId(null);
-    fetchShelfBooks(shelfId, null, limit);
+    fetchShelfBooks(userId, shelfId, null, limit);
   };
 
   return {

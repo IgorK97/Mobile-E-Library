@@ -30,12 +30,16 @@ const usePagination = () => {
   const [lastId, setLastId] = useState<number | null>(initialDataState.lastId);
 
   const fetchBooks = async (
+    userId: number,
     selectionId: number,
     lastId: number | null,
     limit = 10
   ) => {
+    console.log("USERID", userId);
+
     try {
       const result: PagedResult<BookListItem> = await selectionsClient.getBooks(
+        userId,
         selectionId,
         lastId,
         limit
@@ -54,17 +58,17 @@ const usePagination = () => {
     }
   };
 
-  const loadMore = (selectionId: number, limit: number) => {
+  const loadMore = (userId: number, selectionId: number, limit: number) => {
     if (!loadingMore && hasNext) {
       setLoadingMore(true);
-      fetchBooks(selectionId, lastId, limit);
+      fetchBooks(userId, selectionId, lastId, limit);
     }
   };
 
-  const refresh = (selectionId: number, limit: number) => {
+  const refresh = (userId: number, selectionId: number, limit: number) => {
     setRefreshing(true);
     setLastId(null);
-    fetchBooks(selectionId, null, limit);
+    fetchBooks(userId, selectionId, null, limit);
   };
   return {
     books,

@@ -277,3 +277,11 @@ export interface ChangePasswordRequest {
   newPassword: string;
   userId: number;
 }
+
+export interface ShelfDetails {
+  /** Уникальный идентификатор полки. */
+  id: number;
+  /** Название полки (например, "Избранное", "Хочу прочитать"). */
+  name: string;
+  shelfType: number;
+}

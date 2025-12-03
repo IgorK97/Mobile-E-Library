@@ -15,6 +15,7 @@ import { BookCard } from "@/src/entities/books";
 import { BookListItem } from "@/src/shared/types/types";
 import { useEffect } from "react";
 import usePaginationShelfBooks from "./usePaginationShelfBooks";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 
 interface BookListByCategoryProps {
   CategoryId: number;
@@ -35,6 +36,7 @@ export const BookListByCategory = ({
     setCurrentBook(book);
     onNavigateToBook(book.id);
   };
+  const { user } = useStore();
   // const {
   //   books,
   //   refreshing,
@@ -84,8 +86,9 @@ export const BookListByCategory = ({
   const finalLoadingMore = isReadHistory ? readLoadingMore : shelfLoadingMore;
 
   useEffect(() => {
-    if (CategoryId === -1) finalFetch(1, null, 10);
-    else if (CategoryId !== 0) finalFetch(CategoryId, null, 10);
+    if (!user) return;
+    if (CategoryId === -1) finalFetch(user?.userId, 1, null, 10);
+    else if (CategoryId !== 0) finalFetch(user.userId, CategoryId, null, 10);
   }, [CategoryId]);
   const renderFooter = () => {
     if (!readLoadingMore) return null;
@@ -96,6 +99,7 @@ export const BookListByCategory = ({
       </View>
     );
   };
+  if (!user) return;
   return (
     <SafeAreaView
       style={{
@@ -124,10 +128,10 @@ export const BookListByCategory = ({
           refreshControl={
             <RefreshControl
               refreshing={readRefreshing}
-              onRefresh={() => finalRefresh(1, 10)}
+              onRefresh={() => finalRefresh(user.userId, 1, 10)}
             />
           }
-          onEndReached={() => finalLoadMore(1, 10)} // Вызываем fetchNext безусловно
+          onEndReached={() => finalLoadMore(user.userId, 1, 10)} // Вызываем fetchNext безусловно
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
         />

@@ -45,14 +45,15 @@ export class SelectionsClient {
   }
 
   getBooks(
+    userId: number,
     selectionId: number,
     lastId: number | null | undefined,
     limit: number | undefined
   ): Promise<PagedResult<BookListItem>> {
     let url_ = `${this.baseUrl}/api/Selections/${encodeURIComponent(
       selectionId
-    )}/books?userId=1&`;
-
+    )}/books?userId=${userId}&`;
+    console.log("USERID", userId);
     if (lastId !== null && lastId !== undefined) {
       url_ += `lastId=${encodeURIComponent(lastId)}&`;
     }

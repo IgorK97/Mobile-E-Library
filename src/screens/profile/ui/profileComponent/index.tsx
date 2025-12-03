@@ -50,9 +50,7 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
     try {
       const profile = await getProfile();
       setUser(profile);
-    } catch (e) {
-      // offline fallback уже в getProfile
-    }
+    } catch (e) {}
     setLoading(false);
   };
   useEffect(() => {

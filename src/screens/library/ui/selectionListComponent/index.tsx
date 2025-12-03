@@ -19,6 +19,7 @@ import usePagination, {
   SelectionDataState,
 } from "@/src/screens/library/ui/selectionListComponent/usePagination";
 import { Activity } from "lucide-react-native";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 
 interface SelectionListViewProps {
   selectionId: number;
@@ -41,6 +42,7 @@ export const SelectionListView = ({
   const color = useColorScheme();
   const numColumns = 2;
   const cardWidth = width / numColumns - 24;
+  const { user } = useStore();
 
   const {
     books,
@@ -55,7 +57,8 @@ export const SelectionListView = ({
   } = usePagination();
 
   useEffect(() => {
-    fetchBooks(selectionId, null, PAGE_SIZE);
+    if (!user) return;
+    fetchBooks(user.userId, selectionId, null, PAGE_SIZE);
   }, []);
 
   const renderFooter = () => {
@@ -72,7 +75,7 @@ export const SelectionListView = ({
     setCurrentBook(book);
     onNavigateToBook(book.id);
   };
-
+  if (!user) return;
   return (
     <SafeAreaView
       style={{
@@ -124,10 +127,10 @@ export const SelectionListView = ({
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={() => refresh(selectionId, PAGE_SIZE)}
+              onRefresh={() => refresh(user?.userId, selectionId, PAGE_SIZE)}
             />
           }
-          onEndReached={() => loadMore(selectionId, PAGE_SIZE)} // Вызываем fetchNext безусловно
+          onEndReached={() => loadMore(user.userId, selectionId, PAGE_SIZE)} // Вызываем fetchNext безусловно
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
         />

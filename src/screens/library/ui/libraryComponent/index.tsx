@@ -48,9 +48,11 @@ const SelectionSection = ({
   numColumns,
 }: ToggleListProps) => {
   const displayBooks = books.slice(0, 6);
+
   if (displayBooks.length === 0) {
     return null;
   }
+
   return (
     <View>
       <SectionHeader title={title} onPress={onViewAll} />
@@ -85,7 +87,7 @@ export const Library = ({
   const cardWidth = width / numColumns - 24;
   const color = useColorScheme();
   const { setCurrentBook } = useStore();
-
+  const { user } = useStore();
   const selectionIds = useMemo(() => [2, 1, 3], []);
 
   const initialDataState: SelectionDataState = {
@@ -118,10 +120,11 @@ export const Library = ({
       setState: React.Dispatch<React.SetStateAction<SelectionDataState>>
     ) => {
       try {
+        if (!user) return;
         setState((prev) => ({ ...prev, isLoading: true, error: null }));
         // Вызываем асинхронный метод
         const result: PagedResult<BookListItem> =
-          await selectionsClient.getBooks(selectionId, null, 10);
+          await selectionsClient.getBooks(user.userId, selectionId, null, 10);
         setState({
           books: result.items, // Предполагаем, что книги лежат в result.books
           isLoading: false,
@@ -191,6 +194,7 @@ export const Library = ({
       </SafeAreaView>
     );
   }
+  if (!user) return;
   return (
     <SafeAreaView
       style={{

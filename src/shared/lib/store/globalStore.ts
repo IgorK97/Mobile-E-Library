@@ -1,12 +1,19 @@
 import { create } from "zustand";
-import { BookListItem, User, UserProfile } from "../../types/types";
+import {
+  BookListItem,
+  ShelfDetails,
+  User,
+  UserProfile,
+} from "../../types/types";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getProfile } from "../../api/userApi";
+import { shelvesClient } from "../../api/shelvesApi";
 
 interface AppState {
   currentBook: BookListItem | null;
   user: UserProfile | null;
+  shelves: ShelfDetails[] | null;
   init: () => Promise<void>;
   setCurrentBook: (book: BookListItem | null) => void;
   setUser: (user: UserProfile | null) => void;
@@ -18,7 +25,7 @@ export const useStore = create<AppState>()(
     (set, get) => ({
       currentBook: null,
       user: null,
-
+      shelves: null,
       setCurrentBook: (book) => set({ currentBook: book }),
 
       setUser: (user) => set({ user }),
@@ -28,8 +35,11 @@ export const useStore = create<AppState>()(
         try {
           const profile = await getProfile();
           set({ user: profile });
-        } catch {
+          const newShelves = await shelvesClient.getUserShelves(profile.userId);
+          set({ shelves: newShelves });
+        } catch (e) {
           set({ user: null });
+          set({ shelves: null });
         }
       },
     }),

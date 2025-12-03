@@ -17,6 +17,7 @@ import {
   unfavColor,
 } from "@/src/shared/lib/constants/theme";
 import { shelvesClient } from "@/src/shared/api/shelvesApi";
+import { useStore } from "@/src/shared/lib/store/globalStore";
 interface BookCardProps {
   bookInfo: BookListItem;
   onPress: () => void;
@@ -28,13 +29,22 @@ export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
   const numColumns = width < 500 ? 2 : 4;
   const cardWidth = width / numColumns - 24;
   const styles = useBookCardStyles();
+  const { shelves } = useStore();
+  const FAVORITES_SHELF_ID = shelves?.find(
+    (shelf) => shelf.shelfType === 1 // Проверяем тип полки
+  )?.id;
   console.log(`${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${bookInfo.coverUri}`);
   const toggleFavorite = async () => {
+    if (!FAVORITES_SHELF_ID) return;
     let res = false;
 
-    if (!isFavorite) res = await shelvesClient.addBookToShelf(1, bookInfo.id);
-    // Временно захардкодил shelfId
-    else res = await shelvesClient.removeBookFromShelf(1, bookInfo.id);
+    if (!isFavorite)
+      res = await shelvesClient.addBookToShelf(FAVORITES_SHELF_ID, bookInfo.id);
+    else
+      res = await shelvesClient.removeBookFromShelf(
+        FAVORITES_SHELF_ID,
+        bookInfo.id
+      );
 
     if (res) setIsFavorite(!isFavorite);
   };

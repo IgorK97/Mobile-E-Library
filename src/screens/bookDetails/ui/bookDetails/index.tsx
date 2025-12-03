@@ -80,17 +80,30 @@ BookDetailsProps) => {
   const { t } = useTranslation();
   const styles = useBookStyles();
   const { currentBook, setCurrentBook } = useStore();
+  const { shelves, user } = useStore();
+  const FAVORITES_SHELF_ID = shelves?.find(
+    (shelf) => shelf.shelfType === 1
+  )?.id;
+  const READ_SHELF_ID = shelves?.find((shelf) => shelf.shelfType === 2)?.id;
 
   const bookId = currentBook ? currentBook.id : null;
 
   // 💡 Используем хук для загрузки полных деталей
-  const { data: fullBookDetails, isLoading, error } = useBookDetails(bookId);
+  const {
+    data: fullBookDetails,
+    isLoading,
+    error,
+    fetchBookDetails,
+  } = useBookDetails(bookId);
   const [currentDetailedBook, setCurrentDetailedBook] =
     useState<BookDetails | null>(null);
   useEffect(() => {
+    if (!user || !bookId) return;
     if (fullBookDetails) {
       setCurrentDetailedBook(fullBookDetails);
       setIsDownloaded(false);
+    } else {
+      fetchBookDetails(user.userId, bookId);
     }
     const checkBook = async () => {
       if (!fullBookDetails) return;
@@ -117,12 +130,14 @@ BookDetailsProps) => {
 
   if (!currentDetailedBook)
     return <Text>Ошибка загрузки книги, попробуйте еще раз</Text>;
+  console.log(currentDetailedBook);
   const authors: string = getAuthorsString(authorRoleId, currentDetailedBook);
 
   const toggleFavorite = async () => {
     if (!currentDetailedBook) return;
+    if (!FAVORITES_SHELF_ID) return;
 
-    const shelfId = 1; // избранное
+    const shelfId = FAVORITES_SHELF_ID; // избранное
     const bookId = currentDetailedBook.id;
 
     const isNowFavorite = !currentDetailedBook.isFavorite;
@@ -143,8 +158,9 @@ BookDetailsProps) => {
 
   const toggleRead = async () => {
     if (!currentDetailedBook) return;
+    if (!READ_SHELF_ID) return;
 
-    const shelfId = 2; // прочитано
+    const shelfId = READ_SHELF_ID; // прочитано
     const bookId = currentDetailedBook.id;
 
     const isNowRead = !currentDetailedBook.isRead;

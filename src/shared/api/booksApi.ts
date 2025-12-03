@@ -221,16 +221,16 @@ export class BooksClient {
     );
   }
 
-  getBookMetadata(bookId: number): Promise<BookDetails | null> {
+  getBookMetadata(userId: number, bookId: number): Promise<BookDetails | null> {
     // 💡 Возвращаем Promise<BookDetails | null>
     let url_ = `${this.baseUrl}/api/Books/${encodeURIComponent(bookId)}/info?`;
-    url_ += `userId=1`; // Временно захардкодил userId
+    url_ += `userId=${userId}`;
     url_ = url_.replace(/[?&]$/, "");
 
     let options_: RequestInit = {
       method: "GET",
       headers: {
-        Accept: "application/json", // 💡 Ожидаем JSON
+        Accept: "application/json",
       },
     };
 
