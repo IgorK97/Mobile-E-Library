@@ -50,13 +50,13 @@ export const Search = ({ onNavigateToBook, setCurrentBook }: SearchProps) => {
   };
   const {
     books,
-    isSearching, // Используйте для показа ActivityIndicator при первом поиске
-    loadingMore, // Используйте для показа спиннера внизу списка (FooterComponent)
+    isSearching,
+    loadingMore,
     hasNext,
     refreshing,
-    search, // Вызывать при сабмите формы
-    loadMore, // Вызывать при скролле
-    refresh, // Вызывать при обновлении
+    search,
+    loadMore,
+    refresh,
   } = useSearchPagination();
 
   const styles = useSearchStyles();
@@ -171,14 +171,14 @@ export const Search = ({ onNavigateToBook, setCurrentBook }: SearchProps) => {
                 onPress={() => navigateToBookHandler(item)}
               />
             </View>
-          )} // Оборачиваем renderItem в useCallback
+          )}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => refresh(user.userId, 10)}
             />
           }
-          onEndReached={() => loadMore(user.userId, 10)} // Вызываем fetchNext безусловно
+          onEndReached={() => loadMore(user.userId, 10)}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
         />

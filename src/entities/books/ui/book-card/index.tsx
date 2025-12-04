@@ -31,7 +31,7 @@ export const BookCard = ({ bookInfo, onPress }: BookCardProps) => {
   const styles = useBookCardStyles();
   const { shelves } = useStore();
   const FAVORITES_SHELF_ID = shelves?.find(
-    (shelf) => shelf.shelfType === 1 // Проверяем тип полки
+    (shelf) => shelf.shelfType === 1
   )?.id;
   console.log(`${process.env.EXPO_PUBLIC_BASE_DEV_URL}/${bookInfo.coverUri}`);
   const toggleFavorite = async () => {

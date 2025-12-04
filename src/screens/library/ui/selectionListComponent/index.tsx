@@ -84,7 +84,6 @@ export const SelectionListView = ({
           color === "light" ? Colors.light.background : Colors.dark.background,
       }}
     >
-      {/* Пользовательский заголовок с кнопкой "Назад" */}
       <View
         style={{
           flexDirection: "row",
@@ -123,14 +122,14 @@ export const SelectionListView = ({
                 onPress={() => navigateToBookHandler(item)}
               />
             </View>
-          )} // Оборачиваем renderItem в useCallback
+          )}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => refresh(user?.userId, selectionId, PAGE_SIZE)}
             />
           }
-          onEndReached={() => loadMore(user.userId, selectionId, PAGE_SIZE)} // Вызываем fetchNext безусловно
+          onEndReached={() => loadMore(user.userId, selectionId, PAGE_SIZE)}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
         />

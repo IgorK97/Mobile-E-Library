@@ -75,7 +75,7 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
   const insets = useSafeAreaInsets();
   const { currentBook } = useStore();
   const [booMarks, setBooMarks] = useState<Bookmark[]>([]);
-
+  const { user } = useStore();
   // const { file, fileName, loading } = useBookFile(bookId);
 
   // const { id } = useLocalSearchParams();
@@ -134,8 +134,9 @@ export const ReaderComponent = ({ onNavigate, bookId }: ReaderProps) => {
   };
 
   const onNavigateBack = () => {
+    if (!user) return;
     booksClient.updateReadingProgress({
-      userId: 1,
+      userId: user.userId,
       bookId: bookId,
       readingProgress: currentLocation?.start.percentage ?? 0,
     });

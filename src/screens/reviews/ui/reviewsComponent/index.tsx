@@ -99,10 +99,9 @@ export const Reviews = ({ onNavigate }: ReviewsProps) => {
     refresh,
   } = usePaginationReviews();
   useEffect(() => {
-    // Начальная загрузка отзывов для данной книги
     if (!currentBook || !user) return;
     fetchReviews(currentBook?.id, null, 10, user.userId);
-  }, []); // Зависимость от bookId
+  }, []);
   // const sortedReviews = [...mockReviews].sort((a, b) => {
   //   if (sortBy === "highest") return b.rating - a.rating;
   //   return a.rating - b.rating;
@@ -114,7 +113,7 @@ export const Reviews = ({ onNavigate }: ReviewsProps) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
 
     const isCloseToBottom =
-      layoutMeasurement.height + contentOffset.y >= contentSize.height - 500; // Грузим, когда до конца осталось 500 пикселей
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - 500;
 
     if (isCloseToBottom && hasNext && !loadingMore) {
       loadMoreReviews(currentBook?.id, 10, user.userId);
@@ -124,29 +123,22 @@ export const Reviews = ({ onNavigate }: ReviewsProps) => {
     if (newReviewText.trim() === "" || newRating === 0 || !user) return;
 
     try {
-      // 🚨 Вызов API для создания отзыва
       await reviewsClient.createReview({
         bookId: currentBook?.id,
-        // Title: 'New Review Title', // Если требуется заголовок, добавьте его в форму
         description: newReviewText,
         score: newRating,
         title: "name",
         userId: user?.userId,
         userName: user?.firstName,
-
-        // UserId: userId, // UserID может быть добавлен на сервере через JWT
       });
 
-      // Сброс полей
       setNewReviewText("");
       setNewRating(0);
       setIsModalVisible(false);
 
-      // Обновление списка отзывов (запуск полного рефреша)
       refresh(currentBook?.id!, 10, user.userId);
     } catch (e) {
       console.error("Failed to send review:", e);
-      // Здесь можно показать пользователю уведомление об ошибке
     }
   };
   const { user, currentBook } = useStore();

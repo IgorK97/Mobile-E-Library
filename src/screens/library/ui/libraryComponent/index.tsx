@@ -122,11 +122,10 @@ export const Library = ({
       try {
         if (!user) return;
         setState((prev) => ({ ...prev, isLoading: true, error: null }));
-        // Вызываем асинхронный метод
         const result: PagedResult<BookListItem> =
           await selectionsClient.getBooks(user.userId, selectionId, null, 10);
         setState({
-          books: result.items, // Предполагаем, что книги лежат в result.books
+          books: result.items,
           isLoading: false,
           error: null,
         });
@@ -142,9 +141,8 @@ export const Library = ({
       }
     };
 
-    // Запускаем загрузку для каждой подборки
     selectionStates.forEach(({ id, setState }) => fetchData(id, setState));
-  }, [selectionStates]); // Зависимости гарантируют, что эффект запустится только один раз
+  }, [selectionStates]);
 
   const navigateToBookHandler = (book: BookListItem) => {
     setCurrentBook(book);
@@ -215,7 +213,6 @@ export const Library = ({
             numColumns={numColumns}
             onViewAll={() => onNavigateToList(section.id, section.title)}
             onNavigateToBook={(id) => {
-              // Находим полную информацию о книге, чтобы сохранить в стор
               const book = section.data.books.find((b) => b.id === id);
               if (book) {
                 navigateToBookHandler(book);

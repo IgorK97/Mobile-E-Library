@@ -40,8 +40,6 @@ const useSearchPagination = () => {
       const result: PagedResult<BookListItem> =
         await booksClient.getSearchedBooks(query, userId, lastIdParam, limit);
 
-      // Если lastIdParam === null, значит это новый поиск -> перезаписываем массив
-      // Иначе -> добавляем к существующим
       setBooks((prev) =>
         lastIdParam === null ? result.items : [...prev, ...result.items]
       );
@@ -63,7 +61,6 @@ const useSearchPagination = () => {
    */
   const search = (query: string, userId: number, limit: number = 10) => {
     if (!query.trim()) {
-      // Если запрос пустой - очищаем список
       setBooks([]);
       setHasNext(false);
       setLastId(null);
@@ -73,13 +70,10 @@ const useSearchPagination = () => {
 
     setIsSearching(true);
     setLastId(null);
-    setCurrentQuery(query); // Запоминаем, что мы ищем
+    setCurrentQuery(query);
     fetchSearchedBooks(query, userId, null, limit);
   };
 
-  /**
-   * Подгрузить следующую страницу (вызывается в onEndReached)
-   */
   const loadMore = (userId: number, limit: number = 10) => {
     if (!loadingMore && hasNext && currentQuery) {
       setLoadingMore(true);
@@ -87,9 +81,6 @@ const useSearchPagination = () => {
     }
   };
 
-  /**
-   * Обновить текущие результаты (pull-to-refresh)
-   */
   const refresh = (userId: number, limit: number = 10) => {
     if (currentQuery) {
       setRefreshing(true);
@@ -101,12 +92,12 @@ const useSearchPagination = () => {
   return {
     books,
     refreshing,
-    isSearching, // Используйте для показа ActivityIndicator при первом поиске
-    loadingMore, // Используйте для показа спиннера внизу списка (FooterComponent)
+    isSearching,
+    loadingMore,
     hasNext,
-    search, // Вызывать при сабмите формы
-    loadMore, // Вызывать при скролле
-    refresh, // Вызывать при обновлении
+    search,
+    loadMore,
+    refresh,
   };
 };
 

@@ -14,11 +14,9 @@ export default function LibraryScreen() {
     useState<ActiveListState | null>(null);
 
   const navigateToListHandler = (selectionId: number, title: string) => {
-    // При переходе на полный список, устанавливаем ID и заголовок
     setActiveSelection({ id: selectionId, title: title });
   };
 
-  // 💡 Функция для возврата к плитке
   const goBackToLibrary = () => {
     setActiveSelection(null);
   };

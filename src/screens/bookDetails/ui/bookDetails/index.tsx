@@ -35,6 +35,7 @@ import {
   checkIfBookExists,
   deleteLocalBook,
   downloadAndSaveBook,
+  downloadAndSaveMetadata,
 } from "@/src/shared/services/FileSystemService";
 interface BookDetailsProps {
   onNavigateToReviews: (id: number) => void;
@@ -46,20 +47,16 @@ function getAuthorsString(
   authorRoleId: number,
   bookDetails: BookDetails
 ): string {
-  // 1. Найти группу участников с ролью "Автор"
   const authorGroup = bookDetails.participants.find(
     (group) => group.role === authorRoleId
   );
 
-  // 2. Проверить, найдена ли группа авторов, и есть ли в ней персоны
   if (!authorGroup || authorGroup.persons.length === 0) {
-    return "Неизвестный автор"; // Возвращаем заглушку, если авторы не найдены
+    return "Неизвестный автор";
   }
 
-  // 3. Извлечь имена (fullName) и объединить их в строку
   const authorNames = authorGroup.persons.map((person) => person.fullName);
 
-  // 4. Объединить имена запятой и пробелом
   return authorNames.join(", ");
 }
 
@@ -87,24 +84,16 @@ BookDetailsProps) => {
   const READ_SHELF_ID = shelves?.find((shelf) => shelf.shelfType === 2)?.id;
 
   const bookId = currentBook ? currentBook.id : null;
-
-  // 💡 Используем хук для загрузки полных деталей
   const {
     data: fullBookDetails,
     isLoading,
     error,
     fetchBookDetails,
   } = useBookDetails(bookId);
-  // const [currentDetailedBook, setCurrentDetailedBook] =
-  //   useState<BookDetails | null>(null);
+
   useEffect(() => {
     if (!user || !bookId) return;
-    // if (fullBookDetails) {
-    //   // setCurrentDetailedBook(fullBookDetails);
-    //   setIsDownloaded(false);
-    // } else {
-    //   fetchBookDetails(user.userId, bookId);
-    // }
+
     setIsDownloaded(false);
     fetchBookDetails(user.userId, bookId);
     const checkBook = async () => {
@@ -140,18 +129,16 @@ BookDetailsProps) => {
     if (!fullBookDetails) return;
     if (!FAVORITES_SHELF_ID) return;
 
-    const shelfId = FAVORITES_SHELF_ID; // избранное
+    const shelfId = FAVORITES_SHELF_ID;
     const bookId = fullBookDetails.id;
 
     const isNowFavorite = !fullBookDetails.isFavorite;
 
-    // отправляем запрос
     const success = isNowFavorite
       ? await shelvesClient.addBookToShelf(shelfId, bookId)
       : await shelvesClient.removeBookFromShelf(shelfId, bookId);
 
     if (success) {
-      // обновляем локально
       // setCurrentDetailedBook({
       //   ...currentDetailedBook,
       //   isFavorite: isNowFavorite,
@@ -203,6 +190,7 @@ BookDetailsProps) => {
                   fullBookDetails.id,
                   `${process.env.EXPO_PUBLIC_BASE_DEV_URL}/api/Books/${fullBookDetails.id}/read`
                 );
+                await downloadAndSaveMetadata(fullBookDetails);
               } else {
                 deleteLocalBook(fullBookDetails.id);
               }

@@ -3,7 +3,7 @@ import { ReaderComponent } from "@/src/screens/reader";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { BookListItem } from "@/src/shared/types/types";
-import { BookService } from "@/src/shared/services/BookService";
+// import { BookService } from "@/src/shared/services/BookService";
 import { Text } from "react-native";
 
 export default function ReaderScreen() {

@@ -36,8 +36,8 @@ export function ReviewCard({
   const styles = useReviewCardStyles();
   const [isProcessing, setIsProcessing] = useState(false);
   const { user } = useStore();
-  const ACTIVE_COLOR = "#dc2626"; // Красный (red-600)
-  const INACTIVE_COLOR = "#6b7280"; // Серый
+  const ACTIVE_COLOR = "#dc2626";
+  const INACTIVE_COLOR = "#6b7280";
   useEffect(() => {
     setUserLike(initialUserStatus);
   }, [initialUserStatus]);
@@ -52,12 +52,9 @@ export function ReviewCard({
         score: Score,
       });
 
-      // Опционально: вызвать колбэк для обновления списка в родительском компоненте
       onRatingSuccess?.();
     } catch (e) {
       console.error("Ошибка при отправке оценки:", e);
-      // Если произошла ошибка, можно откатить локальные изменения (сложно)
-      // или просто сообщить пользователю.
     } finally {
       setIsProcessing(false);
     }
@@ -67,14 +64,12 @@ export function ReviewCard({
     let isRequestLike: number;
 
     if (userLike === "like") {
-      // Отмена лайка
       setLikeCount((c) => c - 1);
       newStatus = null;
-      isRequestLike = 0; // Сервер должен обработать это как удаление лайка
+      isRequestLike = 0;
     } else {
-      // Ставим лайк
       if (userLike === "dislike") {
-        setDislikeCount((c) => c - 1); // Снимаем дизлайк
+        setDislikeCount((c) => c - 1);
       }
       setLikeCount((c) => c + 1);
       newStatus = "like";
@@ -90,14 +85,12 @@ export function ReviewCard({
     let isRequestDislike: number;
 
     if (userLike === "dislike") {
-      // Отмена дизлайка
       setDislikeCount((c) => c - 1);
       newStatus = null;
-      isRequestDislike = 0; // Сервер должен обработать как удаление дизлайка
+      isRequestDislike = 0;
     } else {
-      // Ставим дизлайк
       if (userLike === "like") {
-        setLikeCount((c) => c - 1); // Снимаем лайк
+        setLikeCount((c) => c - 1);
       }
       setDislikeCount((c) => c + 1);
       newStatus = "dislike";
@@ -105,8 +98,7 @@ export function ReviewCard({
     }
 
     setUserLike(newStatus);
-    sendRatingRequest(isRequestDislike); // Важно: RateReviewCommand принимает IsLike: true/false
-    // Если ставим дизлайк, IsLike должен быть false.
+    sendRatingRequest(isRequestDislike);
   };
   const strDate: string = date.toLocaleString("ru-RU", {
     year: "numeric",
@@ -128,7 +120,7 @@ export function ReviewCard({
             key={star}
             name="star"
             size={16}
-            color={star <= rating ? "#facc15" : "#d1d5db"} // yellow or gray
+            color={star <= rating ? "#facc15" : "#d1d5db"}
           />
         ))}
       </View>

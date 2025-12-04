@@ -92,8 +92,8 @@ export function ReaderFooter({
       };
       await bookmarksClient.remove({
         userId: 1,
-        bookId: currentBook?.id, // текущая книга
-        mark: JSON.stringify(removingBookmarkData), // передаём location
+        bookId: currentBook?.id,
+        mark: JSON.stringify(removingBookmarkData),
         text: bookmark.text,
       } as RemoveBookmarkCommand); //What if it did not save changes???
       removeBookmark(bookmark);

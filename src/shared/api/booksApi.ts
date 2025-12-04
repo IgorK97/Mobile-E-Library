@@ -97,7 +97,6 @@ export class BooksClient {
     const { UserId, LastId, Limit } = query;
     let url_ = `${this.baseUrl}/api/Books/readbooks?`;
     url_ += `userId=${encodeURIComponent(UserId)}&`;
-    // 1. Формируем строку запроса из параметров
     if (LastId !== null && LastId !== undefined) {
       url_ += `lastId=${encodeURIComponent(LastId)}&`;
     }
