@@ -163,19 +163,19 @@ export const Profile = ({ onNavigate }: ProfileProps) => {
             </Text>
             <ChevronRight size={20} color={chevronRightColor} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.row}>
+          {/* <TouchableOpacity style={styles.row}>
             <Text style={typography.rowText}>
               {t("profile.label_dark_theme")}
             </Text>
             <ChevronRight size={20} color={chevronRightColor} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View style={styles.section}>
           <Text style={typography.sectionTitle}>{t("profile.label_help")}</Text>
-          <TouchableOpacity style={styles.row}>
+          {/* <TouchableOpacity style={styles.row}>
             <Text style={typography.rowText}>{t("profile.tips")}</Text>
             <ChevronRight size={20} color={chevronRightColor} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.row}
             // onPress={() => router.navigate(`/auth`)}

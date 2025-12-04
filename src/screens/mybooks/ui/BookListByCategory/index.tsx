@@ -36,7 +36,7 @@ export const BookListByCategory = ({
     setCurrentBook(book);
     onNavigateToBook(book.id);
   };
-  const { user } = useStore();
+  const { user, shelves } = useStore();
   // const {
   //   books,
   //   refreshing,
@@ -85,10 +85,19 @@ export const BookListByCategory = ({
   const finalRefreshing = isReadHistory ? readRefreshing : shelfRefreshing;
   const finalLoadingMore = isReadHistory ? readLoadingMore : shelfLoadingMore;
 
+  // const FAVORITES_ID = shelves?.find(
+  //   (shelf) => shelf.shelfType === 1
+  // )?.id;
+  // const READ_ID= shelves?.find(
+  //   (shelf) => shelf.shelfType === 2
+  // )?.id;
+  const SHELF_ID = shelves?.find((shelf) => shelf.shelfType === CategoryId)?.id;
+
   useEffect(() => {
     if (!user) return;
     if (CategoryId === -1) finalFetch(user?.userId, 1, null, 10);
-    else if (CategoryId !== 0) finalFetch(user.userId, CategoryId, null, 10);
+    else if (CategoryId !== 0 && SHELF_ID)
+      finalFetch(user.userId, SHELF_ID, null, 10);
   }, [CategoryId]);
   const renderFooter = () => {
     if (!readLoadingMore) return null;
@@ -108,7 +117,7 @@ export const BookListByCategory = ({
           color === "light" ? Colors.light.background : Colors.dark.background,
       }}
     >
-      {readInitialLoader ? (
+      {finalInitialLoader ? (
         <ActivityIndicator style={{ marginTop: 20 }} size="large" />
       ) : (
         <FlatList
@@ -124,14 +133,14 @@ export const BookListByCategory = ({
                 onPress={() => navigateToBookHandler(item)}
               />
             </View>
-          )} // Оборачиваем renderItem в useCallback
+          )}
           refreshControl={
             <RefreshControl
               refreshing={readRefreshing}
               onRefresh={() => finalRefresh(user.userId, 1, 10)}
             />
           }
-          onEndReached={() => finalLoadMore(user.userId, 1, 10)} // Вызываем fetchNext безусловно
+          onEndReached={() => finalLoadMore(user.userId, 1, 10)}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
         />
