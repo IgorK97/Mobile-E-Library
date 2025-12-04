@@ -1,28 +1,40 @@
 import { Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
+  FlatList,
   Modal,
+  RefreshControl,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from "react-native";
 import { useTranslation } from "react-i18next";
-
+import { commonStyles } from "@/src/shared/lib/constants/common";
 import "@/src/shared/i18n";
 
 import { useSearchStyles } from "@/src/screens/search/ui/searchComponent/index.style";
 import { useTypography } from "@/src/shared/lib/constants/fontStyles";
+import { BookCard } from "@/src/entities/books";
+import useSearchPagination from "../../api/hooks/useSearchedBooksPagination";
+import { useStore } from "@/src/shared/lib/store/globalStore";
+import { BookListItem } from "@/src/shared/types/types";
 
 interface SearchProps {
+  setCurrentBook: (book: BookListItem) => void;
   onNavigateToBook: (bookId: number) => void;
 }
 
-export const Search = ({ onNavigateToBook }: SearchProps) => {
+export const Search = ({ onNavigateToBook, setCurrentBook }: SearchProps) => {
   const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const { width } = useWindowDimensions();
+  const { user } = useStore();
+  const numColumns = 2;
+  const cardWidth = width / numColumns - 24;
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [showAllLanguages, setShowAllLanguages] = useState(false);
   const { t } = useTranslation();
@@ -32,6 +44,20 @@ export const Search = ({ onNavigateToBook }: SearchProps) => {
   const [rating, setRating] = useState<number | null>(null);
   const [yearFrom, setYearFrom] = useState<string>("");
   const [yearTo, setYearTo] = useState<string>("");
+  const navigateToBookHandler = (book: BookListItem) => {
+    setCurrentBook(book);
+    onNavigateToBook(book.id);
+  };
+  const {
+    books,
+    isSearching, // Используйте для показа ActivityIndicator при первом поиске
+    loadingMore, // Используйте для показа спиннера внизу списка (FooterComponent)
+    hasNext,
+    refreshing,
+    search, // Вызывать при сабмите формы
+    loadMore, // Вызывать при скролле
+    refresh, // Вызывать при обновлении
+  } = useSearchPagination();
 
   const styles = useSearchStyles();
   const typography = useTypography();
@@ -96,7 +122,16 @@ export const Search = ({ onNavigateToBook }: SearchProps) => {
   const handleApply = () => {
     setOpen(false);
   };
+  const renderFooter = () => {
+    if (!loadingMore) return null;
 
+    return (
+      <View style={{ paddingVertical: 20 }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  };
+  if (!user) return;
   return (
     <View style={{ ...styles.container, paddingVertical: 30 }}>
       <View style={styles.searchBar}>
@@ -109,14 +144,45 @@ export const Search = ({ onNavigateToBook }: SearchProps) => {
         <TextInput
           style={styles.searchInput}
           placeholder={t("search.ph")}
-          value={search}
-          onChangeText={setSearch}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onSubmitEditing={() => {
+            search(searchQuery, user.userId, 10);
+          }}
         />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={() => setOpen(true)}>
         <Text style={typography.defaultButtonText}>{t("search.filters")}</Text>
       </TouchableOpacity>
+      {isSearching ? (
+        <ActivityIndicator style={{ marginTop: 20 }} size="large" />
+      ) : (
+        <FlatList
+          data={books}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={numColumns}
+          contentContainerStyle={commonStyles.grid}
+          columnWrapperStyle={commonStyles.gridRow}
+          renderItem={({ item }) => (
+            <View style={{ width: cardWidth }}>
+              <BookCard
+                bookInfo={item}
+                onPress={() => navigateToBookHandler(item)}
+              />
+            </View>
+          )} // Оборачиваем renderItem в useCallback
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => refresh(user.userId, 10)}
+            />
+          }
+          onEndReached={() => loadMore(user.userId, 10)} // Вызываем fetchNext безусловно
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderFooter}
+        />
+      )}
 
       <Modal visible={open} animationType="slide" transparent>
         <View style={styles.modalOverlay}>

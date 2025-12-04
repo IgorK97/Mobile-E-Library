@@ -94,18 +94,6 @@ export class BooksClient {
   }
 
   getReadBooks(query: GetReadBooksQuery): Promise<PagedResult<BookListItem>> {
-    // let url_ = `${this.baseUrl}/api/Books/readbooks`;
-    // const content_ = JSON.stringify(query);
-    // console.log(content_);
-    // let options_: RequestInit = {
-    //   body: content_,
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json",
-    //   },
-    // };
-
     const { UserId, LastId, Limit } = query;
     let url_ = `${this.baseUrl}/api/Books/readbooks?`;
     url_ += `userId=${encodeURIComponent(UserId)}&`;
@@ -122,7 +110,41 @@ export class BooksClient {
     let options_: RequestInit = {
       method: "GET",
       headers: {
+        Accept: "application/octet-stream",
+      },
+    };
 
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processJsonResponseForReadBooks<PagedResult<BookListItem>>(
+        _response
+      );
+    });
+  }
+
+  getSearchedBooks(
+    query: string,
+    userId: number,
+    lastId: number | null,
+    limit: number
+  ): Promise<PagedResult<BookListItem>> {
+    let url_ = `${this.baseUrl}/api/Books/search?`;
+    url_ += `userId=${encodeURIComponent(userId)}&`;
+    url_ += `query=${query}&`;
+
+    if (lastId !== null && lastId !== undefined) {
+      url_ += `lastId=${encodeURIComponent(lastId)}&`;
+    }
+
+    if (limit !== undefined) {
+      url_ += `limit=${encodeURIComponent(limit)}&`;
+    }
+
+    url_ = url_.replace(/[?&]$/, "");
+    console.log(url_);
+
+    let options_: RequestInit = {
+      method: "GET",
+      headers: {
         Accept: "application/octet-stream",
       },
     };
